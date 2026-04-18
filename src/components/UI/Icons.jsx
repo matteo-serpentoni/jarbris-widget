@@ -336,3 +336,19 @@ export const ImagePlaceholderIcon = ({ size = 32 } = {}) => (
     <path d="M17 21l-5-5-5 5" />
   </svg>
 );
+
+/** Horizontal dots — overflow chip "Mostra altre" control */
+export const MoreDotsIcon = ({ size = 14 } = {}) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    aria-hidden="true"
+  >
+    <circle cx="5" cy="12" r="2" />
+    <circle cx="12" cy="12" r="2" />
+    <circle cx="19" cy="12" r="2" />
+  </svg>
+);

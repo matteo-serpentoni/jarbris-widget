@@ -86,3 +86,35 @@
 .mobile-device .jarbris-suggestion-chip {
   backdrop-filter: blur(6px);
 }
+
+/* Inner wrapper rendered by AnimatePresence motion.div */
+.jarbris-suggestions-inner {
+  display: contents;
+}
+
+/* Overflow toggle — "Mostra altre N" UI control */
+.jarbris-suggestion-chip.overflow {
+  background: rgba(139, 92, 246, 0.2);
+  border-color: rgba(139, 92, 246, 0.4);
+  color: #a78bfa;
+}
+
+.jarbris-suggestion-chip.overflow:hover {
+  background: rgba(139, 92, 246, 0.32);
+  border-color: rgba(139, 92, 246, 0.6);
+  transform: translateY(-2px);
+}
+
+/* Back control — "Indietro" UI control */
+.jarbris-suggestion-chip.back {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: rgba(139, 92, 246, 0.25);
+  color: #c4b5fd;
+}
+
+.jarbris-suggestion-chip.back:hover {
+  background: rgba(139, 92, 246, 0.2);
+  border-color: rgba(139, 92, 246, 0.4);
+  transform: translateY(-2px);
+}
+
