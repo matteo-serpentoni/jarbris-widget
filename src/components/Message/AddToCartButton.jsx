@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, memo } from 'react';
 import { extractVariantId } from '../../utils/shopifyUtils';
+import { useI18n } from '../../hooks/useI18n';
 import './AddToCartButton.css';
 
 import { BRIDGE_CONFIG } from '../../config/bridge';
@@ -14,6 +15,7 @@ const AddToCartButton = memo(
     onAnimationComplete,
     compact = false,
   }) => {
+    const t = useI18n();
     const buttonRef = useRef(null);
     const isMounted = useRef(true);
 
@@ -283,7 +285,7 @@ const AddToCartButton = memo(
     return (
       <div className={`jarbris-add-to-cart-container ${compact ? 'compact' : ''}`}>
         <button className={`add-to-cart ${compact ? 'jarbris-add-to-cart-btn' : ''}`} ref={buttonRef}>
-          <span>Add to cart</span>
+          <span>{t('product.add_to_cart_chip')}</span>
           <svg className="morph" viewBox="0 0 64 13">
             <path d="M0 12C6 12 17 12 32 12C47.9024 12 58 12 64 12V13H0V12Z" />
           </svg>

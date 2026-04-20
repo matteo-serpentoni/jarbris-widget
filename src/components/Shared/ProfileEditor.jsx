@@ -6,6 +6,7 @@ import storage from '../../utils/storage';
 import { LockIcon } from '../UI/Icons';
 import { validateEmail } from '../../utils/validators';
 import ConfirmDialog from '../UI/ConfirmDialog';
+import { useI18n } from '../../hooks/useI18n';
 import './ProfileEditor.css';
 
 const ProfileEditor = ({
@@ -22,6 +23,7 @@ const ProfileEditor = ({
   },
   mode = 'drawer', // 'drawer' | 'inline'
 }) => {
+  const t = useI18n();
   const [name, setName] = useState(initialProfile?.name || '');
   const [email, setEmail] = useState(initialProfile?.email || '');
   const [saving, setSaving] = useState(false);
@@ -54,13 +56,13 @@ const ProfileEditor = ({
     e.preventDefault();
 
     if (!email.trim()) {
-      setMessage({ type: 'error', text: 'Email obbligatoria.' });
+      setMessage({ type: 'error', text: t('profile.error_email_required') });
       setTimeout(() => setMessage(null), 3000);
       return;
     }
 
     if (!validateEmail(email)) {
-      setMessage({ type: 'error', text: "Inserisci un'email valida." });
+      setMessage({ type: 'error', text: t('profile.error_email_invalid') });
       setTimeout(() => setMessage(null), 3000);
       return;
     }
@@ -90,14 +92,14 @@ const ProfileEditor = ({
       onProfileUpdate?.(serverProfile);
 
       setSaving(false);
-      setMessage({ type: 'success', text: 'Profilo salvato!' });
+      setMessage({ type: 'success', text: t('profile.saved') });
 
       setTimeout(() => {
         onSuccess?.();
       }, 1500);
     } catch {
       setSaving(false);
-      setMessage({ type: 'error', text: 'Errore durante il salvataggio.' });
+      setMessage({ type: 'error', text: t('profile.error_save') });
       setTimeout(() => {
         setMessage(null);
       }, 3000);
@@ -107,7 +109,7 @@ const ProfileEditor = ({
   const handleReset = async () => {
     setShowConfirm(false);
     setSaving(true);
-    setMessage({ type: 'success', text: 'Eliminazione in corso...' });
+    setMessage({ type: 'success', text: t('profile.deleting') });
 
     try {
       await deleteMyData(sessionId, shopDomain, visitorId);
@@ -118,7 +120,7 @@ const ProfileEditor = ({
       setIsIdentified(false);
       onProfileUpdate?.(null);
 
-      setMessage({ type: 'success', text: 'Dati eliminati.' });
+      setMessage({ type: 'success', text: t('profile.deleted') });
 
       // Force an immediate reload to ensure ghost state is wiped and a clean boot is triggered
       setTimeout(() => {
@@ -127,9 +129,9 @@ const ProfileEditor = ({
     } catch (err) {
       setSaving(false);
       if (err.message.includes('identity_verification_required')) {
-        setMessage({ type: 'error', text: 'Identità non verificabile.' });
+        setMessage({ type: 'error', text: t('profile.error_identity') });
       } else {
-        setMessage({ type: 'error', text: 'Errore durante il reset.' });
+        setMessage({ type: 'error', text: t('profile.error_reset') });
       }
       setTimeout(() => setMessage(null), 3500);
     }
@@ -138,16 +140,16 @@ const ProfileEditor = ({
   const handleExport = async () => {
     setShowExportConfirm(false);
     setSaving(true);
-    setMessage({ type: 'success', text: 'Download avviato...' });
+    setMessage({ type: 'success', text: t('profile.download_started') });
 
     try {
       await exportMyData(sessionId, shopDomain, visitorId);
-      setMessage({ type: 'success', text: 'Dati esportati.' });
+      setMessage({ type: 'success', text: t('profile.downloaded') });
     } catch (err) {
       if (err.message.includes('identity_verification_required')) {
-        setMessage({ type: 'error', text: 'Identità non verificata. Impossibile scaricare.' });
+        setMessage({ type: 'error', text: t('profile.error_export_identity') });
       } else {
-        setMessage({ type: 'error', text: "Errore durante l'export." });
+        setMessage({ type: 'error', text: t('profile.error_export') });
       }
     } finally {
       setSaving(false);
@@ -168,7 +170,7 @@ const ProfileEditor = ({
     } catch {
       setAnalyticsConsent(previousValue);
       rollbackConsent(previousValue);
-      setPrivacyError('Non è stato possibile aggiornare la preferenza. Riprova.');
+      setPrivacyError(t('profile.error_privacy'));
 
       if (privacyErrorTimerRef.current) clearTimeout(privacyErrorTimerRef.current);
       privacyErrorTimerRef.current = setTimeout(() => {
@@ -202,7 +204,7 @@ const ProfileEditor = ({
         style={{ '--profile-header-color': colors.header }}
       >
         <div className="profile-editor-field email">
-          <label className="profile-editor-label">Email</label>
+          <label className="profile-editor-label">{t('profile.email_label')}</label>
           <input
             type="email"
             className="profile-editor-input"
@@ -213,7 +215,7 @@ const ProfileEditor = ({
         </div>
 
         <div className="profile-editor-field">
-          <label className="profile-editor-label">Nome Completo (Opzionale)</label>
+          <label className="profile-editor-label">{t('profile.name_label')}</label>
           <input
             type="text"
             className="profile-editor-input"
@@ -234,10 +236,10 @@ const ProfileEditor = ({
             {message
               ? message.text
               : saving
-                ? '...'
+                ? t('profile.saving')
                 : isIdentified
-                  ? 'Aggiorna Profilo'
-                  : 'Salva Profilo'}
+                  ? t('profile.update_profile')
+                  : t('profile.save_profile')}
           </button>
         </div>
 
@@ -249,7 +251,7 @@ const ProfileEditor = ({
               disabled={saving}
               className="profile-editor-btn-export"
             >
-              Scarica i miei dati
+              {t('profile.download_data')}
             </button>
             <button
               type="button"
@@ -257,7 +259,7 @@ const ProfileEditor = ({
               disabled={saving}
               className="profile-editor-btn-delete"
             >
-              Elimina Profilo
+              {t('profile.delete_profile')}
             </button>
           </div>
         )}
@@ -265,14 +267,14 @@ const ProfileEditor = ({
         <div className="profile-editor-privacy">
           <div className="profile-editor-privacy-header">
             <LockIcon />
-            <span>Privacy</span>
+            <span>{t('profile.privacy_section')}</span>
           </div>
 
           <div className="profile-editor-privacy-row">
             <div className="profile-editor-privacy-label-wrapper">
-              <p className="profile-editor-privacy-title">Raccolta dati di utilizzo</p>
+              <p className="profile-editor-privacy-title">{t('profile.privacy_title')}</p>
               <p className="profile-editor-privacy-desc">
-                Aiutaci a migliorare attivando l&apos;analisi anonima delle interazioni.
+                {t('profile.privacy_desc')}
               </p>
             </div>
 
@@ -280,7 +282,7 @@ const ProfileEditor = ({
               type="button"
               role="switch"
               aria-checked={analyticsConsent}
-              aria-label="Attiva/disattiva raccolta dati"
+              aria-label={t('profile.privacy_toggle_label')}
               disabled={privacySaving}
               onClick={handlePrivacyToggleClick}
               className={`profile-editor-privacy-toggle ${analyticsConsent ? 'on' : ''} ${privacySaving ? 'saving' : ''}`}
@@ -298,30 +300,30 @@ const ProfileEditor = ({
       </form>
       <ConfirmDialog
         isOpen={showPrivacyConfirm}
-        title="Sei sicuro?"
-        message="Disattivando questa opzione, Jarbris non potrà più offrirti consigli personalizzati."
-        confirmText="Disattiva"
-        cancelText="Annulla"
+        title={t('profile.confirm_privacy_title')}
+        message={t('profile.confirm_privacy_message')}
+        confirmText={t('profile.confirm_privacy_confirm')}
+        cancelText={t('profile.confirm_cancel')}
         onConfirm={confirmPrivacyRevocation}
         onCancel={() => setShowPrivacyConfirm(false)}
       />
 
       <ConfirmDialog
         isOpen={showExportConfirm}
-        title="Scarica dati"
-        message="Il file JSON con tutti i tuoi dati associati alla tua identità verrà preparato e scaricato."
-        confirmText="Avvia Download"
-        cancelText="Annulla"
+        title={t('profile.confirm_export_title')}
+        message={t('profile.confirm_export_message')}
+        confirmText={t('profile.confirm_export_confirm')}
+        cancelText={t('profile.confirm_cancel')}
         onConfirm={handleExport}
         onCancel={() => setShowExportConfirm(false)}
       />
 
       <ConfirmDialog
         isOpen={showConfirm}
-        title="Eliminazione irreversibile"
-        message="Questa operazione eliminerà permanentemente tutti i tuoi dati e ti sgancerà dal servizio."
-        confirmText="Sì, elimina tutto"
-        cancelText="Annulla"
+        title={t('profile.confirm_delete_title')}
+        message={t('profile.confirm_delete_message')}
+        confirmText={t('profile.confirm_delete_confirm')}
+        cancelText={t('profile.confirm_cancel')}
         onConfirm={handleReset}
         onCancel={() => setShowConfirm(false)}
       />

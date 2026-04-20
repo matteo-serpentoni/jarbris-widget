@@ -4,6 +4,7 @@ import ProductModal from '../UI/ProductModal';
 import AddToCartButton from './AddToCartButton';
 import { formatPrice } from '../../utils/messageHelpers';
 import { normalizeStorefrontProduct, isDefaultVariant } from '../../utils/shopifyUtils';
+import { useI18n } from '../../hooks/useI18n';
 
 /**
  * ProductSheet — Responsive customize panel.
@@ -23,6 +24,7 @@ import { normalizeStorefrontProduct, isDefaultVariant } from '../../utils/shopif
  * @param {boolean}  props.isMobile         - Device flag from Orb via prop chain
  */
 const ProductSheet = memo(({ product, onClose, shopDomain, onProductAction, isMobile }) => {
+  const t = useI18n();
   const normalized = normalizeStorefrontProduct(product);
   const {
     isAvailable,
@@ -101,7 +103,7 @@ const ProductSheet = memo(({ product, onClose, shopDomain, onProductAction, isMo
 
   const handleAtcClick = () => {
     if (!allOptionsSelected) {
-      setValidationError(`Seleziona ${missingOptionNames.join(' e ')} per continuare`);
+      setValidationError(t('product.select_missing', { options: missingOptionNames.join(' e ') }));
     }
   };
 
@@ -118,7 +120,7 @@ const ProductSheet = memo(({ product, onClose, shopDomain, onProductAction, isMo
         // Product itself is marked unavailable
         <div className="jarbris-add-to-cart-container compact">
           <button className="add-to-cart jarbris-add-to-cart-btn disabled" disabled>
-            <span>Prodotto Esaurito</span>
+            <span>{t('product.sold_out')}</span>
           </button>
         </div>
       ) : !allOptionsSelected ? (
@@ -129,21 +131,21 @@ const ProductSheet = memo(({ product, onClose, shopDomain, onProductAction, isMo
             onClick={handleAtcClick}
             aria-disabled="true"
           >
-            <span>Seleziona Opzioni</span>
+            <span>{t('product.select_options')}</span>
           </button>
         </div>
       ) : !currentVariant ? (
         // All options selected, but this combination NEVER existed in Shopify (unlinked variants)
         <div className="jarbris-add-to-cart-container compact">
           <button className="add-to-cart jarbris-add-to-cart-btn disabled" disabled>
-            <span>Non Disponibile</span>
+            <span>{t('product.unavailable')}</span>
           </button>
         </div>
       ) : !isVariantAvailable ? (
         // Specific variant combo exists but inventory is 0
         <div className="jarbris-add-to-cart-container compact">
           <button className="add-to-cart jarbris-add-to-cart-btn disabled" disabled>
-            <span>Variante Esaurita</span>
+            <span>{t('product.variant_sold_out')}</span>
           </button>
         </div>
       ) : (
@@ -217,7 +219,7 @@ const ProductSheet = memo(({ product, onClose, shopDomain, onProductAction, isMo
                       onChange={(e) => handleOptionChange(opt.name, e.target.value)}
                     >
                       <option value="" disabled>
-                        Scegli {opt.name}
+                        {t('product.choose_option')} {opt.name}
                       </option>
                       {opt.values.map((val) => (
                         <option key={val} value={val}>

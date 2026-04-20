@@ -11,9 +11,11 @@ import AddToCartButton from './AddToCartButton';
 import { ExternalLinkIcon, SparkleIcon, ChevronLeftIcon, ChevronRightIcon } from '../UI/Icons';
 import { formatPrice } from '../../utils/messageHelpers';
 import { normalizeStorefrontProduct } from '../../utils/shopifyUtils';
+import { useI18n } from '../../hooks/useI18n';
 import './CrossSellBlock.css';
 
 const CrossSellCard = memo(({ product, shopDomain, index, onOpen }) => {
+  const t = useI18n();
   const normalized = normalizeStorefrontProduct(product);
   const {
     primaryImage: image,
@@ -96,7 +98,7 @@ const CrossSellCard = memo(({ product, shopDomain, index, onOpen }) => {
             )
           )
         ) : (
-          <span className="jarbris-xs-unavailable">Sold out</span>
+          <span className="jarbris-xs-unavailable">{t('product.sold_out')}</span>
         )}
       </div>
     </div>

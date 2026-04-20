@@ -3,6 +3,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import ProfileEditor from '../Shared/ProfileEditor';
 import { UserIcon, ChevronDownIcon } from '../UI/Icons';
+import { useI18n } from '../../hooks/useI18n';
 import './ProfileCardMessage.css';
 
 const ProfileCardMessage = ({
@@ -17,6 +18,7 @@ const ProfileCardMessage = ({
   bootConsent,
   handleProfileUpdate,
 }) => {
+  const t = useI18n();
   // It's expanded by default if it's the last message
   const [isExpanded, setIsExpanded] = useState(isLastMessage);
   const [hasInteracted, setHasInteracted] = useState(false);
@@ -44,10 +46,8 @@ const ProfileCardMessage = ({
   );
 
   // Use the text provided by the backend, or fallback
-  const title = 'Salva le tue preferenze';
-  const text =
-    message.text ||
-    'Vuoi che mi ricordi di te per la prossima volta? Posso salvare le tue preferenze, taglie e prodotti che ti interessano.';
+  const title = t('profile_card.title');
+  const text = message.text || t('profile_card.fallback');
 
   return (
     <div className="jarbris-profile-card-message">
@@ -59,7 +59,7 @@ const ProfileCardMessage = ({
           role="button"
           tabIndex={0}
           aria-expanded={effectiveExpanded}
-          aria-label={effectiveExpanded ? 'Comprimi dettagli profilo' : 'Espandi dettagli profilo'}
+          aria-label={effectiveExpanded ? t('profile_card.aria_collapse') : t('profile_card.aria_expand')}
         >
           <div className="jarbris-profile-card-icon" style={{ color: 'rgba(255, 255, 255, 0.35)' }}>
             <UserIcon size={18} />

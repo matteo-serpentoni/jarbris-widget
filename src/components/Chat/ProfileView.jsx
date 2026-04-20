@@ -1,6 +1,7 @@
 import React from 'react';
 import ProfileEditor from '../Shared/ProfileEditor';
 import { BackArrowIcon } from '../UI/Icons';
+import { useI18n } from '../../hooks/useI18n';
 import './ProfileView.css';
 
 const ProfileView = ({
@@ -18,6 +19,7 @@ const ProfileView = ({
     inputFocus: '#4CC2E9',
   },
 }) => {
+  const t = useI18n();
   const isIdentified = !!profile?.isIdentified;
 
   return (
@@ -32,18 +34,18 @@ const ProfileView = ({
         <button onClick={onBack} className="back-button">
           <BackArrowIcon size={18} />
         </button>
-        <h3 className="profile-title">Il tuo Profilo</h3>
+        <h3 className="profile-title">{t('profile.title')}</h3>
       </div>
 
       <p className="profile-description">
         {requiresReConsent && (
           <span className="profile-reconsent-inline-alert">
-            ⚠️ Abbiamo aggiornato la Privacy Policy.
+            {t('profile.reconsent_alert')}
           </span>
         )}
         {isIdentified
-          ? 'I tuoi dati sono salvati. Puoi modificarli o rimuoverli in qualsiasi momento.'
-          : "Inserisci i tuoi dati per ricevere un'assistenza migliore e offerte personalizzate."}
+          ? t('profile.description_identified')
+          : t('profile.description_anonymous')}
       </p>
 
       <ProfileEditor

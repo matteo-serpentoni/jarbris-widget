@@ -1,71 +1,24 @@
 import { useMemo } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import MessageBubble from './MessageBubble';
+import { t } from '../../i18n';
 import './HumanThinking.css';
 
-/** Pick a random phrase at module load time — outside React's render cycle */
-const pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
-const INTENT_PHRASES = {
-  PRODUCT_SEARCH: [
-    'Cerco nel catalogo...',
-    'Sbircio in magazzino...',
-    'Vediamo cosa trovo per te...',
-    'Controllo subito la disponibilità...',
-    'Cerco i prodotti migliori per te...',
-    'Ti aiuto a scegliere...',
-    'Vediamo qual è il prodotto perfetto per te...',
-  ],
-  PRODUCT_DETAIL: [
-    'Recupero le info sul prodotto...',
-    'Cerco i dettagli per te...',
-    'Controllo le caratteristiche...',
-    'Fammi vedere cosa so su questo...',
-    'Un attimo che trovo le specifiche...',
-  ],
-  ORDER_TRACK: [
-    'Verifico lo stato della spedizione...',
-    'Cerco il tuo pacco...',
-    'Controllo dove si trova l’ordine...',
-    'Un attimo che guardo il tracking...',
-    'Recupero le info sulla consegna...',
-  ],
-  FAQ: [
-    'Consulto la nostra guida...',
-    'Cerco la risposta per te...',
-    'Verifico le info richieste...',
-    'Un attimo che controllo i dettagli...',
-    'Fammi controllare nelle FAQ...',
-  ],
-  SHIPPING: [
-    'Verifico i costi e i tempi di spedizione...',
-    'Controllo le info sulla consegna...',
-    'Cerco dettagli sulle spedizioni...',
-    'Un attimo che guardo le policy di trasporto...',
-    'Recupero i dettagli per la consegna...',
-  ],
-  REFUND: [
-    'Verifico la nostra politica di reso...',
-    'Controllo come gestire il rimborso...',
-    'Cerco info sui resi e rimborsi...',
-    'Un attimo che guardo la procedura di reso...',
-    'Recupero i dettagli sulle restituzioni...',
-  ],
-  ESCALATION: [
-    'Ti metto subito in contatto con un umano...',
-    'Cerco un operatore per te...',
-    'Avviso subito il team...',
-    'Un attimo che chiamo rinforzi umani...',
-    'Ti passo un mio collega in carne ed ossa...',
-  ],
-  DEFAULT: [
-    'Fammi controllare...',
-    'Un attimo che guardo...',
-    'Vediamo cosa trovo per te...',
-    'Cerco subito informazioni...',
-    'Dammi un secondo...',
-    'Controllo subito...',
-  ],
+/** Pick a random phrase for the given intent from the locale bundle */
+const pickPhrase = (intent) => {
+  const key = intent?.toLowerCase().replace('_action', '') || 'default';
+  const intentKey = {
+    product_search: 'product_search',
+    product_detail: 'product_detail',
+    order_track: 'order_track',
+    faq: 'faq',
+    shipping: 'shipping',
+    refund: 'refund',
+    escalation: 'escalation',
+  }[key] || 'default';
+  const phrases = t(`thinking.${intentKey}`);
+  const list = Array.isArray(phrases) ? phrases : t('thinking.default');
+  return list[Math.floor(Math.random() * list.length)];
 };
 
 /**
@@ -74,10 +27,7 @@ const INTENT_PHRASES = {
  * Slides in from the left, shows a random phrase, and slides back.
  */
 const HumanThinking = ({ chatColors, intent }) => {
-  const phrase = useMemo(() => {
-    const list = INTENT_PHRASES[intent] || INTENT_PHRASES.DEFAULT;
-    return pickRandom(list);
-  }, [intent]);
+  const phrase = useMemo(() => pickPhrase(intent), [intent]);
 
   return (
     <div className="human-thinking-container">

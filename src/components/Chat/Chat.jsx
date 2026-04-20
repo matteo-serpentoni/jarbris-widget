@@ -2,6 +2,7 @@ import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { useChat } from '../../hooks/useChat';
 import { useCheckout } from '../../hooks/useCheckout';
 import { useIdleNudge } from '../../hooks/useIdleNudge';
+import { useI18n } from '../../hooks/useI18n';
 import './Chat.css';
 
 // eslint-disable-next-line no-unused-vars -- motion.div used in JSX
@@ -40,6 +41,7 @@ const Chat = ({
   shopDomain: previewShopDomain,
   connectionStatus: previewConnectionStatus = 'online',
 }) => {
+  const t = useI18n();
   const [view, setView] = useState('chat'); // 'chat' | 'profile'
   const [activeProduct, setActiveProduct] = useState(null);
   const [activeOrder, setActiveOrder] = useState(null);
@@ -179,8 +181,8 @@ const Chat = ({
   const liveExpandSend = isPreview ? null : liveChat.sendMessage;
   const onExpand = useCallback(() => {
     if (!liveExpandSend || loading) return;
-    liveExpandSend('__expand__', { displayText: 'Mostra altri' });
-  }, [liveExpandSend, loading]);
+    liveExpandSend('__expand__', { displayText: t('chat.show_more') });
+  }, [liveExpandSend, loading, t]);
 
   // Capture DOM refs for idle nudge after mount
   useEffect(() => {
@@ -362,7 +364,7 @@ const Chat = ({
               <div className="conversation-ended-container">
                 <div className="conversation-ended-separator">
                   <div className="separator-line" />
-                  <span className="separator-text">Conversazione Terminata</span>
+                  <span className="separator-text">{t('chat.ended')}</span>
                   <div className="separator-line" />
                 </div>
 
@@ -385,7 +387,7 @@ const Chat = ({
                       <Suggestions
                         suggestions={[
                           {
-                            label: `Vai al checkout (${cartCount})`,
+                            label: t('chat.checkout_cta', { count: cartCount }),
                             value: 'Checkout',
                             variant: 'checkout',
                           },
@@ -422,8 +424,8 @@ const Chat = ({
               loading={loading}
               placeholder={
                 sessionStatus === 'escalated' && !assignedTo
-                  ? "Attendi l'intervento."
-                  : 'Scrivi qualcosa...'
+                  ? t('chat.human_waiting')
+                  : t('chat.input_placeholder')
               }
               connectionStatus={connectionStatus}
               disabled={sessionStatus === 'escalated' && !assignedTo}
@@ -436,23 +438,23 @@ const Chat = ({
 
             {/* Legal Disclaimer */}
             <div className="legal-disclaimer">
-              Chattando accetti la{' '}
+              {t('chat.legal_prefix')}{' '}
               <a
                 href="/policies/privacy-policy"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="legal-link"
               >
-                Privacy Policy
+                {t('chat.legal_privacy')}
               </a>{' '}
-              e la{' '}
+              {t('chat.legal_and')}{' '}
               <a
                 href="/policies/cookie-policy"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="legal-link"
               >
-                Cookie Policy
+                {t('chat.legal_cookie')}
               </a>
               .
             </div>
@@ -466,7 +468,7 @@ const Chat = ({
       {view !== 'profile' && (
         <button
           className="close-button"
-          aria-label="Riduci chat"
+          aria-label={t('chat.minimize')}
           onClick={(e) => {
             e.stopPropagation();
             if (!isPreview && onMinimize) onMinimize();

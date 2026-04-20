@@ -1,0 +1,226 @@
+{
+  "welcome": "Bonjour ! 👋 Je suis Jarbris, votre assistant. Comment puis-je vous aider ?",
+  "welcome_named": "Bonjour {{name}} ! 👋 Comment puis-je vous aider aujourd'hui ?",
+  "chat": {
+    "human_waiting": "En attente d'un agent.",
+    "input_placeholder": "Écrivez quelque chose...",
+    "checkout_cta": "Passer à la caisse ({{count}})",
+    "ended": "Conversation Terminée",
+    "minimize": "Réduire le chat",
+    "show_more": "Afficher plus",
+    "legal_prefix": "En chattant vous acceptez la",
+    "legal_privacy": "Politique de confidentialité",
+    "legal_and": "et la",
+    "legal_cookie": "Politique de cookies"
+  },
+  "session": {
+    "expired_title": "Session expirée",
+    "expired_message": "Votre session a expiré en raison d'inactivité. Rechargez la page pour démarrer une nouvelle conversation."
+  },
+  "errors": {
+    "config": "Configuration introuvable. Veuillez recharger la page. (Code : 001)",
+    "network": "Erreur de connexion. Vérifiez votre connexion et réessayez.",
+    "server": "Quelque chose s'est mal passé. Réessayez dans quelques secondes.",
+    "generic": "Un problème s'est produit. Réessayez.",
+    "unexpected": "Une erreur inattendue s'est produite."
+  },
+  "feedback": {
+    "helpful": "Utile",
+    "helpful_aria": "Réponse utile",
+    "not_helpful": "Pas utile",
+    "not_helpful_aria": "Réponse pas utile",
+    "thanks": "Merci pour vos retours !",
+    "rate_conversation": "Comment évalueriez-vous cette conversation ?"
+  },
+  "profile": {
+    "title": "Votre Profil",
+    "description_identified": "Vos données sont sauvegardées. Vous pouvez les modifier ou les supprimer à tout moment.",
+    "description_anonymous": "Entrez vos coordonnées pour bénéficier d'une meilleure assistance et d'offres personnalisées.",
+    "reconsent_alert": "⚠️ Nous avons mis à jour notre Politique de Confidentialité.",
+    "email_label": "Email",
+    "name_label": "Nom Complet (Optionnel)",
+    "save_profile": "Enregistrer le Profil",
+    "update_profile": "Mettre à Jour le Profil",
+    "saving": "...",
+    "saved": "Profil enregistré !",
+    "error_email_required": "L'email est obligatoire.",
+    "error_email_invalid": "Veuillez entrer un email valide.",
+    "error_save": "Erreur lors de l'enregistrement du profil.",
+    "error_identity": "Identité non vérifiable.",
+    "error_export_identity": "Identité non vérifiée. Impossible de télécharger.",
+    "error_privacy": "Impossible de mettre à jour la préférence. Réessayez.",
+    "error_reset": "Erreur lors de la réinitialisation.",
+    "error_export": "Erreur lors de l'exportation.",
+    "download_data": "Télécharger mes données",
+    "delete_profile": "Supprimer le Profil",
+    "deleting": "Suppression en cours...",
+    "deleted": "Données supprimées.",
+    "download_started": "Téléchargement démarré...",
+    "downloaded": "Données exportées.",
+    "privacy_section": "Confidentialité",
+    "privacy_title": "Collecte de données d'utilisation",
+    "privacy_desc": "Aidez-nous à nous améliorer en activant l'analyse anonyme des interactions.",
+    "privacy_toggle_label": "Activer/désactiver la collecte de données",
+    "confirm_privacy_title": "Êtes-vous sûr ?",
+    "confirm_privacy_message": "En désactivant cela, Jarbris ne pourra plus vous proposer des suggestions personnalisées.",
+    "confirm_privacy_confirm": "Désactiver",
+    "confirm_cancel": "Annuler",
+    "confirm_export_title": "Télécharger les données",
+    "confirm_export_message": "Un fichier JSON avec toutes vos données sera préparé et téléchargé.",
+    "confirm_export_confirm": "Démarrer le téléchargement",
+    "confirm_delete_title": "Suppression irréversible",
+    "confirm_delete_message": "Cela supprimera définitivement toutes vos données et vous déconnectera du service.",
+    "confirm_delete_confirm": "Oui, tout supprimer"
+  },
+  "profile_card": {
+    "title": "Enregistrez vos préférences",
+    "fallback": "Voulez-vous que je me souvienne de vous pour la prochaine fois ? Je peux enregistrer vos préférences, tailles et produits qui vous intéressent.",
+    "aria_expand": "Développer les détails du profil",
+    "aria_collapse": "Réduire les détails du profil"
+  },
+  "ui": {
+    "profile_button": "Profil",
+    "back_to_offer": "Retour à l'offre",
+    "back_to_coupon": "Retour au Coupon",
+    "send_message": "Envoyer le message",
+    "requires_code": "Nécessite la saisie du code à la caisse",
+    "cannot_display": "Impossible d'afficher ce contenu",
+    "success": "Succès",
+    "request_received": "Demande reçue !",
+    "click_category": "Cliquez sur une catégorie pour voir les produits",
+    "show_more": "Voir plus",
+    "more_options_count": "+{{count}} autres",
+    "aria_more_options": "Afficher {{count}} autres options",
+    "back_to_options": "Retour aux options précédentes",
+    "back": "Retour"
+  },
+  "checkout": {
+    "preparing": "Préparation du paiement...",
+    "in_progress_title": "Paiement en cours",
+    "open_title": "Paiement ouvert",
+    "open_text": "Le paiement s'est ouvert dans un nouvel onglet.",
+    "success_title": "Paiement terminé",
+    "success_sub": "Merci pour votre achat",
+    "title": "Checkout",
+    "payment": "Paiement",
+    "back_to_chat": "Retour au chat",
+    "chat": "Chat",
+    "in_progress_text": "Votre paiement s'est ouvert dans une nouvelle fenêtre. Complétez le paiement et revenez ici.",
+    "error_cart_empty": "Votre panier est vide.",
+    "error_unavailable": "Impossible de démarrer le checkout. Veuillez réessayer.",
+    "error_generic": "Un problème est survenu avec le paiement. Réessayez ou ouvrez le checkout externalement."
+  },
+  "promo": {
+    "combinable": "Cumulable avec d'autres réductions",
+    "not_combinable": "Non cumulable avec d'autres réductions",
+    "single_purchase": "Valable pour des achats uniques seulement",
+    "all_customers": "Ouvert à tous les clients",
+    "specific_customers": "Réservé à des segments de clients spécifiques",
+    "validity_label": "Validité",
+    "combinability_label": "Cumulabilité",
+    "limited_availability": "Disponibilité limitée",
+    "once_per_customer": "1 utilisation par client",
+    "requires_code": "Nécessite la saisie du code au checkout",
+    "auto_applied": "Appliqué automatiquement dans le panier",
+    "limits_label": "Limites",
+    "shipping_label": "Livraison",
+    "shipping_all_countries": "Tous les pays",
+    "shipping_max_price": "Valide pour les tarifs inférieurs à {{price}}€",
+    "discount_applies_to": "Remise applicable à:",
+    "purchase_requirement": "Condition d’achat",
+    "other_notes": "Autres notes",
+    "back_to_coupon": "Retour au coupon",
+    "details_title": "Détails"
+  },
+  "product": {
+    "sold_out": "Épuisé",
+    "select_options": "Sélectionner des options",
+    "unavailable": "Indisponible",
+    "variant_sold_out": "Variante épuisée",
+    "add_to_cart_chip": "Ajouter au panier",
+    "customize_chip": "Personnaliser",
+    "brand": "Marque",
+    "type": "Type",
+    "tags": "Tags",
+    "select_missing": "Veuillez sélectionner {{options}} pour continuer",
+    "no_products_found": "Je n'ai trouvé aucun produit correspondant à votre recherche.",
+    "details_for": "Voir les détails de",
+    "zoom_image": "Agrandir l'image",
+    "no_image": "Image non disponible",
+    "discount": "RÉDUCTION",
+    "offer": "OFFRE",
+    "only_left": "Seulement {{count}} restants",
+    "in_stock": "En stock",
+    "show_description": "Afficher la description du produit",
+    "details": "DÉTAILS",
+    "no_description": "Aucune description disponible pour ce produit.",
+    "view_in_store": "Voir en Boutique",
+    "add_to_cart": "Ajouter au panier",
+    "choose_option": "Choisir"
+  },
+  "connection": {
+    "online": "EN LIGNE",
+    "offline": "HORS LIGNE",
+    "reconnecting": "RECONNEXION"
+  },
+  "form": {
+    "field_required": "Le champ {{label}} est obligatoire.",
+    "generic_error": "Quelque chose s'est mal passé.",
+    "retry": "Réessayer",
+    "notes_required": "Veuillez fournir plus de détails dans la section notes.",
+    "required_details": "Détails obligatoires",
+    "optional_details": "Détails optionnels",
+    "back": "Retour",
+    "qty_pieces": "{{count}} pièces"
+  },
+  "thinking": {
+    "product_search": [
+      "Je cherche dans le catalogue...",
+      "Je jette un œil en stock...",
+      "Voyons ce que je trouve pour vous...",
+      "Je vérifie la disponibilité..."
+    ],
+    "product_detail": [
+      "Je récupère les infos du produit...",
+      "Je cherche les détails pour vous..."
+    ],
+    "order_track": [
+      "Je vérifie l'état de la livraison...",
+      "Je cherche votre colis..."
+    ],
+    "faq": [
+      "Je consulte notre guide...",
+      "Je cherche la réponse pour vous..."
+    ],
+    "shipping": [
+      "Je vérifie les frais et délais de livraison..."
+    ],
+    "refund": [
+      "Je vérifie notre politique de retour..."
+    ],
+    "escalation": [
+      "Je vous mets en contact avec un humain..."
+    ],
+    "default": [
+      "Laissez-moi vérifier...",
+      "Un instant...",
+      "Je cherche des informations..."
+    ]
+  },
+  "order": {
+    "track_package": "Suivre le colis",
+    "items_label": "ARTICLES",
+    "your_orders": "Vos commandes",
+    "details": "Détails",
+    "in_processing": "En cours"
+  },
+  "orb": {
+    "msg1": "Salut! 👋",
+    "msg2": "Besoin\nd'aide? 💬",
+    "msg3": "Demandez-\nmoi tout ✨",
+    "cart_item": "article dans votre panier",
+    "cart_items": "articles dans votre panier",
+    "open_aria": "Ouvrir l'assistant Jarbris",
+    "active_aria": "Widget Jarbris actif"
+  }
+}

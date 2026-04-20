@@ -8,6 +8,7 @@ const DevTools = import.meta.env.DEV ? lazy(() => import('../Dev/DevTools')) : n
 import { useOrb } from '../../hooks/useOrb';
 import { getCssVariable } from '../../utils/domUtils';
 import { vec3ToRgbString } from '../../utils/colorUtils';
+import { t } from '../../i18n';
 import './Orb.css';
 
 // GLSL shaders extracted as module-level constants to avoid re-allocation on each render
@@ -398,7 +399,7 @@ const Orb = memo(
     );
 
     // ✅ FUNZIONALITÀ: Messaggi a rotazione
-    const messages = ['Ciao! 👋', 'Serve\naiuto? 💬', 'Chiedimi\ntutto ✨'];
+    const messages = [t('orb.msg1'), t('orb.msg2'), t('orb.msg3')];
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
     useEffect(() => {
@@ -473,7 +474,7 @@ const Orb = memo(
       <>
         {/* ✅ Cart bubble notification (rendered outside orb-container for proper positioning) */}
         <OrbBubble
-          message={`Hai ${cartCount} ${cartCount === 1 ? 'prodotto' : 'prodotti'} nel carrello`}
+          message={`${cartCount} ${cartCount === 1 ? t('orb.cart_item') : t('orb.cart_items')}`}
           icon="🛒"
           visible={showCartBubble}
           onDismiss={handleBubbleDismiss}
@@ -498,7 +499,7 @@ const Orb = memo(
           ref={containerRef}
           role="button"
           tabIndex={0}
-          aria-label={isMinimized ? 'Apri assistente Jarbris' : 'Widget Jarbris attivo'}
+          aria-label={isMinimized ? t('orb.open_aria') : t('orb.active_aria')}
           className={`orb-container ${isMinimized ? 'minimized' : ''} ${
             isMobileView ? 'mobile-device' : ''
           } ${mode === 'preview' ? 'preview-mode' : ''} ${loading ? 'loading' : ''}`}

@@ -3,6 +3,7 @@ import React, { memo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CHIP_ICON_MAP } from '../UI/chipIconMap';
 import { MoreDotsIcon, ChevronLeft } from '../UI/Icons';
+import { useI18n } from '../../hooks/useI18n';
 import './Suggestions.css';
 
 /**
@@ -29,6 +30,7 @@ const OVERFLOW_THRESHOLD = 6;
  * These controls are pure UI and do NOT trigger onSuggestionClick.
  */
 const Suggestions = memo(({ suggestions, onSuggestionClick }) => {
+  const t = useI18n();
   // Content-based reset: store the last-seen key alongside the overflow flag.
   // When the key changes (new chip set), React detects the stale stored key
   // during render and resets showOverflow before painting — no effect needed.
@@ -106,12 +108,12 @@ const Suggestions = memo(({ suggestions, onSuggestionClick }) => {
               custom={visibleChips.length}
               variants={chipVariants}
               onClick={() => setOverflowState({ showOverflow: true, lastKey: suggestionsKey })}
-              aria-label={`Mostra altre ${overflowCount} opzioni`}
+              aria-label={t('ui.aria_more_options', { count: overflowCount })}
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
               <MoreDotsIcon />
-              {`+${overflowCount} altre`}
+              {t('ui.more_options_count', { count: overflowCount })}
             </motion.button>
           )}
 
@@ -124,12 +126,12 @@ const Suggestions = memo(({ suggestions, onSuggestionClick }) => {
               custom={visibleChips.length}
               variants={chipVariants}
               onClick={() => setOverflowState({ showOverflow: false, lastKey: suggestionsKey })}
-              aria-label="Torna alle opzioni precedenti"
+              aria-label={t('ui.back_to_options')}
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
               <ChevronLeft size={12} />
-              Indietro
+              {t('ui.back')}
             </motion.button>
           )}
         </motion.div>

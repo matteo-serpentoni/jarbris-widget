@@ -28,6 +28,11 @@ const DevTools = ({ onConfigChange, onSiteChange, onMobileToggle }) => {
     return localStorage.getItem('jarbris_dev_storefront_theme') || 'light';
   });
 
+  // Language Simulator State
+  const [simulatedLng, setSimulatedLng] = useState(() => {
+    return localStorage.getItem('jarbris_dev_lng_override') || '';
+  });
+
   const dispatchDevUpdate = () => {
     window.dispatchEvent(new CustomEvent('jarbris_dev_update'));
   };
@@ -454,6 +459,56 @@ const DevTools = ({ onConfigChange, onSiteChange, onMobileToggle }) => {
               🔄 Reset Session
             </button>
           </div>
+          <div style={{ height: '1px', background: '#333', margin: '4px 0' }} />
+
+          {/* Language Simulator */}
+          <div>
+            <label
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                fontSize: '11px',
+                color: '#8b92a7',
+                marginBottom: '4px',
+              }}
+            >
+              <span>Language Simulator</span>
+              <span style={{color: '#f6ad55'}}>(Auto-resets session)</span>
+            </label>
+            <select
+              value={simulatedLng}
+              onChange={(e) => {
+                const lng = e.target.value;
+                setSimulatedLng(lng);
+                if (lng) {
+                  localStorage.setItem('jarbris_dev_lng_override', lng);
+                } else {
+                  localStorage.removeItem('jarbris_dev_lng_override');
+                }
+                // Reset session to force a fresh bootData with the new language context
+                window.postMessage({ type: 'JARBRIS:devResetSession' }, '*');
+                // Hard reload to fully re-initialize React tree with new string defaults
+                setTimeout(() => window.location.reload(), 150);
+              }}
+              style={{
+                width: '100%',
+                background: '#222',
+                color: 'white',
+                border: '1px solid #444',
+                borderRadius: '4px',
+                padding: '4px',
+              }}
+            >
+              <option value="">Browser Default</option>
+              <option value="en">🇬🇧 English (en)</option>
+              <option value="it">🇮🇹 Italiano (it)</option>
+              <option value="es">🇪🇸 Español (es)</option>
+              <option value="fr">🇫🇷 Français (fr)</option>
+              <option value="de">🇩🇪 Deutsch (de)</option>
+              <option value="pt">🇵🇹 Português (pt)</option>
+            </select>
+          </div>
+
           <div style={{ height: '1px', background: '#333', margin: '4px 0' }} />
 
           {/* Storefront Preview */}

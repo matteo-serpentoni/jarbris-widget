@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import './MessageBubble.css';
 import { formatTime } from '../../utils/messageHelpers';
 import { hexToRgb } from '../../utils/colorUtils';
+import { useI18n } from '../../hooks/useI18n';
 
 /**
  * MessageBubble
@@ -22,6 +23,7 @@ const MessageBubble = memo(
     onFeedback = null,
     showFeedback = false,
   }) => {
+    const t = useI18n();
     const isUser = sender === 'user';
     const isBot = !isUser;
 
@@ -55,8 +57,8 @@ const MessageBubble = memo(
                   }}
                   type="button"
                   className={`feedback-btn ${feedback === 'positive' ? 'active' : ''}`}
-                  title="Utile"
-                  aria-label="Risposta utile"
+                  title={t('feedback.helpful')}
+                  aria-label={t('feedback.helpful_aria')}
                 >
                   <svg
                     width="12"
@@ -80,8 +82,8 @@ const MessageBubble = memo(
                   }}
                   type="button"
                   className={`feedback-btn ${feedback === 'negative' ? 'active' : ''}`}
-                  title="Non utile"
-                  aria-label="Risposta non utile"
+                  title={t('feedback.not_helpful')}
+                  aria-label={t('feedback.not_helpful_aria')}
                 >
                   <svg
                     width="12"

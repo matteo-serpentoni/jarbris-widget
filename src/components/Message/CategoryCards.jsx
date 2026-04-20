@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 // eslint-disable-next-line no-unused-vars -- motion.div used in JSX
 import { motion } from 'framer-motion';
+import { useI18n } from '../../hooks/useI18n';
 import './CategoryCards.css';
 
 const CategoryCard = memo(({ category, index, onCategoryClick }) => {
@@ -62,6 +63,7 @@ const CategoryCard = memo(({ category, index, onCategoryClick }) => {
 });
 
 const CategoryCards = memo(({ message, onCategoryClick }) => {
+  const t = useI18n();
   const { categories = [], message: displayMessage } = message;
 
   if (!Array.isArray(categories) || categories.length === 0) {
@@ -86,7 +88,7 @@ const CategoryCards = memo(({ message, onCategoryClick }) => {
       </div>
 
       {/* Help text */}
-      <div className="jarbris-category-help-text">Clicca su una categoria per vedere i prodotti</div>
+      <div className="jarbris-category-help-text">{t('ui.click_category')}</div>
     </div>
   );
 });

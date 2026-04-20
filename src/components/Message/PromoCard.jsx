@@ -2,6 +2,7 @@ import React, { useState, memo } from 'react';
 // eslint-disable-next-line no-unused-vars -- motion.div used in JSX
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatPromoExpiry } from '../../utils/shopifyUtils';
+import { useI18n } from '../../hooks/useI18n';
 import './PromoCard.css';
 
 // --- Premium Refined SVG Icons ---
@@ -161,6 +162,7 @@ const Icons = {
 };
 
 const PromoCard = memo(({ promo, onSearch, index = 0 }) => {
+  const t = useI18n();
   const [copied, setCopied] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -247,7 +249,7 @@ const PromoCard = memo(({ promo, onSearch, index = 0 }) => {
                     Attivo
                   </motion.div>
                 )}
-                <button className="jarbris-promo-info-btn" onClick={toggleFlip} title="Dettagli">
+                <button className="jarbris-promo-info-btn" onClick={toggleFlip} title={t('promo.details_title')}>
                   <Icons.Info />
                 </button>
               </div>
@@ -279,7 +281,7 @@ const PromoCard = memo(({ promo, onSearch, index = 0 }) => {
                       <Icons.Gift />
                     </div>
                     <div className="jarbris-targets-info">
-                      <span className="jarbris-targets-label">Sconto applicabile a:</span>
+                      <span className="jarbris-targets-label">{t('promo.discount_applies_to')}</span>
                       <span className={`jarbris-targets-value ${isAllCatalog ? 'all-catalog' : ''}`}>
                         {isAllCatalog
                           ? 'Tutto il catalogo'
@@ -388,8 +390,8 @@ const PromoCard = memo(({ promo, onSearch, index = 0 }) => {
             <button
               className="jarbris-promo-close-btn"
               onClick={toggleFlip}
-              title="Torna all'offerta"
-            >
+              title={t('ui.back_to_offer')}>
+
               <Icons.Close />
             </button>
           </div>
@@ -397,7 +399,7 @@ const PromoCard = memo(({ promo, onSearch, index = 0 }) => {
           <div className="jarbris-back-content">
             <div className="jarbris-details-list">
               <div className="jarbris-detail-item">
-                <span className="label">Validità:</span>
+                <span className="label">{t('promo.validity_label')}:</span>
                 <span className="value">
                   Solo {promo.details?.channels?.join(', ') || 'Online'}
                 </span>
@@ -409,16 +411,16 @@ const PromoCard = memo(({ promo, onSearch, index = 0 }) => {
 
               {promo.details?.shipping && (
                 <div className="jarbris-detail-item">
-                  <span className="label">Spedizione:</span>
+                  <span className="label">{t('promo.shipping_label')}:</span>
                   <span className="value">
                     {promo.details.shipping.countries.includes('*') ||
                     promo.details.shipping.countries.includes('Tutti i paesi')
-                      ? 'Tutti i paesi'
+                      ? t('promo.shipping_all_countries')
                       : `Solo ${promo.details.shipping.countries.join(', ')}`}
                   </span>
                   {promo.details.shipping.maxPrice && (
                     <div className="meta">
-                      Valido su tariffe inferiori a {promo.details.shipping.maxPrice}€
+                      {t('promo.shipping_max_price', { price: promo.details.shipping.maxPrice })}
                     </div>
                   )}
                 </div>
@@ -426,42 +428,42 @@ const PromoCard = memo(({ promo, onSearch, index = 0 }) => {
 
               {(promo.details?.totalUsageLimit || promo.details?.oncePerCustomer) && (
                 <div className="jarbris-detail-item">
-                  <span className="label">Limiti:</span>
+                  <span className="label">{t('promo.limits_label')}:</span>
                   <span className="value">
-                    {promo.details.totalUsageLimit && 'Disponibilità limitata'}
+                    {promo.details.totalUsageLimit && t('promo.limited_availability')}
                     {promo.details.totalUsageLimit && promo.details.oncePerCustomer && ' • '}
-                    {promo.details.oncePerCustomer && '1 utilizzo per cliente'}
+                    {promo.details.oncePerCustomer && t('promo.once_per_customer')}
                   </span>
                 </div>
               )}
 
               {promo.buyObjects && promo.buyObjects.length > 0 && (
                 <div className="jarbris-detail-item">
-                  <span className="label">Requisito Acquisto:</span>
+                  <span className="label">{t('promo.purchase_requirement')}:</span>
                   <span className="value">{promo.buyObjects.map((o) => o.title).join(', ')}</span>
                 </div>
               )}
 
               <div className="jarbris-detail-item">
-                <span className="label">Cumulabilità:</span>
+                <span className="label">{t('promo.combinability_label')}:</span>
                 {promo.details?.canCombineWith?.productDiscounts ||
                 promo.details?.canCombineWith?.orderDiscounts ? (
-                  <span className="value success">Cumulabile con altri sconti</span>
+                  <span className="value success">{t('promo.combinable')}</span>
                 ) : (
-                  <span className="value warning">Non cumulabile con altri sconti</span>
+                  <span className="value warning">{t('promo.not_combinable')}</span>
                 )}
               </div>
 
               <div className="jarbris-detail-item">
-                <span className="label">Altre note:</span>
+                <span className="label">{t('promo.other_notes')}:</span>
                 <ul className="jarbris-notes-list">
                   {promo.details?.onOneTimePurchaseOnly && (
-                    <li>Valido solo per acquisti singoli</li>
+                    <li>{t('promo.single_purchase')}</li>
                   )}
                   {promo.details?.isForAllCustomers ? (
-                    <li>Aperto a tutti i clienti</li>
+                    <li>{t('promo.all_customers')}</li>
                   ) : (
-                    <li>Riservato a segmenti clienti specifici</li>
+                    <li>{t('promo.specific_customers')}</li>
                   )}
                   <li>
                     {promo.isAutomatic
@@ -475,7 +477,7 @@ const PromoCard = memo(({ promo, onSearch, index = 0 }) => {
 
           <div className="jarbris-back-footer">
             <button className="jarbris-back-return-btn" onClick={toggleFlip}>
-              Torna al Coupon
+              {t('ui.back_to_coupon')}
             </button>
           </div>
         </div>

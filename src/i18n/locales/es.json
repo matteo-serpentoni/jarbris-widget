@@ -1,0 +1,227 @@
+{
+  "welcome": "¡Hola! 👋 Soy Jarbris, tu asistente. ¿Cómo puedo ayudarte?",
+  "welcome_named": "¡Hola {{name}}! 👋 ¿Cómo puedo ayudarte hoy?",
+  "chat": {
+    "human_waiting": "Esperando a un agente.",
+    "input_placeholder": "Escribe algo...",
+    "checkout_cta": "Ir al pago ({{count}})",
+    "ended": "Conversación Terminada",
+    "minimize": "Minimizar chat",
+    "show_more": "Mostrar más",
+    "legal_prefix": "Al chatear aceptas la",
+    "legal_privacy": "Política de privacidad",
+    "legal_and": "y la",
+    "legal_cookie": "Política de cookies"
+  },
+  "session": {
+    "expired_title": "Sesión expirada",
+    "expired_message": "Tu sesión expiró por inactividad. Recarga la página para iniciar una nueva conversación."
+  },
+  "errors": {
+    "config": "Configuración no encontrada. Por favor recarga la página. (Código: 001)",
+    "network": "Error de conexión. Verifica tu conexión e inténtalo de nuevo.",
+    "server": "Algo salió mal. Inténtalo de nuevo en unos segundos.",
+    "generic": "Ocurrió un problema. Inténtalo de nuevo.",
+    "unexpected": "Ocurrió un error inesperado."
+  },
+  "feedback": {
+    "helpful": "Útil",
+    "helpful_aria": "Respuesta útil",
+    "not_helpful": "No útil",
+    "not_helpful_aria": "Respuesta no útil",
+    "thanks": "¡Gracias por tus comentarios!",
+    "rate_conversation": "¿Cómo calificarías esta conversación?"
+  },
+  "profile": {
+    "title": "Tu Perfil",
+    "description_identified": "Tus datos están guardados. Puedes editarlos o eliminarlos en cualquier momento.",
+    "description_anonymous": "Ingresa tus datos para recibir mejor asistencia y ofertas personalizadas.",
+    "reconsent_alert": "⚠️ Hemos actualizado nuestra Política de Privacidad.",
+    "email_label": "Email",
+    "name_label": "Nombre Completo (Opcional)",
+    "save_profile": "Guardar Perfil",
+    "update_profile": "Actualizar Perfil",
+    "saving": "...",
+    "saved": "¡Perfil guardado!",
+    "error_email_required": "El email es obligatorio.",
+    "error_email_invalid": "Por favor ingresa un email válido.",
+    "error_save": "Error al guardar el perfil.",
+    "error_identity": "Identidad no verificable.",
+    "error_export_identity": "Identidad no verificada. No se puede descargar.",
+    "error_privacy": "No se pudo actualizar la preferencia. Inténtalo de nuevo.",
+    "error_reset": "Error durante el restablecimiento.",
+    "error_export": "Error durante la exportación.",
+    "download_data": "Descargar mis datos",
+    "delete_profile": "Eliminar Perfil",
+    "deleting": "Eliminando...",
+    "deleted": "Datos eliminados.",
+    "download_started": "Descarga iniciada...",
+    "downloaded": "Datos exportados.",
+    "privacy_section": "Privacidad",
+    "privacy_title": "Recopilación de datos de uso",
+    "privacy_desc": "Ayúdanos a mejorar habilitando el análisis anónimo de interacciones.",
+    "privacy_toggle_label": "Activar/desactivar recopilación de datos",
+    "confirm_privacy_title": "¿Estás seguro?",
+    "confirm_privacy_message": "Desactivando esto, Jarbris ya no podrá ofrecerte sugerencias personalizadas.",
+    "confirm_privacy_confirm": "Desactivar",
+    "confirm_cancel": "Cancelar",
+    "confirm_export_title": "Descargar datos",
+    "confirm_export_message": "Se preparará y descargará un archivo JSON con todos tus datos.",
+    "confirm_export_confirm": "Iniciar Descarga",
+    "confirm_delete_title": "Eliminación irreversible",
+    "confirm_delete_message": "Esto eliminará permanentemente todos tus datos y te desconectará del servicio.",
+    "confirm_delete_confirm": "Sí, eliminar todo"
+  },
+  "profile_card": {
+    "title": "Guarda tus preferencias",
+    "fallback": "¿Quieres que te recuerde para la próxima vez? Puedo guardar tus preferencias, tallas y productos de interés.",
+    "aria_expand": "Expandir detalles del perfil",
+    "aria_collapse": "Colapsar detalles del perfil"
+  },
+  "ui": {
+    "profile_button": "Perfil",
+    "back_to_offer": "Volver a la oferta",
+    "back_to_coupon": "Volver al Cupón",
+    "send_message": "Enviar mensaje",
+    "requires_code": "Requiere ingresar el código en el pago",
+    "cannot_display": "No se puede mostrar este contenido",
+    "success": "Éxito",
+    "request_received": "¡Solicitud recibida!",
+    "click_category": "Haz clic en una categoría para ver los productos",
+    "show_more": "Mostrar más",
+    "more_options_count": "+{{count}} más",
+    "aria_more_options": "Mostrar {{count}} opciones más",
+    "back_to_options": "Volver a las opciones anteriores",
+    "back": "Atrás"
+  },
+  "checkout": {
+    "preparing": "Preparando el pago...",
+    "in_progress_title": "Pago en curso",
+    "open_title": "Pago abierto",
+    "open_text": "El pago se ha abierto en una nueva pestaña.",
+    "success_title": "Pago completado",
+    "success_sub": "Gracias por tu compra",
+    "title": "Checkout",
+    "payment": "Pago",
+    "back_to_chat": "Volver al chat",
+    "chat": "Chat",
+    "in_progress_text": "Tu pago se ha abierto en una nueva ventana. Completa el pago y regresa aquí.",
+    "error_cart_empty": "Tu carrito está vacío.",
+    "error_unavailable": "No se pudo iniciar el checkout. Por favor, inténtalo de nuevo.",
+    "error_generic": "Ocurrió un problema con el pago. Inténtalo de nuevo o abre el checkout externamente."
+  },
+  "promo": {
+    "combinable": "Combinable con otros descuentos",
+    "not_combinable": "No combinable con otros descuentos",
+    "single_purchase": "Válido solo para compras individuales",
+    "all_customers": "Abierto a todos los clientes",
+    "specific_customers": "Reservado para segmentos de clientes específicos",
+    "validity_label": "Validez",
+    "combinability_label": "Combinabilidad",
+    "limited_availability": "Disponibilidad limitada",
+    "once_per_customer": "1 uso por cliente",
+    "requires_code": "Requiere ingresar el código en el checkout",
+    "auto_applied": "Se aplica automáticamente en el carrito",
+    "limits_label": "Límites",
+    "shipping_label": "Envío",
+    "shipping_all_countries": "Todos los países",
+    "shipping_max_price": "Válido en tarifas inferiores a {{price}}€",
+    "discount_applies_to": "Descuento aplicable a:",
+    "purchase_requirement": "Requisito de compra",
+    "other_notes": "Otras notas",
+    "back_to_coupon": "Volver al cupón",
+    "details_title": "Detalles"
+  },
+  "product": {
+    "sold_out": "Agotado",
+    "select_options": "Seleccionar opciones",
+    "unavailable": "No disponible",
+    "variant_sold_out": "Variante agotada",
+    "add_to_cart_chip": "Añadir al carrito",
+    "customize_chip": "Personalizar",
+    "brand": "Marca",
+    "type": "Tipo",
+    "tags": "Etiquetas",
+    "select_missing": "Selecciona {{options}} para continuar",
+    "no_products_found": "No encontré productos que coincidan con tu búsqueda.",
+    "details_for": "Ver detalles de",
+    "zoom_image": "Ampliar imagen",
+    "no_image": "Imagen no disponible",
+    "discount": "DESCUENTO",
+    "offer": "OFERTA",
+    "only_left": "Solo quedan {{count}}",
+    "in_stock": "En stock",
+    "show_description": "Mostrar descripción del producto",
+    "details": "DETALLES",
+    "no_description": "No hay descripción disponible para este producto.",
+    "view_in_store": "Ver en la Tienda",
+    "add_to_cart": "Añadir al carrito",
+    "choose_option": "Elige"
+  },
+  "connection": {
+    "online": "ONLINE",
+    "offline": "OFFLINE",
+    "reconnecting": "RECONECTANDO"
+  },
+  "form": {
+    "field_required": "El campo {{label}} es obligatorio.",
+    "generic_error": "Algo salió mal.",
+    "retry": "Reintentar",
+    "notes_required": "Por favor, proporciona más detalles en la sección de notas.",
+    "required_details": "Detalles obligatorios",
+    "optional_details": "Detalles opcionales",
+    "back": "Atrás",
+    "qty_pieces": "{{count}} piezas"
+  },
+  "thinking": {
+    "product_search": [
+      "Buscando en el catálogo...",
+      "Revisando el almacén...",
+      "Veamos qué encuentro para ti...",
+      "Comprobando disponibilidad...",
+      "Buscando los mejores productos..."
+    ],
+    "product_detail": [
+      "Obteniendo info del producto...",
+      "Buscando detalles para ti..."
+    ],
+    "order_track": [
+      "Verificando el estado del envío...",
+      "Buscando tu paquete..."
+    ],
+    "faq": [
+      "Consultando nuestra guía...",
+      "Buscando la respuesta para ti..."
+    ],
+    "shipping": [
+      "Verificando costos y tiempos de envío..."
+    ],
+    "refund": [
+      "Verificando nuestra política de devoluciones..."
+    ],
+    "escalation": [
+      "Conectándote con un humano ahora..."
+    ],
+    "default": [
+      "Déjame revisar...",
+      "Un momento...",
+      "Buscando información..."
+    ]
+  },
+  "order": {
+    "track_package": "Rastrear paquete",
+    "items_label": "ARTÍCULOS",
+    "your_orders": "Tus pedidos",
+    "details": "Detalles",
+    "in_processing": "En proceso"
+  },
+  "orb": {
+    "msg1": "¡Hola! 👋",
+    "msg2": "¿Necesitas\nayuda? 💬",
+    "msg3": "Pregúntame\ntodo ✨",
+    "cart_item": "producto en tu carrito",
+    "cart_items": "productos en tu carrito",
+    "open_aria": "Abrir asistente Jarbris",
+    "active_aria": "Widget Jarbris activo"
+  }
+}

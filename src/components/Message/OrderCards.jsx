@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 // eslint-disable-next-line no-unused-vars -- motion.div used in JSX
 import { motion } from 'framer-motion';
 import { getOrderStatusClass, normalizeOrderNumber } from '../../utils/shopifyUtils';
+import { useI18n } from '../../hooks/useI18n';
 import './OrderCards.css';
 
 const OrderItemRow = memo(({ item, index, theme = 'dark' }) => {
@@ -28,6 +29,7 @@ const OrderItemRow = memo(({ item, index, theme = 'dark' }) => {
 
 // Detail view for a single order
 export const OrderDetailCard = memo(({ order, theme = 'dark' }) => {
+  const t = useI18n();
   const { orderNumber, status, createdAt, total, items = [], tracking = [] } = order;
 
   const getStatusClass = (statusValue) => {
@@ -63,13 +65,8 @@ export const OrderDetailCard = memo(({ order, theme = 'dark' }) => {
             📦 {statusLabel}
           </span>
           {tracking.length > 0 && (
-            <a
-              href={tracking[0].url}
-              target="_blank"
-              rel="noreferrer"
-              className="jarbris-tracking-link"
-            >
-              🚀 Traccia pacco
+            <a href={tracking[0].url} target="_blank" rel="noreferrer" className="jarbris-tracking-link">
+              🚀 {t('order.track_package')}
             </a>
           )}
         </div>
@@ -77,7 +74,7 @@ export const OrderDetailCard = memo(({ order, theme = 'dark' }) => {
 
       {/* Items */}
       <div className="jarbris-order-detail-items-container">
-        <p className="jarbris-order-items-label">ARTICOLI ({items.length})</p>
+        <p className="jarbris-order-items-label">{t('order.items_label')} ({items.length})</p>
         <div>
           {items.map((item, idx) => (
             <OrderItemRow key={idx} item={item} index={idx} theme={theme} />
@@ -90,6 +87,7 @@ export const OrderDetailCard = memo(({ order, theme = 'dark' }) => {
 
 // Summary row for list view
 const OrderListRow = memo(({ order, index, onClick }) => {
+  const t = useI18n();
   const isClickable = !!onClick;
 
   return (
@@ -122,19 +120,20 @@ const OrderListRow = memo(({ order, index, onClick }) => {
         </div>
         <div className="jarbris-order-row-status">
           {typeof order.status === 'object'
-            ? order.status.fulfillment || 'In elaborazione'
+            ? order.status.fulfillment || t('order.in_processing')
             : order.status}
         </div>
       </div>
       <div className="jarbris-order-row-right">
         {order.total && <div className="jarbris-order-row-total">{order.total}</div>}
-        {isClickable && <div className="jarbris-order-row-details-arrow">Dettagli →</div>}
+        {isClickable && <div className="jarbris-order-row-details-arrow">{t('order.details')} →</div>}
       </div>
     </motion.div>
   );
 });
 
 const OrderCards = memo(({ message, onOrderClick }) => {
+  const t = useI18n();
   const {
     type: directType,
     orders: directOrders = [],
@@ -183,7 +182,7 @@ const OrderCards = memo(({ message, onOrderClick }) => {
       <div className="jarbris-order-list-header">
         <div className="jarbris-order-list-icon">📦</div>
         <div>
-          <h4 className="jarbris-order-list-title">{title || 'I tuoi ordini'}</h4>
+          <h4 className="jarbris-order-list-title">{title || t('order.your_orders')}</h4>
           {email && <p className="jarbris-order-list-email">{email}</p>}
         </div>
       </div>

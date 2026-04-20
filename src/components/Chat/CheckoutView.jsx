@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 // eslint-disable-next-line no-unused-vars -- motion.div used in JSX
 import { motion } from 'framer-motion';
 import { ExternalLinkIcon, CheckCircleIcon, ChevronLeft } from '../UI/Icons';
+import { useI18n } from '../../hooks/useI18n';
 import './CheckoutView.css';
 
 /**
@@ -21,6 +22,7 @@ import './CheckoutView.css';
  * @param {{ checkoutState, checkoutMode, error, onClose }} props
  */
 const CheckoutView = memo(({ checkoutState, checkoutMode, error, onClose }) => {
+  const t = useI18n();
   if (checkoutState === 'idle') return null;
 
   return (
@@ -35,15 +37,15 @@ const CheckoutView = memo(({ checkoutState, checkoutMode, error, onClose }) => {
       {checkoutState !== 'completed' && (
         <div className="jarbris-checkout-header">
           <span className="jarbris-checkout-header-title">
-            {checkoutState === 'loading' ? 'Checkout' : 'Pagamento'}
+            {checkoutState === 'loading' ? t('checkout.title') : t('checkout.payment')}
           </span>
           <button
             className="jarbris-checkout-back-btn"
             onClick={onClose}
-            aria-label="Torna alla chat"
+            aria-label={t('checkout.back_to_chat')}
           >
             <ChevronLeft />
-            Chat
+            {t('checkout.chat')}
           </button>
         </div>
       )}
@@ -52,7 +54,7 @@ const CheckoutView = memo(({ checkoutState, checkoutMode, error, onClose }) => {
       {checkoutState === 'loading' && (
         <div className="jarbris-checkout-loading">
           <div className="jarbris-checkout-loading-spinner" />
-          <span className="jarbris-checkout-loading-text">Preparazione pagamento...</span>
+          <span className="jarbris-checkout-loading-text">{t('checkout.preparing')}</span>
         </div>
       )}
 
@@ -71,12 +73,12 @@ const CheckoutView = memo(({ checkoutState, checkoutMode, error, onClose }) => {
           <div className="jarbris-checkout-popup-icon">
             <ExternalLinkIcon />
           </div>
-          <h3 className="jarbris-checkout-popup-title">Checkout in corso</h3>
+          <h3 className="jarbris-checkout-popup-title">{t('checkout.in_progress_title')}</h3>
           <p className="jarbris-checkout-popup-text">
-            Il pagamento si è aperto in una nuova finestra. Completa il pagamento e torna qui.
+            {t('checkout.in_progress_text')}
           </p>
           <button className="jarbris-checkout-popup-btn" onClick={onClose}>
-            Torna alla chat
+            {t('checkout.back_to_chat')}
           </button>
         </div>
       )}
@@ -87,10 +89,10 @@ const CheckoutView = memo(({ checkoutState, checkoutMode, error, onClose }) => {
           <div className="jarbris-checkout-popup-icon">
             <ExternalLinkIcon />
           </div>
-          <h3 className="jarbris-checkout-popup-title">Checkout aperto</h3>
-          <p className="jarbris-checkout-popup-text">Il pagamento si è aperto in una nuova scheda.</p>
+          <h3 className="jarbris-checkout-popup-title">{t('checkout.open_title')}</h3>
+          <p className="jarbris-checkout-popup-text">{t('checkout.open_text')}</p>
           <button className="jarbris-checkout-popup-btn" onClick={onClose}>
-            Torna alla chat
+            {t('checkout.back_to_chat')}
           </button>
         </div>
       )}
@@ -111,8 +113,8 @@ const CheckoutView = memo(({ checkoutState, checkoutMode, error, onClose }) => {
           >
             <CheckCircleIcon />
           </motion.div>
-          <h3 className="jarbris-checkout-success-text">Pagamento completato</h3>
-          <p className="jarbris-checkout-success-sub">Grazie per il tuo acquisto</p>
+          <h3 className="jarbris-checkout-success-text">{t('checkout.success_title')}</h3>
+          <p className="jarbris-checkout-success-sub">{t('checkout.success_sub')}</p>
         </motion.div>
       )}
 
@@ -132,17 +134,17 @@ const CheckoutView = memo(({ checkoutState, checkoutMode, error, onClose }) => {
           </div>
           <p className="jarbris-checkout-error-text">
             {error === 'cart_empty'
-              ? 'Il carrello è vuoto.'
+              ? t('checkout.error_cart_empty')
               : error === 'checkout_url_unavailable'
-                ? 'Non è stato possibile avviare il checkout. Riprova.'
-                : 'Si è verificato un problema con il pagamento. Riprova o apri il checkout esternamente.'}
+                ? t('checkout.error_unavailable')
+                : t('checkout.error_generic')}
           </p>
           <button
             className="jarbris-checkout-error-btn"
             onClick={onClose}
-            aria-label="Torna alla chat"
+            aria-label={t('checkout.back_to_chat')}
           >
-            Torna alla chat
+            {t('checkout.back_to_chat')}
           </button>
         </div>
       )}

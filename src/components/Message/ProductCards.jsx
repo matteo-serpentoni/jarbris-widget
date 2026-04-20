@@ -6,6 +6,7 @@ import SmartBadges from './SmartBadges';
 import MessageBubble from '../Chat/MessageBubble';
 import { formatPrice } from '../../utils/messageHelpers';
 import { normalizeStorefrontProduct } from '../../utils/shopifyUtils';
+import { useI18n } from '../../hooks/useI18n';
 import './ProductCards.css';
 import TextMessage from './TextMessage';
 import {
@@ -25,6 +26,7 @@ export { default as ProductDrawer } from './ProductSheet';
 const ProductCard = memo(
   ({ product, index, onOpen, onImageClick, shopDomain, onProductAction }) => {
     const [isFlipped, setIsFlipped] = useState(false);
+    const t = useI18n();
 
     // 2c: Memoize normalization — normalizeStorefrontProduct is a non-trivial transform
     // and ProductCard re-renders when the parent carousel re-renders (scroll events).
@@ -68,7 +70,7 @@ const ProductCard = memo(
           className={`jarbris-product-card-minimal ${isFlipped ? 'is-flipped' : ''} clickable`}
           role="button"
           tabIndex={0}
-          aria-label={`Visualizza dettagli per ${name}`}
+          aria-label={`${t('product.details_for')} ${name}`}
           initial={{ opacity: 0, y: 10 }}
           animate={{
             opacity: 1,
@@ -96,7 +98,7 @@ const ProductCard = memo(
               className={`jarbris-product-image-container ${!image ? 'no-image' : ''}`}
               role={image ? 'button' : 'img'}
               tabIndex={image ? 0 : -1}
-              aria-label={image ? 'Ingrandisci immagine' : 'Immagine non disponibile'}
+              aria-label={image ? t('product.zoom_image') : t('product.no_image')}
               onClick={(e) => {
                 e.stopPropagation();
                 if (!image) return;
@@ -131,20 +133,20 @@ const ProductCard = memo(
               {(discountCode || isAutomatic || discountPercentage > 0) && (
                 <div className="jarbris-product-discount-badge">
                   {discountCode
-                    ? `SCONTO: ${discountCode}`
+                    ? `${t('product.discount')}: ${discountCode}`
                     : discountPercentage > 0
                       ? `-${discountPercentage}%`
-                      : 'OFFERTA'}
+                      : t('product.offer')}
                 </div>
               )}
               {isAvailable && (
                 <div className="jarbris-stock-status-badge-container">
                   {totalInventory > 0 && totalInventory <= 10 ? (
-                    <span className="jarbris-stock-urgency-badge">Solo {totalInventory} rimasti</span>
+                    <span className="jarbris-stock-urgency-badge">{t('product.only_left', { count: totalInventory })}</span>
                   ) : (
                     <span className="jarbris-stock-status-badge">
                       <span className="jarbris-stock-dot" />
-                      In stock
+                      {t('product.in_stock')}
                     </span>
                   )}
                 </div>
@@ -156,7 +158,7 @@ const ProductCard = memo(
                     height="20"
                     viewBox="0 0 24 24"
                     role="img"
-                    aria-label="Ingrandisci immagine"
+                    aria-label={t('product.zoom_image')}
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2.5"
@@ -197,9 +199,9 @@ const ProductCard = memo(
                 <button
                   className="jarbris-product-details-toggle"
                   onClick={toggleFlip}
-                  aria-label="Mostra descrizione prodotto"
+                  aria-label={t('product.show_description')}
                 >
-                  DETAILS
+                  {t('product.details')}
                 </button>
               </div>
 
@@ -219,14 +221,14 @@ const ProductCard = memo(
                       <div className="jarbris-add-to-cart-container compact" style={{ flex: 1 }}>
                         <button
                           className="add-to-cart jarbris-add-to-cart-btn"
-                          aria-label={`Aggiungi al carrello ${product.name}`}
+                          aria-label={`${t('product.add_to_cart')} ${product.name}`}
                           onClick={(e) => {
                             e.stopPropagation();
                             e.preventDefault();
                             onOpen(product);
                           }}
                         >
-                          <span>Add to cart</span>
+                          <span>{t('product.add_to_cart')}</span>
                         </button>
                       </div>
                     ) : (
@@ -258,21 +260,21 @@ const ProductCard = memo(
               <div className="jarbris-product-details-list">
                 <div className="jarbris-detail-item">
                   <p className="jarbris-product-description">
-                    {description || 'No description available for this product.'}
+                    {description || t('product.no_description')}
                   </p>
                 </div>
 
                 <div className="jarbris-detail-grid">
                   {vendor && (
                     <div className="jarbris-detail-item">
-                      <span className="label">Brand</span>
+                      <span className="label">{t('product.brand')}</span>
                       <span className="value">{vendor}</span>
                     </div>
                   )}
 
                   {productType && (
                     <div className="jarbris-detail-item">
-                      <span className="label">Type</span>
+                      <span className="label">{t('product.type')}</span>
                       <span className="value">{productType}</span>
                     </div>
                   )}
@@ -280,7 +282,7 @@ const ProductCard = memo(
 
                 {product.tags && product.tags.length > 0 && (
                   <div className="jarbris-detail-item">
-                    <span className="label">Tags</span>
+                    <span className="label">{t('product.tags')}</span>
                     <div className="jarbris-product-tags">
                       {product.tags.slice(0, 5).map((tag) => (
                         <span key={tag} className="jarbris-tag-pill">
@@ -298,7 +300,7 @@ const ProductCard = memo(
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
               >
-                View in Store
+                {t('product.view_in_store')}
                 <ExternalLinkIcon size={12} />
               </a>
             </div>
@@ -320,6 +322,7 @@ const ProductCards = memo(
     const scrollRef = React.useRef(null);
     const [showLeftArrow, setShowLeftArrow] = React.useState(false);
     const [showRightArrow, setShowRightArrow] = React.useState(true);
+    const t = useI18n();
 
     const checkScroll = () => {
       if (scrollRef.current) {
@@ -357,7 +360,7 @@ const ProductCards = memo(
     if (!Array.isArray(products) || products.length === 0) {
       return (
         <div className="jarbris-no-products">
-          Non ho trovato prodotti che corrispondono alla tua ricerca.
+          {t('product.no_products_found')}
         </div>
       );
     }

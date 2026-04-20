@@ -5,6 +5,7 @@ import { reportError } from '../services/errorApi';
 import { predictIntent } from '../utils/messageHelpers';
 import { broadcastConsentChange } from '../utils/consentBridge';
 import storage from '../utils/storage';
+import { t, setLng } from '../i18n';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
@@ -13,12 +14,12 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 const CONSENT_EXEMPT_EVENTS = new Set(['jarbris_session_started', 'privacy_consent_updated']);
 
 const buildWelcomeMessage = (profileOverride = null) => {
-  let welcomeText = 'Ciao! 👋 Sono Jarbris, il tuo assistente. Come posso aiutarti?';
   const profile = profileOverride || storage.getProfile();
+  let welcomeText = t('welcome');
   if (profile?.name) {
     const firstName = profile.name.trim().split(' ')[0];
     if (firstName) {
-      welcomeText = `Ciao ${firstName}! 👋 Come posso aiutarti oggi?`;
+      welcomeText = t('welcome_named', { name: firstName });
     }
   }
 
@@ -327,12 +328,17 @@ export const useChat = (devShopDomain, customer, options = {}) => {
           setBootProfile(bootData.profile);
         }
 
+        // Language override: API language takes priority over navigator.language
+        if (bootData.lng) {
+          setLng(bootData.lng);
+        }
+
         // Welcome personalization
         if (bootData.profile?.name) {
           setMessages((prev) => {
             if (prev.length === 1 && prev[0].disableFeedback) {
               const firstName = bootData.profile.name.trim().split(' ')[0];
-              const personalizedText = `Ciao ${firstName}! 👋 Come posso aiutarti oggi?`;
+              const personalizedText = t('welcome_named', { name: firstName });
               if (prev[0].text !== personalizedText) {
                 return [{ ...prev[0], text: personalizedText }];
               }
@@ -375,8 +381,8 @@ export const useChat = (devShopDomain, customer, options = {}) => {
               // Welcome singleton: always keep, will be deduped by ID if somehow duplicated
               if (localIdStr === 'welcome') return true;
 
-              // Local-only error messages
-              if (localMsg.title === 'Errore' || localMsg.title === 'Sessione scaduta') return true;
+              // Local-only error/system messages flagged explicitly
+              if (localMsg._localOnly === true) return true;
 
               // Drop anything the server already has
               return !serverIds.has(localIdStr);
@@ -538,7 +544,7 @@ export const useChat = (devShopDomain, customer, options = {}) => {
           userAgent: navigator.userAgent,
           url: window.location.href,
         });
-        throw new Error('Configurazione non trovata. Per favore ricarica la pagina. (Codice: 001)');
+        throw new Error(t('errors.config'));
       }
 
       let currentSessionId = sessionId;
@@ -606,10 +612,10 @@ export const useChat = (devShopDomain, customer, options = {}) => {
 
           addAssistantMessage({
             type: 'text',
-            title: 'Sessione scaduta',
-            message:
-              'La tua sessione è scaduta per inattività. Ricarica la pagina per iniziare una nuova conversazione.',
+            title: t('session.expired_title'),
+            message: t('session.expired_message'),
             format: 'plain',
+            _localOnly: true,
           });
 
           return;
@@ -620,22 +626,23 @@ export const useChat = (devShopDomain, customer, options = {}) => {
         if (error instanceof ChatApiError) {
           if (error.status === 0) {
             // Network error (offline, timeout, DNS failure)
-            errorMessage = 'Errore di connessione. Verifica la tua connessione e riprova.';
+            errorMessage = t('errors.network');
           } else if (error.status >= 500) {
             // Server error (internal bug, overload)
-            errorMessage = 'Qualcosa è andato storto. Riprova tra qualche secondo.';
+            errorMessage = t('errors.server');
           } else {
             // Other API errors
-            errorMessage = 'Si è verificato un problema. Riprova.';
+            errorMessage = t('errors.generic');
           }
         } else {
-          errorMessage = 'Si è verificato un errore inaspettato.';
+          errorMessage = t('errors.unexpected');
         }
 
         addAssistantMessage({
           type: 'text',
           message: errorMessage,
           format: 'plain',
+          _localOnly: true,
         });
       } finally {
         setLoading(false);

@@ -1,4 +1,5 @@
 import { getWidgetToken } from './widgetTokenStore';
+import { getSnapshot } from '../i18n';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
@@ -18,7 +19,11 @@ export const sendMessage = async (
   clientMessageId = null,
 ) => {
   try {
-    const headers = { 'Content-Type': 'application/json', 'X-Widget-Token': getWidgetToken() };
+    const headers = { 
+      'Content-Type': 'application/json', 
+      'X-Widget-Token': getWidgetToken(),
+      'Accept-Language': getSnapshot()
+    };
 
     const response = await fetch(`${API_BASE_URL}/api/chat`, {
       method: 'POST',
@@ -27,10 +32,10 @@ export const sendMessage = async (
         message,
         sessionId,
         shopDomain,
-        customer: meta.customer, // ✅ Passa info customer se presenti nei meta
-        meta: { lang: navigator.language || 'it', ...meta },
-        clientMessageId, // ✅ Send client ID
-        hidden: !!meta.hidden, // ✅ Send hidden flag if present
+        customer: meta.customer,
+        meta: { lang: getSnapshot(), ...meta },
+        clientMessageId,
+        hidden: !!meta.hidden,
       }),
     });
 
@@ -60,7 +65,11 @@ export const sendMessage = async (
  */
 export const bootSession = async (sessionId, shopDomain, visitorId) => {
   try {
-    const headers = { 'Content-Type': 'application/json', 'X-Widget-Token': getWidgetToken() };
+    const headers = { 
+      'Content-Type': 'application/json', 
+      'X-Widget-Token': getWidgetToken(),
+      'Accept-Language': getSnapshot()
+    };
     const params = new URLSearchParams();
     if (shopDomain) params.set('shopDomain', shopDomain);
     if (sessionId) params.set('sessionId', sessionId);
@@ -75,7 +84,11 @@ export const bootSession = async (sessionId, shopDomain, visitorId) => {
 };
 
 export const updateProfile = async (sessionId, shopDomain, data) => {
-  const headers = { 'Content-Type': 'application/json', 'X-Widget-Token': getWidgetToken() };
+  const headers = { 
+    'Content-Type': 'application/json', 
+    'X-Widget-Token': getWidgetToken(),
+    'Accept-Language': getSnapshot()
+  };
 
   const response = await fetch(`${API_BASE_URL}/api/chat/profile`, {
     method: 'POST',
@@ -92,7 +105,11 @@ export const updateProfile = async (sessionId, shopDomain, data) => {
  * Sends user feedback (message rating) to the backend.
  */
 export const submitFeedback = async (feedbackData) => {
-  const headers = { 'Content-Type': 'application/json', 'X-Widget-Token': getWidgetToken() };
+  const headers = { 
+    'Content-Type': 'application/json', 
+    'X-Widget-Token': getWidgetToken(),
+    'Accept-Language': getSnapshot()
+  };
   const response = await fetch(`${API_BASE_URL}/api/feedback`, {
     method: 'POST',
     headers,

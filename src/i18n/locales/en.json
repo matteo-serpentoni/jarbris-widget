@@ -1,0 +1,253 @@
+{
+  "welcome": "Hi! 👋 I'm Jarbris, your assistant. How can I help you?",
+  "welcome_named": "Hi {{name}}! 👋 How can I help you today?",
+  "chat": {
+    "human_waiting": "Waiting for an agent.",
+    "input_placeholder": "Write something...",
+    "checkout_cta": "Go to checkout ({{count}})",
+    "ended": "Conversation Ended",
+    "minimize": "Minimize chat",
+    "show_more": "Show more",
+    "legal_prefix": "By chatting you accept the",
+    "legal_privacy": "Privacy Policy",
+    "legal_and": "and the",
+    "legal_cookie": "Cookie Policy"
+  },
+  "session": {
+    "expired_title": "Session expired",
+    "expired_message": "Your session expired due to inactivity. Reload the page to start a new conversation."
+  },
+  "errors": {
+    "config": "Configuration not found. Please reload the page. (Code: 001)",
+    "network": "Connection error. Check your connection and try again.",
+    "server": "Something went wrong. Try again in a few seconds.",
+    "generic": "A problem occurred. Try again.",
+    "unexpected": "An unexpected error occurred."
+  },
+  "feedback": {
+    "helpful": "Helpful",
+    "helpful_aria": "Helpful response",
+    "not_helpful": "Not helpful",
+    "not_helpful_aria": "Not helpful response",
+    "thanks": "Thanks for your feedback!",
+    "rate_conversation": "How would you rate this conversation?"
+  },
+  "profile": {
+    "title": "Your Profile",
+    "description_identified": "Your data is saved. You can edit or remove it at any time.",
+    "description_anonymous": "Enter your details to get better assistance and personalized offers.",
+    "reconsent_alert": "⚠️ We've updated our Privacy Policy.",
+    "email_label": "Email",
+    "name_label": "Full Name (Optional)",
+    "save_profile": "Save Profile",
+    "update_profile": "Update Profile",
+    "saving": "...",
+    "saved": "Profile saved!",
+    "error_email_required": "Email is required.",
+    "error_email_invalid": "Please enter a valid email.",
+    "error_save": "Error saving profile.",
+    "error_identity": "Identity not verifiable.",
+    "error_export_identity": "Identity not verified. Cannot download.",
+    "error_privacy": "Could not update preference. Try again.",
+    "error_reset": "Error during reset.",
+    "error_export": "Error during export.",
+    "download_data": "Download my data",
+    "delete_profile": "Delete Profile",
+    "deleting": "Deleting...",
+    "deleted": "Data deleted.",
+    "download_started": "Download started...",
+    "downloaded": "Data exported.",
+    "privacy_section": "Privacy",
+    "privacy_title": "Usage data collection",
+    "privacy_desc": "Help us improve by enabling anonymous interaction analysis.",
+    "privacy_toggle_label": "Enable/disable data collection",
+    "confirm_privacy_title": "Are you sure?",
+    "confirm_privacy_message": "Disabling this, Jarbris can no longer offer you personalized suggestions.",
+    "confirm_privacy_confirm": "Disable",
+    "confirm_cancel": "Cancel",
+    "confirm_export_title": "Download data",
+    "confirm_export_message": "A JSON file with all your data will be prepared and downloaded.",
+    "confirm_export_confirm": "Start Download",
+    "confirm_delete_title": "Irreversible deletion",
+    "confirm_delete_message": "This will permanently delete all your data and disconnect you from the service.",
+    "confirm_delete_confirm": "Yes, delete everything"
+  },
+  "profile_card": {
+    "title": "Save your preferences",
+    "fallback": "Would you like me to remember you for next time? I can save your preferences, sizes, and products you're interested in.",
+    "aria_expand": "Expand profile details",
+    "aria_collapse": "Collapse profile details"
+  },
+  "ui": {
+    "profile_button": "Profile",
+    "back_to_offer": "Back to offer",
+    "back_to_coupon": "Back to Coupon",
+    "send_message": "Send message",
+    "requires_code": "Requires entering the code at checkout",
+    "cannot_display": "Unable to display this content",
+    "success": "Success",
+    "request_received": "Request received!",
+    "click_category": "Click a category to view products",
+    "show_more": "Show more",
+    "more_options_count": "+{{count}} more",
+    "aria_more_options": "Show {{count}} more options",
+    "back_to_options": "Back to previous options",
+    "back": "Back"
+  },
+  "checkout": {
+    "preparing": "Preparing checkout...",
+    "in_progress_title": "Checkout in progress",
+    "open_title": "Checkout opened",
+    "open_text": "The checkout has opened in a new tab.",
+    "success_title": "Payment completed",
+    "success_sub": "Thank you for your purchase",
+    "title": "Checkout",
+    "payment": "Payment",
+    "back_to_chat": "Back to chat",
+    "chat": "Chat",
+    "in_progress_text": "Your checkout has opened in a new window. Complete payment and return here.",
+    "error_cart_empty": "Your cart is empty.",
+    "error_unavailable": "Could not start checkout. Please try again.",
+    "error_generic": "A problem occurred with the payment. Try again or open checkout externally."
+  },
+  "promo": {
+    "combinable": "Combinable with other discounts",
+    "not_combinable": "Not combinable with other discounts",
+    "single_purchase": "Valid for single purchases only",
+    "all_customers": "Open to all customers",
+    "specific_customers": "Reserved for specific customer segments",
+    "validity_label": "Validity",
+    "combinability_label": "Combinability",
+    "limited_availability": "Limited availability",
+    "once_per_customer": "1 use per customer",
+    "requires_code": "Requires code entry at checkout",
+    "auto_applied": "Applied automatically at cart",
+    "limits_label": "Limits",
+    "shipping_label": "Shipping",
+    "shipping_all_countries": "All countries",
+    "shipping_max_price": "Valid on rates below {{price}}€",
+    "discount_applies_to": "Discount applies to:",
+    "purchase_requirement": "Purchase Requirement",
+    "other_notes": "Other notes",
+    "back_to_coupon": "Back to Coupon",
+    "details_title": "Details"
+  },
+  "product": {
+    "sold_out": "Sold out",
+    "select_options": "Select options",
+    "unavailable": "Unavailable",
+    "variant_sold_out": "Variant sold out",
+    "add_to_cart_chip": "Add to cart",
+    "customize_chip": "Customize",
+    "brand": "Brand",
+    "type": "Type",
+    "tags": "Tags",
+    "select_missing": "Please select {{options}} to continue",
+    "no_products_found": "I couldn't find products matching your search.",
+    "details_for": "View details for",
+    "zoom_image": "Zoom image",
+    "no_image": "No image available",
+    "discount": "DISCOUNT",
+    "offer": "OFFER",
+    "only_left": "Only {{count}} left",
+    "in_stock": "In stock",
+    "show_description": "Show product description",
+    "details": "DETAILS",
+    "no_description": "No description available for this product.",
+    "view_in_store": "View in Store",
+    "add_to_cart": "Add to cart",
+    "choose_option": "Choose"
+  },
+  "connection": {
+    "online": "ONLINE",
+    "offline": "OFFLINE",
+    "reconnecting": "RECONNECTING"
+  },
+  "form": {
+    "field_required": "The field {{label}} is required.",
+    "generic_error": "Something went wrong.",
+    "retry": "Retry",
+    "notes_required": "Please provide more details in the notes section.",
+    "required_details": "Required details",
+    "optional_details": "Optional details",
+    "back": "Back",
+    "qty_pieces": "{{count}} pieces"
+  },
+  "thinking": {
+    "product_search": [
+      "Browsing the catalog...",
+      "Peeking in the warehouse...",
+      "Let me find the best options for you...",
+      "Checking availability...",
+      "Searching the best products for you...",
+      "Let me help you choose...",
+      "Finding the perfect product for you..."
+    ],
+    "product_detail": [
+      "Fetching product info...",
+      "Looking up the details for you...",
+      "Checking the specs...",
+      "Let me see what I know about this...",
+      "One sec, looking up the specifics..."
+    ],
+    "order_track": [
+      "Checking the shipping status...",
+      "Looking for your package...",
+      "Checking where the order is...",
+      "One sec, checking tracking...",
+      "Fetching delivery info..."
+    ],
+    "faq": [
+      "Consulting our guide...",
+      "Looking for the answer for you...",
+      "Checking the requested info...",
+      "One sec, checking the details...",
+      "Let me check the FAQs..."
+    ],
+    "shipping": [
+      "Checking shipping costs and times...",
+      "Looking up delivery info...",
+      "Fetching shipping details...",
+      "One sec, looking at shipping policies...",
+      "Fetching delivery details for you..."
+    ],
+    "refund": [
+      "Checking our return policy...",
+      "Looking up how to handle the refund...",
+      "Looking up return and refund info...",
+      "One sec, checking the return procedure...",
+      "Fetching return details..."
+    ],
+    "escalation": [
+      "Connecting you with a human right away...",
+      "Looking for an agent for you...",
+      "Notifying the team...",
+      "One sec, calling for human backup...",
+      "Passing you to a human colleague..."
+    ],
+    "default": [
+      "Let me check...",
+      "One sec, looking it up...",
+      "Let me see what I can find...",
+      "Looking up information...",
+      "Give me a second...",
+      "Checking right away..."
+    ]
+  },
+  "order": {
+    "track_package": "Track package",
+    "items_label": "ITEMS",
+    "your_orders": "Your orders",
+    "details": "Details",
+    "in_processing": "Processing"
+  },
+  "orb": {
+    "msg1": "Hi! 👋",
+    "msg2": "Need\nhelp? 💬",
+    "msg3": "Ask me\nanything ✨",
+    "cart_item": "item in your cart",
+    "cart_items": "items in your cart",
+    "open_aria": "Open Jarbris assistant",
+    "active_aria": "Jarbris widget active"
+  }
+}

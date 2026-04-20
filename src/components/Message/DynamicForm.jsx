@@ -3,12 +3,15 @@ import React, { useState, useEffect } from 'react';
 // eslint-disable-next-line no-unused-vars -- motion.div used in JSX
 import { motion, AnimatePresence } from 'framer-motion';
 import { validateEmail } from '../../utils/validators';
+import { useI18n } from '../../hooks/useI18n';
 import './DynamicForm.css';
 
 /**
  * LookupResult Sub-component (Error/Not Found state)
  */
-const LookupResult = ({ message, onRetry, loading }) => (
+const LookupResult = ({ message, onRetry, loading }) => {
+  const t = useI18n();
+  return (
   <motion.div
     className="jarbris-order-lookup-results-text"
     initial={{ opacity: 0, scale: 0.95 }}
@@ -18,10 +21,10 @@ const LookupResult = ({ message, onRetry, loading }) => (
     <div className="jarbris-order-lookup-icon">🔍</div>
     <p className="jarbris-order-lookup-message">{message}</p>
     <button onClick={onRetry} className="jarbris-order-lookup-retry-btn" disabled={loading}>
-      {loading ? <span className="jarbris-loader-small" /> : 'Riprova'}
+      {loading ? <span className="jarbris-loader-small" /> : t('form.retry')}
     </button>
   </motion.div>
-);
+);};
 
 // Navigation cache to survive component unmounts (capped to prevent unbounded growth)
 const NAV_CACHE_MAX = 50;
@@ -36,6 +39,7 @@ const navCacheSet = (key, value) => {
 };
 
 const DynamicForm = ({ message, onSubmit, loading, children }) => {
+  const t = useI18n();
   if (!message || (!message.config && !navCache.has(message.id))) {
     return null;
   }
@@ -196,18 +200,18 @@ const DynamicForm = ({ message, onSubmit, loading, children }) => {
     // Validation
     for (const field of fields) {
       if (field.required && !formData[field.id] && formData[field.id] !== 0) {
-        setErrorVisible(`Il campo ${field.label} è obbligatorio.`);
+        setErrorVisible(t('form.field_required', { label: field.label }));
         return;
       }
       if (field.type === 'email' && formData[field.id] && !validateEmail(formData[field.id])) {
-        setErrorVisible('Inserisci un indirizzo email valido.');
+        setErrorVisible(t('profile.error_email_invalid'));
         return;
       }
     }
 
     const isOtherReason = formData.reasonId === 'other';
     if (isOtherReason && allowNotes && !notes.trim()) {
-      setErrorVisible('Per favore, fornisci maggiori dettagli nella sezione note.');
+      setErrorVisible(t('form.notes_required'));
       return;
     }
 
@@ -280,7 +284,7 @@ const DynamicForm = ({ message, onSubmit, loading, children }) => {
                   </div>
                   {(opt.quantity || opt.price) && (
                     <div className="jarbris-dynamic-option-meta">
-                      {opt.quantity && opt.quantity > 1 ? `${opt.quantity} pezzi • ` : ''}
+                      {opt.quantity && opt.quantity > 1 ? `${t('form.qty_pieces', { count: opt.quantity })} • ` : ''}
                       {opt.price}
                     </div>
                   )}
@@ -384,7 +388,7 @@ const DynamicForm = ({ message, onSubmit, loading, children }) => {
                 results.results?.message ||
                 results.text ||
                 results.message ||
-                'Qualcosa è andato storto.'
+                t('form.generic_error')
               }
               onRetry={() => {
                 const fallbackSignal = formId.startsWith('order')
@@ -410,8 +414,8 @@ const DynamicForm = ({ message, onSubmit, loading, children }) => {
                   <div className="jarbris-form-group-notes">
                     <label>
                       {formData.reasonId === 'other'
-                        ? 'Dettagli obbligatori'
-                        : 'Dettagli opzionali'}
+                        ? t('form.required_details')
+                        : t('form.optional_details')}
                     </label>
                     <textarea
                       className="jarbris-dynamic-textarea"
@@ -430,13 +434,8 @@ const DynamicForm = ({ message, onSubmit, loading, children }) => {
 
               <div className="jarbris-dynamic-form-actions">
                 {history.length > 0 && (
-                  <button
-                    type="button"
-                    onClick={handleBack}
-                    className="jarbris-dynamic-form-back-btn"
-                    disabled={loading}
-                  >
-                    Indietro
+                  <button type="button" onClick={handleBack} className="jarbris-dynamic-form-back-btn" disabled={loading}>
+                    {t('form.back')}
                   </button>
                 )}
                 <button type="submit" className="jarbris-dynamic-form-submit" disabled={loading}>

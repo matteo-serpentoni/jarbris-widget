@@ -12,6 +12,7 @@ import PromoCards from '../Message/PromoCards';
 import CartAction from '../Message/CartAction';
 import CrossSellBlock from '../Message/CrossSellBlock';
 import ErrorBoundary from '../UI/ErrorBoundary';
+import { useI18n } from '../../hooks/useI18n';
 import MessageFallback from './MessageFallback';
 import MessageBubble from './MessageBubble';
 import HumanThinking from './HumanThinking';
@@ -64,6 +65,8 @@ const MessageList = memo(
     // and should NOT animate in (they were already "seen" before reload).
     // Only truly new messages arriving after mount get the entrance animation.
     const [hydratedIds] = useState(() => new Set(chatBlocks.map((b) => String(b.id))));
+
+    const t = useI18n();
 
     const scrollToBottom = (behavior = 'auto') => {
       if (messagesAreaRef.current) {
@@ -236,14 +239,14 @@ const MessageList = memo(
             <div className="jarbris-success-check-wrapper">
               <div className="jarbris-success-check">
                 <svg viewBox="0 0 52 52">
-                  <title>Successo</title>
+                  <title>{t('ui.success')}</title>
                   <circle cx="26" cy="26" r="25" fill="none" />
                   <path fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
                 </svg>
               </div>
             </div>
             <div className="jarbris-return-success-text">
-              <h4>Richiesta Ricevuta!</h4>
+              <h4>{t('ui.request_received')}</h4>
               <p>{msg.message}</p>
             </div>
           </div>
@@ -390,10 +393,10 @@ const MessageList = memo(
               className="jarbris-suggestion-chip overflow"
               onClick={onExpand}
               disabled={loading}
-              aria-label="Mostra altri"
+              aria-label={t('ui.show_more')}
             >
               <MoreDotsIcon />
-              Mostra altri
+              {t('ui.show_more')}
             </button>
           )}
         </div>

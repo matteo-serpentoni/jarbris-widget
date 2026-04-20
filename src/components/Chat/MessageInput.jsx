@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
+import { useI18n } from '../../hooks/useI18n';
 import './MessageInput.css';
 
 const MessageInput = ({
   onSendMessage,
   disabled: propDisabled,
   loading,
-  placeholder = 'Scrivi un messaggio…',
+  placeholder,
   sendButtonColor = '#a259ff',
   inputBorderColor = '#a259ff',
   inputFocusColor = '#4CC2E9',
@@ -13,6 +14,9 @@ const MessageInput = ({
   onProfileClick,
   connectionStatus = 'online',
 }) => {
+  const t = useI18n();
+  const actualPlaceholder = placeholder || t('chat.input_placeholder');
+
   const [message, setMessage] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef(null);
@@ -84,12 +88,12 @@ const MessageInput = ({
           className="chat-input"
           placeholder={
             connectionStatus === 'offline'
-              ? 'Nessuna connessione...'
+              ? t('errors.network') // Best fit for "Nessuna connessione..." although 'reconnecting' is different. We can use generic network error for UI brevity, or fallback
               : connectionStatus === 'reconnecting'
-                ? 'Riconnessione...'
-                : placeholder
+                ? t('errors.network')
+                : actualPlaceholder
           }
-          aria-label="Messaggio da inviare"
+          aria-label={t('ui.send_message')}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onFocus={() => !previewMode && setIsFocused(true)}
@@ -99,7 +103,7 @@ const MessageInput = ({
           maxLength={2000}
         />
         {shouldShowButton && (
-          <button type="submit" aria-label="Invia messaggio" className="chat-send-btn">
+          <button type="submit" aria-label={t('ui.send_message')} className="chat-send-btn">
             <svg
               width="20"
               height="20"
@@ -123,7 +127,7 @@ const MessageInput = ({
         <button
           type="button"
           onClick={onProfileClick}
-          title="Profilo"
+          title={t('ui.profile_button')}
           className="profile-btn profile-button-gradient-border"
         >
           <div className="profile-icon" />
