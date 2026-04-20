@@ -173,6 +173,15 @@ const Chat = ({
     ? () => {}
     : (suggestion) => liveChat.handleSuggestionClick(suggestion, handleSystemChipAction);
 
+  // Product expand: sends 'mostra altri' (pre-router catches it deterministically via EXPAND pattern).
+  // Does NOT use handleSuggestionClick — avoids adding 'suggestionAction: expand' to options which
+  // would route through _routeToHandler → handleUnknownAction instead of the agent runtime.
+  const liveExpandSend = isPreview ? null : liveChat.sendMessage;
+  const onExpand = useCallback(() => {
+    if (!liveExpandSend || loading) return;
+    liveExpandSend('__expand__', { displayText: 'Mostra altri' });
+  }, [liveExpandSend, loading]);
+
   // Capture DOM refs for idle nudge after mount
   useEffect(() => {
     const wrapper = document.querySelector('.chat-content-wrapper');
@@ -345,6 +354,7 @@ const Chat = ({
               onProductAction={(action, payloadData) => {
                 if (action === 'add_to_cart') handleProductCartAction(payloadData?.id);
               }}
+              onExpand={onExpand}
             />
 
             {/* Conversation Ended Separator & Rating */}

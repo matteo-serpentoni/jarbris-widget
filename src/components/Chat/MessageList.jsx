@@ -16,6 +16,7 @@ import MessageFallback from './MessageFallback';
 import MessageBubble from './MessageBubble';
 import HumanThinking from './HumanThinking';
 import ProfileCardMessage from '../Message/ProfileCardMessage';
+import { MoreDotsIcon } from '../UI/Icons';
 
 /**
  * MessageList
@@ -43,7 +44,17 @@ const MessageList = memo(
     sendFeedback,
     onImageClick,
     onProductAction,
+    onExpand,
   }) => {
+    // Pre-compute the ID of the last message that has hasMore=true,
+    // so the expand button is only rendered on the most recent product page.
+    const lastExpandableId = (() => {
+      for (let i = chatBlocks.length - 1; i >= 0; i--) {
+        const b = chatBlocks[i];
+        if (b.type?.toLowerCase() === 'product_cards' && b.hasMore) return b.id;
+      }
+      return null;
+    })();
     const messagesAreaRef = useRef(null);
     const lastMessageRef = useRef(null);
     const lastMessageIdRef = useRef(null);
@@ -369,6 +380,21 @@ const MessageList = memo(
           {/* Suggestion Chips - External to Bubble */}
           {msg.suggestions && msg.suggestions.length > 0 && (
             <Suggestions suggestions={msg.suggestions} onSuggestionClick={handleSuggestionClick} />
+          )}
+
+          {/* Product Expand Button — rendered only on the last product page with hasMore */}
+          {msg.id === lastExpandableId && (
+            <button
+              id="product-expand-btn"
+              type="button"
+              className="jarbris-suggestion-chip overflow"
+              onClick={onExpand}
+              disabled={loading}
+              aria-label="Mostra altri"
+            >
+              <MoreDotsIcon />
+              Mostra altri
+            </button>
           )}
         </div>
       );

@@ -105,6 +105,13 @@
   transform: translateY(-2px);
 }
 
+.jarbris-suggestion-chip.overflow:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  pointer-events: none;
+}
+
 /* Back control — "Indietro" UI control */
 .jarbris-suggestion-chip.back {
   background: rgba(139, 92, 246, 0.1);
