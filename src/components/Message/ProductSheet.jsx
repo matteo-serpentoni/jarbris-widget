@@ -148,6 +148,24 @@ const ProductSheet = memo(({ product, onClose, shopDomain, onProductAction, isMo
             <span>{t('product.variant_sold_out')}</span>
           </button>
         </div>
+      ) : product.purchaseOptions?.allocations?.length > 0 ? (
+        // All good, but product has subscriptions: show Subscription Drawer next
+        <div className="jarbris-add-to-cart-container compact">
+          <button
+            className="add-to-cart jarbris-add-to-cart-btn"
+            onClick={() => {
+              if (onProductAction) {
+                onProductAction('open_purchase_options_drawer', {
+                  product,
+                  variantId: currentVariant.id || currentVariant.variantId,
+                });
+              }
+              onClose();
+            }}
+          >
+            <span>{t('purchase_options.select_purchase_type') || t('product.add_to_cart')}</span>
+          </button>
+        </div>
       ) : (
         // All good — fire the real ATC with animation
         <AddToCartButton

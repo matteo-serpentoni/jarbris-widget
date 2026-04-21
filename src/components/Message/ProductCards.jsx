@@ -21,7 +21,41 @@ import {
 // Re-export ProductDrawer from ProductSheet for backward-compatible imports in Chat.jsx
 export { default as ProductDrawer } from './ProductSheet';
 
+/**
+ * Derives the correct card badge i18n key for a product's purchase options.
+ *
+ * Logic (in priority order):
+ *   requiresSellingPlan=true  (no one-time) → only_badge.<dominantType>
+ *   hasAllocations + one-time available   → available_badge.<dominantType>
+ *   no allocations                        → no badge
+ *
+ * dominantType is the most common planType across allocations, falling back to 'mixed'
+ * if multiple distinct types are present.
+ *
+ * @param {Object} purchaseOptions  - NormalizedPurchaseOptions from the API
+ * @param {boolean} requiresSellingPlan
+ * @returns {{ namespace: string, type: string } | null}
+ */
+function resolvePurchaseOptionBadge(purchaseOptions, requiresSellingPlan) {
+  const allocations = purchaseOptions?.allocations;
+  if (!allocations?.length) return null;
 
+  // Find the dominant plan type
+  const typeCounts = {};
+  for (const a of allocations) {
+    const t = a.planType || 'unknown';
+    // Ignore 'unknown' in dominant type resolution — never show subscription semantics for it
+    if (t !== 'unknown') typeCounts[t] = (typeCounts[t] || 0) + 1;
+  }
+
+  const types = Object.keys(typeCounts);
+  const dominantType = types.length === 1 ? types[0] : types.length > 1 ? 'mixed' : 'mixed';
+
+  return {
+    namespace: requiresSellingPlan ? 'only_badge' : 'available_badge',
+    type: dominantType,
+  };
+}
 
 const ProductCard = memo(
   ({ product, index, onOpen, onImageClick, shopDomain, onProductAction }) => {
@@ -139,6 +173,19 @@ const ProductCard = memo(
                       : t('product.offer')}
                 </div>
               )}
+              {(() => {
+                const badge = resolvePurchaseOptionBadge(product.purchaseOptions, product.requiresSellingPlan);
+                if (!badge) return null;
+                return (
+                  <div
+                    className={`jarbris-product-subscription-badge${
+                      badge.namespace === 'only_badge' ? ' jarbris-product-subscription-badge--only' : ''
+                    }`}
+                  >
+                    {t(`purchase_options.${badge.namespace}.${badge.type}`)}
+                  </div>
+                );
+              })()}
               {isAvailable && (
                 <div className="jarbris-stock-status-badge-container">
                   {totalInventory > 0 && totalInventory <= 10 ? (
@@ -217,7 +264,7 @@ const ProductCard = memo(
                 {((isAvailable && (product.variants[0] || product.variantId)) || hasVariants) && (
                   <div className="jarbris-add-to-cart-wrapper" style={{ flex: 1, width: '100%' }}>
                     {hasVariants ? (
-                      // Product has variants: ATC opens the sheet to let user pick options first
+                      // Product has variants: open sheet (even if it has selling plans, we need variant first)
                       <div className="jarbris-add-to-cart-container compact" style={{ flex: 1 }}>
                         <button
                           className="add-to-cart jarbris-add-to-cart-btn"
@@ -231,8 +278,25 @@ const ProductCard = memo(
                           <span>{t('product.add_to_cart')}</span>
                         </button>
                       </div>
+                    ) : product.purchaseOptions?.allocations?.length > 0 ? (
+                      // No variants, but has selling plans: open subscription drawer directly
+                      <div className="jarbris-add-to-cart-container compact" style={{ flex: 1 }}>
+                        <button
+                          className="add-to-cart jarbris-add-to-cart-btn"
+                          id={`jarbris-open-purchase-drawer-${product.productId || product.id}`}
+                          aria-label={`${t('purchase_options.select_purchase_type')} - ${name}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            onProductAction &&
+                              onProductAction('open_purchase_options_drawer', { product });
+                          }}
+                        >
+                          <span>{t('product.add_to_cart')}</span>
+                        </button>
+                      </div>
                     ) : (
-                      // No variants: add directly to cart
+                      // No variants, no selling plans: direct add
                       <AddToCartButton
                         variantId={product.variants[0]?.id || product.variantId}
                         shopDomain={shopDomain}

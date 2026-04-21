@@ -1,0 +1,332 @@
+/* PurchaseOptionsDrawer — widget-isolated styles (ConfirmDialog style) */
+
+.jarbris-purchase-drawer {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  padding: 16px;
+}
+
+.jarbris-purchase-drawer__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+
+/* Ensure the overlay matches the rounded shape of the widget without clipping issues */
+.orb-container:not(.mobile-device) .jarbris-purchase-drawer__backdrop {
+  border-radius: 50%;
+}
+.orb-container.mobile-device .jarbris-purchase-drawer__backdrop {
+  border-radius: 24px;
+}
+
+.jarbris-purchase-drawer__panel {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 340px;
+  max-height: 85%;
+  background: rgba(25, 25, 30, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+[data-theme='light'] .jarbris-purchase-drawer__panel {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.jarbris-purchase-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 12px;
+  flex-shrink: 0;
+}
+
+.jarbris-purchase-drawer__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+
+[data-theme='light'] .jarbris-purchase-drawer__title {
+  color: #1a1a1a;
+}
+
+.jarbris-purchase-drawer__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1;
+  padding: 0;
+  transition: color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-theme='light'] .jarbris-purchase-drawer__close {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.jarbris-purchase-drawer__close:hover {
+  color: #fff;
+}
+
+[data-theme='light'] .jarbris-purchase-drawer__close:hover {
+  color: #000;
+}
+
+/* Body */
+.jarbris-purchase-drawer__body {
+  overflow-y: auto;
+  padding: 8px 20px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* Ensure radio inputs aren't clipped */
+  overflow-x: visible;
+}
+
+.jarbris-purchase-drawer__notice {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  line-height: 1.5;
+}
+
+[data-theme='light'] .jarbris-purchase-drawer__notice {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.jarbris-purchase-drawer__plans {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Fieldset / Legend */
+.jarbris-purchase-drawer__fieldset {
+  border: none;
+  margin: 0;
+  padding: 0 0 0 2px; /* 2px left to prevent radio clipping from panel overflow:hidden */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.jarbris-purchase-drawer__legend {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 4px;
+  padding: 0;
+}
+
+[data-theme='light'] .jarbris-purchase-drawer__legend {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+/* Radio row */
+.jarbris-purchase-drawer__radio-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.jarbris-purchase-drawer__radio-row:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.jarbris-purchase-drawer__radio-row.selected {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+[data-theme='light'] .jarbris-purchase-drawer__radio-row {
+  border-color: rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.03);
+}
+[data-theme='light'] .jarbris-purchase-drawer__radio-row:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+[data-theme='light'] .jarbris-purchase-drawer__radio-row.selected {
+  background: #eff6ff;
+  border-color: #3b82f6;
+}
+
+/* Native radio — visually hidden, still keyboard/screen-reader accessible */
+.jarbris-purchase-drawer__radio {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Custom radio indicator */
+.jarbris-purchase-drawer__radio-indicator {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: all 0.18s ease;
+  position: relative;
+}
+
+.jarbris-purchase-drawer__radio-row.selected .jarbris-purchase-drawer__radio-indicator {
+  border-color: #fff;
+  background: #fff;
+}
+
+/* Dot inside selected */
+.jarbris-purchase-drawer__radio-row.selected .jarbris-purchase-drawer__radio-indicator::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1a1a1e;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+[data-theme='light'] .jarbris-purchase-drawer__radio-indicator {
+  border-color: rgba(0, 0, 0, 0.25);
+}
+[data-theme='light'] .jarbris-purchase-drawer__radio-row.selected .jarbris-purchase-drawer__radio-indicator {
+  border-color: #3b82f6;
+  background: #3b82f6;
+}
+[data-theme='light'] .jarbris-purchase-drawer__radio-row.selected .jarbris-purchase-drawer__radio-indicator::after {
+  background: #fff;
+}
+
+/* Radio content (label + price) */
+.jarbris-purchase-drawer__radio-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.jarbris-purchase-drawer__radio-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 1.4;
+}
+
+[data-theme='light'] .jarbris-purchase-drawer__radio-label {
+  color: #111;
+}
+
+.jarbris-purchase-drawer__option-price {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+[data-theme='light'] .jarbris-purchase-drawer__option-price {
+  color: #555;
+}
+
+.jarbris-purchase-drawer__per-delivery {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme='light'] .jarbris-purchase-drawer__per-delivery {
+  color: #888;
+}
+
+/* Blocked message */
+.jarbris-purchase-drawer__blocked-msg {
+  font-size: 13px;
+  color: #ff4d4d;
+  margin: 4px 0 0;
+  text-align: center;
+}
+
+[data-theme='light'] .jarbris-purchase-drawer__blocked-msg {
+  color: #c0392b;
+}
+
+/* Footer & AddToCartButton wrapper */
+.jarbris-purchase-drawer__footer {
+  padding: 12px 20px 20px;
+  flex-shrink: 0;
+  display: block; /* Removed flex layout to freeze the baseline */
+}
+
+/* Override AddToCartButton full-width inside the drawer */
+.jarbris-purchase-drawer__footer > * {
+  width: 100%;
+  margin: 0;
+}
+.jarbris-purchase-drawer__footer .jarbris-add-to-cart-container {
+  width: 100%;
+}
+.jarbris-purchase-drawer__footer .jarbris-add-to-cart-container .add-to-cart {
+  width: 100%;
+}
+
+/* Plan type badge pill */
+.jarbris-purchase-drawer__plan-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-bottom: 4px;
+  line-height: 1.6;
+}
+
+/* Dark theme colors */
+.jarbris-purchase-drawer__plan-badge--subscription       { background: rgba(99,102,241,0.15); color: rgb(165,180,252); }
+.jarbris-purchase-drawer__plan-badge--prepaid            { background: rgba(16,185,129,0.15); color: rgb(52,211,153);  }
+.jarbris-purchase-drawer__plan-badge--preorder           { background: rgba(245,158,11,0.15); color: rgb(251,191,36);  }
+.jarbris-purchase-drawer__plan-badge--try_before_you_buy { background: rgba(59,130,246,0.15); color: rgb(147,197,253); }
+
+/* Light theme colors */
+[data-theme='light'] .jarbris-purchase-drawer__plan-badge--subscription       { background: #eef2ff; color: #4f46e5; }
+[data-theme='light'] .jarbris-purchase-drawer__plan-badge--prepaid            { background: #ecfdf5; color: #059669; }
+[data-theme='light'] .jarbris-purchase-drawer__plan-badge--preorder           { background: #fffbeb; color: #d97706; }
+[data-theme='light'] .jarbris-purchase-drawer__plan-badge--try_before_you_buy { background: #eff6ff; color: #2563eb; }
+
+/* Dashed "Seleziona un'opzione" prompt button —
+   The dashed background + muted text come from AddToCartButton.css
+   disabled:before rules — no extra border needed here. */
+.jarbris-purchase-drawer__select-prompt {
+  cursor: default !important;
+}

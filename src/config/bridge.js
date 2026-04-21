@@ -57,4 +57,15 @@ export const BRIDGE_CONFIG = {
     FALLBACK: 'JARBRIS:checkoutFallback',
     COMPLETE: 'JARBRIS:checkoutComplete',
   },
+
+  // Cart message types — used by usePurchaseOptions + useChat
+  cartMessages: {
+    ADD_TO_CART: 'JARBRIS:addToCart',
+    CART_LINE_UPDATE: 'JARBRIS:cartLineUpdate',
+  },
+
+  // Widget-internal action signals (not postMessage — consumed by useChat)
+  widgetActions: {
+    OPEN_PURCHASE_OPTIONS_DRAWER: 'OPEN_PURCHASE_OPTIONS_DRAWER',
+  },
 };

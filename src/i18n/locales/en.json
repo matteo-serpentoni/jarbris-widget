@@ -249,5 +249,35 @@
     "cart_items": "items in your cart",
     "open_aria": "Open Jarbris assistant",
     "active_aria": "Jarbris widget active"
+  },
+  "purchase_options": {
+    "title": "Purchase options",
+    "one_time": "One-time purchase",
+    "select_purchase_type": "Select purchase type",
+    "no_one_time_purchase": "This product is not available as a one-time purchase.",
+    "per_delivery": "Per delivery",
+    "choose_option": "Select a purchase option",
+    "select_option": "Select an option",
+    "available_badge": {
+      "subscription": "Subscription available",
+      "prepaid": "Prepaid available",
+      "preorder": "Preorder available",
+      "try_before_you_buy": "Try first available",
+      "mixed": "Purchase option available"
+    },
+    "only_badge": {
+      "subscription": "Subscription only",
+      "prepaid": "Prepaid only",
+      "preorder": "Preorder only",
+      "try_before_you_buy": "Try first only",
+      "mixed": "No one-time purchase"
+    },
+    "plan_type_label": {
+      "subscription": "Subscription",
+      "prepaid": "Prepaid",
+      "preorder": "Preorder",
+      "try_before_you_buy": "Try first",
+      "unknown": ""
+    }
   }
 }

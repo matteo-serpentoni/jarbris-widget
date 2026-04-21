@@ -10,6 +10,7 @@ const AddToCartButton = memo(
     variantId,
     shopDomain,
     quantity = 1,
+    sellingPlanId = null,
     onSuccess,
     onError,
     onAnimationComplete,
@@ -39,14 +40,14 @@ const AddToCartButton = memo(
         }
 
         // Invece di fare la fetch, invia un messaggio al parent
-        window.parent.postMessage(
-          {
-            type: 'JARBRIS:addToCart',
-            variantId: numericVariantId,
-            quantity: quantity,
-          },
-          '*',
-        );
+        const cartPayload = {
+          type: 'JARBRIS:addToCart',
+          variantId: numericVariantId,
+          quantity: quantity,
+        };
+        if (sellingPlanId) cartPayload.sellingPlanId = sellingPlanId;
+
+        window.parent.postMessage(cartPayload, '*');
 
         // Ascolta la risposta dal parent
         const handleResponse = (event) => {

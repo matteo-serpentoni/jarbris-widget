@@ -221,5 +221,35 @@
     "cart_items": "Artikel in deinem Warenkorb",
     "open_aria": "Jarbris-Assistent öffnen",
     "active_aria": "Jarbris-Widget aktiv"
+  },
+  "purchase_options": {
+    "title": "Kaufoptionen",
+    "one_time": "Einmaliger Kauf",
+    "available_badge": {
+      "subscription": "Abo verfügbar",
+      "prepaid": "Prepaid verfügbar",
+      "preorder": "Vorbestellung verfügbar",
+      "try_before_you_buy": "Erst testen verfügbar",
+      "mixed": "Kaufoption verfügbar"
+    },
+    "only_badge": {
+      "subscription": "Nur Abo",
+      "prepaid": "Nur Prepaid",
+      "preorder": "Nur Vorbestellung",
+      "try_before_you_buy": "Nur erst testen",
+      "mixed": "Kein Einzelkauf"
+    },
+    "select_purchase_type": "Kaufart auswählen",
+    "per_delivery": "Pro Lieferung",
+    "choose_option": "Wähle eine Kaufoption",
+    "select_option": "Option wählen",
+    "no_one_time_purchase": "Dieses Produkt ist nicht als Einzelkauf erhältlich.",
+    "plan_type_label": {
+      "subscription": "Abonnement",
+      "prepaid": "Prepaid",
+      "preorder": "Vorbestellung",
+      "try_before_you_buy": "Erst testen",
+      "unknown": ""
+    }
   }
 }

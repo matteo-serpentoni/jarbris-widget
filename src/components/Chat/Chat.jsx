@@ -3,6 +3,8 @@ import { useChat } from '../../hooks/useChat';
 import { useCheckout } from '../../hooks/useCheckout';
 import { useIdleNudge } from '../../hooks/useIdleNudge';
 import { useI18n } from '../../hooks/useI18n';
+import { usePurchaseOptions } from '../../hooks/usePurchaseOptions';
+import PurchaseOptionsDrawer from '../Chat/PurchaseOptionsDrawer/PurchaseOptionsDrawer';
 import './Chat.css';
 
 // eslint-disable-next-line no-unused-vars -- motion.div used in JSX
@@ -55,6 +57,10 @@ const Chat = ({
 
   // Use custom hook for live chat logic, but ONLY if NOT in preview mode
   const liveChat = useChat(devShopDomain, null, { disabled: isPreview });
+
+  // Purchase options (selling plans / subscriptions)
+  const purchaseOptions = usePurchaseOptions();
+  const activeLng = liveChat.bootData?.lng || 'en';
 
   // ✅ Source of truth: use host props if preview, otherwise use live hook results
   const messages = useMemo(
@@ -354,7 +360,15 @@ const Chat = ({
               sendFeedback={sendFeedback}
               onImageClick={setActiveGallery}
               onProductAction={(action, payloadData) => {
-                if (action === 'add_to_cart') handleProductCartAction(payloadData?.id);
+                if (action === 'add_to_cart') {
+                  handleProductCartAction(payloadData?.id);
+                } else if (action === 'open_purchase_options_drawer') {
+                  const defaultVariantId =
+                    payloadData?.variantId ||
+                    payloadData?.product?.variantId ||
+                    payloadData?.product?.variants?.[0]?.id;
+                  purchaseOptions.openDrawer(payloadData?.product, defaultVariantId);
+                }
               }}
               onExpand={onExpand}
             />
@@ -500,11 +514,45 @@ const Chat = ({
             shopDomain={shopDomain}
             isMobile={isMobile}
             onProductAction={(action, payloadData) => {
-              if (action === 'add_to_cart') handleProductCartAction(payloadData?.id);
+              if (action === 'add_to_cart') {
+                handleProductCartAction(payloadData?.id);
+              } else if (action === 'open_purchase_options_drawer') {
+                // Variant has been selected from ProductSheet, now open subscription drawer
+                setActiveProduct(null); // close variant sheet first
+                const defaultVariantId =
+                  payloadData?.variantId ||
+                  payloadData?.product?.variantId ||
+                  payloadData?.product?.variants?.[0]?.id;
+                purchaseOptions.openDrawer(payloadData?.product, defaultVariantId);
+              }
             }}
           />
         )}
       </AnimatePresence>
+
+      {/* Purchase Options Drawer — shown when a product with selling plans is added */}
+      {purchaseOptions.isDrawerOpen && (
+        <PurchaseOptionsDrawer
+          isOpen={purchaseOptions.isDrawerOpen}
+          requiresSellingPlan={purchaseOptions.requiresSellingPlan}
+          hasOneTimePurchase={purchaseOptions.hasOneTimePurchase}
+          availablePlans={purchaseOptions.availablePlans}
+          sellingPlanId={purchaseOptions.sellingPlanId}
+          variantId={purchaseOptions.variantId}
+          shopDomain={shopDomain}
+          mode={purchaseOptions.mode}
+          onSelectPlan={purchaseOptions.selectPlan}
+          onSelectOneTime={purchaseOptions.selectOneTime}
+          addToCartBlocked={purchaseOptions.addToCartBlocked}
+          lng={activeLng}
+          onClose={purchaseOptions.closeDrawer}
+          onConfirm={() => {
+            // Called after AddToCartButton animation completes
+            handleProductCartAction(purchaseOptions.productId);
+            purchaseOptions.closeDrawer();
+          }}
+        />
+      )}
 
       <AnimatePresence>
         {activeOrder && (

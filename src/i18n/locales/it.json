@@ -249,5 +249,35 @@
     "cart_items": "prodotti nel carrello",
     "open_aria": "Apri assistente Jarbris",
     "active_aria": "Widget Jarbris attivo"
+  },
+  "purchase_options": {
+    "title": "Opzioni di acquisto",
+    "one_time": "Acquisto singolo",
+    "available_badge": {
+      "subscription": "Abbonamento disponibile",
+      "prepaid": "Prepagato disponibile",
+      "preorder": "Preordine disponibile",
+      "try_before_you_buy": "Prova prima disponibile",
+      "mixed": "Opzione disponibile"
+    },
+    "only_badge": {
+      "subscription": "Solo abbonamento",
+      "prepaid": "Solo prepagato",
+      "preorder": "Solo preordine",
+      "try_before_you_buy": "Solo prova prima",
+      "mixed": "No acquisto singolo"
+    },
+    "select_purchase_type": "Seleziona tipo di acquisto",
+    "per_delivery": "Per consegna",
+    "choose_option": "Seleziona un'opzione di acquisto",
+    "select_option": "Seleziona un'opzione",
+    "no_one_time_purchase": "Questo prodotto non è disponibile come acquisto singolo.",
+    "plan_type_label": {
+      "subscription": "Abbonamento",
+      "prepaid": "Prepagato",
+      "preorder": "Preordine",
+      "try_before_you_buy": "Prova prima",
+      "unknown": ""
+    }
   }
 }
