@@ -8,12 +8,20 @@
   let shopParam = '';
   let siteIdParam = '';
 
-  if (scriptUrl) {
+  // Theme App Extension: read from data attributes (set by Liquid block)
+  if (currentScript) {
+    shopParam = currentScript.getAttribute('data-shop') || '';
+    tokenParam = currentScript.getAttribute('data-token') || '';
+    siteIdParam = currentScript.getAttribute('data-site-id') || '';
+  }
+
+  // Fallback: legacy URL params (ScriptTag transition period)
+  if (!shopParam && scriptUrl) {
     try {
       const url = new URL(scriptUrl);
-      shopParam = url.searchParams.get('shop');
-      siteIdParam = url.searchParams.get('siteId');
-      tokenParam = url.searchParams.get('token');
+      shopParam = url.searchParams.get('shop') || '';
+      siteIdParam = url.searchParams.get('siteId') || '';
+      tokenParam = tokenParam || url.searchParams.get('token') || '';
     } catch (e) {
       // Error parsing script URL
     }
@@ -284,7 +292,10 @@
         // Only send update if item count actually changed
         if (count !== lastCartCount) {
           lastCartCount = count;
-          iframe.contentWindow.postMessage({ type: 'JARBRIS:cartUpdate', cart: cart }, WIDGET_ORIGIN);
+          iframe.contentWindow.postMessage(
+            { type: 'JARBRIS:cartUpdate', cart: cart },
+            WIDGET_ORIGIN,
+          );
         }
       })
       .catch(function () {});
