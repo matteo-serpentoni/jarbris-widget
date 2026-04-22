@@ -20,6 +20,7 @@ These rules define the code style and quality standards for jarbris-widget.
 - **Utils**: Generic helpers (color conversion, DOM helpers) MUST live in 'utils/'.
 - **UI Atoms**: Re-use core building blocks (e.g., 'MessageBubble', 'Drawer') instead of duplicating CSS or structural HTML. This ensures project-wide visual consistency.
 - **No Duplication**: If similar logic or styling appears in multiple components, extract it to a shared component, hook, or utility.
+- **File size guardrail (500 LOC)**: If a source file exceeds 500 LOC, do NOT make it larger. Extract new code into a separate module. For files already over 500 LOC (e.g., `useChat.js`), full splits are tracked in the backlog — don't block feature work on them. New files MUST stay under 500 LOC.
 - **localStorage**: All localStorage access MUST go through 'utils/storage.js'. Never call 'localStorage.getItem/setItem' directly in components or hooks. The storage helper handles try/catch for Safari private browsing and provides the 'jarbris_' prefix automatically.
 
 ## 4. Extensibility

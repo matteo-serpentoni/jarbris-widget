@@ -5,6 +5,7 @@ These rules define the security standards specific to jarbris-widget, which runs
 ## 1. iframe Isolation
 
 - **Origin validation**: All `postMessage` communication MUST validate the `event.origin` against the merchant's registered domain. Never accept messages from unknown origins.
+- **Outbound targetOrigin**: When sending `postMessage` to the parent frame, NEVER use the wildcard `'*'` as `targetOrigin`. Use the merchant's known origin from `bridge.js` config (`ALLOWED_PARENT_ORIGINS`) or `event.origin` from the initial identity handshake. This prevents data leakage if the widget is embedded in an unauthorized page.
 - **Message schema**: Incoming bridge messages must be validated against a known schema before processing. Reject any message with unexpected structure or types.
 - **Sandbox awareness**: The widget iframe relies on specific sandbox permissions. Never assume capabilities (e.g., `allow-top-navigation`) that aren't explicitly granted.
 
