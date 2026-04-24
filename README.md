@@ -67,11 +67,7 @@ src/
 
 ## Embedding
 
-The widget is embedded on merchant sites via `public/embed.js`, which creates an iframe pointing to the hosted widget build.
-
-```html
-<script src="https://cdn.jarbris.io/embed.js" data-shop="merchant-store.myshopify.com"></script>
-```
+The widget is embedded on merchant storefronts via a **Theme App Extension** (`extensions/jarbris-widget-embed/`). The Liquid block injects `embed.js` from the extension assets, which creates an iframe pointing to the hosted widget build. Merchants enable/disable the widget from **Theme Settings > App Embeds** in the Shopify Admin.
 
 ## Environment Variables
 

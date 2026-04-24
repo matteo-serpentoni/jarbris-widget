@@ -12,15 +12,6 @@
       ]
     },
     {
-      "source": "/widget/embed.js",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=60, must-revalidate"
-        }
-      ]
-    },
-    {
       "source": "/widget/(index.html|jarbris-tracker.js)",
       "headers": [
         {
