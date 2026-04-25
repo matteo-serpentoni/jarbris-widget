@@ -248,9 +248,20 @@
     document.addEventListener('submit', (e) => {
       if (e.target && e.target.action && e.target.action.includes('/cart/add')) {
         const formData = new FormData(e.target);
+        const productInfo = (window.meta && window.meta.product) || {};
         track('add_to_cart', {
+          productId: productInfo.id ? productInfo.id.toString() : null,
           variantId: formData.get('id') || null,
-          eventData: { quantity: formData.get('quantity') || 1 },
+          eventData: {
+            quantity: parseInt(formData.get('quantity'), 10) || 1,
+            productTitle: productInfo.title || null,
+            variantTitle:
+              productInfo.variants && productInfo.variants[0]
+                ? productInfo.variants[0].title
+                : null,
+            price: productInfo.price ? productInfo.price / 100 : null,
+            productType: productInfo.type || null,
+          },
         });
       }
     });
@@ -272,9 +283,22 @@
       if (typeof args[0] === 'string' && args[0].includes('/cart/add.js')) {
         try {
           const body = args[1]?.body ? JSON.parse(args[1].body) : {};
+          // Fire tracking from request body first (immediate signal)
+          const productInfo = (window.meta && window.meta.product) || {};
           track('add_to_cart', {
-            variantId: body.id?.toString(),
-            eventData: { quantity: body.quantity || 1 },
+            productId: body.product_id
+              ? body.product_id.toString()
+              : productInfo.id
+                ? productInfo.id.toString()
+                : null,
+            variantId: body.id?.toString() || null,
+            eventData: {
+              quantity: parseInt(body.quantity, 10) || 1,
+              productTitle: productInfo.title || null,
+              variantTitle: body.title || null,
+              price: body.price ? body.price / 100 : null,
+              productType: productInfo.type || null,
+            },
           });
         } catch {
           /* fetch body parse failed — skip cart tracking */
