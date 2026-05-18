@@ -111,6 +111,8 @@ export const useChat = (devShopDomain, customer, options = {}) => {
   const socketRef = useRef(null);
   // Stores a message sent when session was completed, to be auto-sent after session renewal.
   const pendingAfterResetRef = useRef(null); // { text, options, fromSessionId }
+  // Guards the boot effect message merge: true after clearChat() until boot completes for the new session.
+  const isSessionResetRef = useRef(false);
 
   const [shopDomain, setShopDomain] = useState(() => {
     if (disabled) return 'preview-shop.myshopify.com';
@@ -128,12 +130,21 @@ export const useChat = (devShopDomain, customer, options = {}) => {
     storage.clearSession();
     storage.setJSON('messages', [welcomeMsg]);
 
+    // Flag the boot effect to skip the server message merge for the incoming new session.
+    // Without this guard, bootSession() would re-inject messages from the old session
+    // into the freshly cleared state, causing ghost messages and duplicates.
+    isSessionResetRef.current = true;
+
     setMessages([welcomeMsg]);
     setSessionStatus('active');
     setAssignedTo(null);
     setInitialSuggestions([]);
     setBootProfile(null);
     setBootConsent(null);
+    // Reset thinking/loading state so the indicator is never stuck after a session reset.
+    setIsThinking(false);
+    setThinkingIntent(null);
+    setLoading(false);
 
     // Request new session from parent (embed.js)
     window.parent?.postMessage({ type: 'JARBRIS:requestNewSession' }, '*');
@@ -262,11 +273,16 @@ export const useChat = (devShopDomain, customer, options = {}) => {
         // Mark identity as ready — triggers boot API call
         setIdentityReady(true);
 
-        // Product Interaction Tracking V1: set tracking context with resolved identity
+        // Product Interaction Tracking V1: set tracking context with resolved identity.
+        // Read sessionId and visitorId from event.data (not closure) to avoid stale values
+        // when this effect is mounted with old state.
         setTrackingContext({
-          siteId: shopDomain || null,
-          sessionId: event.data.sessionId || sessionId,
-          visitorId: event.data.visitorId || visitorId || null,
+          siteId:
+            new URLSearchParams(window.location.search).get('shop') ||
+            storage.get('dev_shop_domain') ||
+            null,
+          sessionId: event.data.sessionId || null,
+          visitorId: event.data.visitorId || null,
           shopifyCustomerId: customer?.id?.toString() || null,
           widgetToken: new URLSearchParams(window.location.search).get('widgetToken') || '',
         });
@@ -295,12 +311,17 @@ export const useChat = (devShopDomain, customer, options = {}) => {
 
     window.addEventListener('message', handleMessage);
 
-    // Request identity and current cart status from parent
+    // Request identity and current cart status from parent.
+    // This is intentionally sent only on mount (and on clearChat, which re-registers the effect
+    // via the clearChat dep). It must NOT be re-sent on sessionId/visitorId/shopDomain changes:
+    // those changes are triggered by the JARBRIS:identity response itself, so re-sending JARBRIS:ready
+    // would cause an infinite re-registration loop (new sessionId → effect teardown/remount → ready
+    // → embed replies with identity → new sessionId → ...) resulting in duplicate messages.
     window.parent?.postMessage({ type: 'JARBRIS:ready' }, '*');
     window.parent?.postMessage({ type: 'JARBRIS:getCart' }, '*');
 
     return () => window.removeEventListener('message', handleMessage);
-  }, [disabled, clearChat, sessionId, shopDomain, visitorId]);
+  }, [disabled, clearChat]);
 
   // Sync bootConsent when the user toggles the privacy preference in ProfileView.
   // broadcastConsentChange dispatches 'jarbris:analytics-consent-changed' so we
@@ -397,8 +418,10 @@ export const useChat = (devShopDomain, customer, options = {}) => {
           }
         }
 
-        // Sync message history if available
-        if (bootData.messages && bootData.messages.length > 0) {
+        // Sync message history if available.
+        // Skip merge on a post-reset boot: the new session has no server history yet,
+        // and merging would re-inject messages from the previous session.
+        if (bootData.messages && bootData.messages.length > 0 && !isSessionResetRef.current) {
           setMessages((prev) => {
             const serverMessages = bootData.messages;
 
@@ -453,9 +476,14 @@ export const useChat = (devShopDomain, customer, options = {}) => {
             return final;
           });
         }
+
+        // Boot completed for this session — lift the reset guard.
+        isSessionResetRef.current = false;
       })
       .catch(() => {
         // Silently fail if boot doesn't exist yet (backward compat during rollout)
+        // Also lift the guard on failure to avoid a permanently blocked state.
+        isSessionResetRef.current = false;
       });
   }, [identityReady, sessionId, shopDomain, visitorId, disabled]);
 
@@ -587,6 +615,7 @@ export const useChat = (devShopDomain, customer, options = {}) => {
       if (sessionStatus === 'completed' || sessionStatus === 'abandoned') {
         // B22: queue the pending message so it auto-sends after the new sessionId arrives.
         // clearChat() resets state + welcome message + sends JARBRIS:requestNewSession.
+        // isThinking is reset inside clearChat() — no stuck indicator.
         pendingAfterResetRef.current = { text, options, fromSessionId: sessionId };
         clearChat();
         return;
