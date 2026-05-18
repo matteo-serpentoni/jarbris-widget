@@ -315,7 +315,9 @@ export const useChat = (devShopDomain, customer, options = {}) => {
       window.removeEventListener('jarbris:analytics-consent-changed', handleConsentChange);
   }, []);
 
-  // B22: Unified Boot — replaces getSessionStatus + getProfile + getConsent
+  // B22: Unified Boot — replaces getSessionStatus + getProfile + getConsent.
+  // Intentionally separate from the socket effect below — visitorId/identityReady changes
+  // must NOT tear down and recreate the socket connection.
   useEffect(() => {
     if (disabled || !identityReady || !sessionId || !shopDomain) return;
 
@@ -456,6 +458,15 @@ export const useChat = (devShopDomain, customer, options = {}) => {
       .catch(() => {
         // Silently fail if boot doesn't exist yet (backward compat during rollout)
       });
+  }, [identityReady, sessionId, shopDomain, visitorId, disabled]);
+
+  // Socket lifecycle — intentionally separate from the boot effect above.
+  // visitorId and identityReady must NOT be deps here: changes to those values
+  // (triggered by JARBRIS:identity postMessages from the parent) would tear down
+  // and recreate the socket on every identity refresh, causing a reconnect storm.
+  // The socket only needs to reconnect on genuine session or domain changes.
+  useEffect(() => {
+    if (disabled || !sessionId || !shopDomain) return;
 
     // Connect Socket with Reconnection Logic
     const socket = io(API_URL, {
@@ -537,7 +548,7 @@ export const useChat = (devShopDomain, customer, options = {}) => {
     return () => {
       socket.disconnect();
     };
-  }, [identityReady, sessionId, visitorId, disabled, shopDomain]);
+  }, [sessionId, shopDomain, disabled]);
 
   // Widget Event Emitter
   // Product Interaction Tracking V1: delegates to centralized trackingService.
