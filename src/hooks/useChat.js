@@ -8,7 +8,6 @@ import {
   updateProfile,
 } from '../services/chatApi';
 import { reportError } from '../services/errorApi';
-import { predictIntent } from '../utils/messageHelpers';
 import { broadcastConsentChange } from '../utils/consentBridge';
 import { setContext as setTrackingContext, trackEvent } from '../services/trackingService.js';
 import storage from '../utils/storage';
@@ -536,7 +535,9 @@ export const useChat = (devShopDomain, customer, options = {}) => {
     });
 
     socket.on('thinking:start', (data) => {
-      setIsThinking(true);
+      // Phase 2: server classified the real intent — refine the phrase only.
+      // isThinking is already true from the local prediction at submit time;
+      // re-setting it here would cause a flicker if message:received races ahead.
       setThinkingIntent(data.intent);
     });
 
@@ -596,20 +597,15 @@ export const useChat = (devShopDomain, customer, options = {}) => {
 
       setLoading(true);
 
-      // Local Prediction: Show thinking indicator immediately.
-      // Chip clicks (suggestionAction present) always show thinking since
-      // chip values (e.g. "dangle") won't match Italian predictIntent patterns.
-      // For regular text, predictIntent pattern-matches to set the right intent label.
-      if (options.suggestionAction) {
-        setIsThinking(true);
-        setThinkingIntent('PRODUCT_SEARCH');
-      } else {
-        const predicted = predictIntent(text);
-        if (predicted) {
-          setIsThinking(true);
-          setThinkingIntent(predicted);
-        }
-      }
+      // B29: Always show thinking indicator immediately at submit time (Phase 1).
+      // Phase 1 always uses 'default' — a neutral phrase ("Fammi controllare...")
+      // appears instantly regardless of what the user typed. Using predictIntent()
+      // here caused false positives (e.g. "info su spedizioni" → PRODUCT_DETAIL phrase
+      // instead of SHIPPING), which is worse UX than a generic phrase.
+      // Phase 2: socket 'thinking:start' (~1s) updates thinkingIntent to the real
+      // backend-classified intent, swapping to the specific phrase without any flicker.
+      setIsThinking(true);
+      setThinkingIntent('default');
 
       const userMsgId = Date.now(); // Generate ID here
       addUserMessage(options.displayText ?? text, userMsgId, options.hidden);
