@@ -22,10 +22,26 @@ export default defineConfig(({ mode }) => ({
     minify: 'esbuild',
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-framer': ['framer-motion'],
-          'vendor-ogl': ['ogl'],
-          'vendor-react-core': ['react', 'react-dom', 'react-router-dom'],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('@sentry') || id.includes('sentry-')) {
+              return 'vendor-sentry';
+            }
+            if (id.includes('framer-motion')) {
+              return 'vendor-framer';
+            }
+            if (id.includes('ogl')) {
+              return 'vendor-ogl';
+            }
+            if (
+              id.includes('react/') ||
+              id.includes('react-dom/') ||
+              id.includes('react-router-dom/') ||
+              id.includes('scheduler/')
+            ) {
+              return 'vendor-react-core';
+            }
+          }
         },
       },
     },
