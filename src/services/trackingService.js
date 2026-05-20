@@ -161,29 +161,3 @@ export function trackEvent(eventType, eventData = {}) {
     // Fail silently
   }
 }
-
-/**
- * Track a batch of events. Same consent rules as trackEvent.
- * Useful for flushing multiple events at once (e.g., on page unload).
- *
- * @param {Array<{eventType: string, eventData: Object}>} events
- */
-export function trackBatch(events) {
-  try {
-    if (!events || events.length === 0) return;
-
-    // Filter by consent
-    const filtered = events.filter((e) => {
-      const isTechnical = CONSENT_EXEMPT_EVENTS.has(e.eventType);
-      return isTechnical || canTrackAnalytics();
-    });
-    if (filtered.length === 0) return;
-
-    const payload = _buildPayload(filtered);
-    if (!payload) return;
-
-    _send(payload);
-  } catch {
-    // Fail silently
-  }
-}
