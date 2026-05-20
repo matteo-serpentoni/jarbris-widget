@@ -181,32 +181,13 @@
       "Comprobando disponibilidad...",
       "Buscando los mejores productos..."
     ],
-    "product_detail": [
-      "Obteniendo info del producto...",
-      "Buscando detalles para ti..."
-    ],
-    "order_track": [
-      "Verificando el estado del envío...",
-      "Buscando tu paquete..."
-    ],
-    "faq": [
-      "Consultando nuestra guía...",
-      "Buscando la respuesta para ti..."
-    ],
-    "shipping": [
-      "Verificando costos y tiempos de envío..."
-    ],
-    "refund": [
-      "Verificando nuestra política de devoluciones..."
-    ],
-    "escalation": [
-      "Conectándote con un humano ahora..."
-    ],
-    "default": [
-      "Déjame revisar...",
-      "Un momento...",
-      "Buscando información..."
-    ]
+    "product_detail": ["Obteniendo info del producto...", "Buscando detalles para ti..."],
+    "order_track": ["Verificando el estado del envío...", "Buscando tu paquete..."],
+    "faq": ["Consultando nuestra guía...", "Buscando la respuesta para ti..."],
+    "shipping": ["Verificando costos y tiempos de envío..."],
+    "refund": ["Verificando nuestra política de devoluciones..."],
+    "escalation": ["Conectándote con un humano ahora..."],
+    "default": ["Déjame revisar...", "Un momento...", "Buscando información..."]
   },
   "order": {
     "track_package": "Rastrear paquete",

@@ -65,7 +65,12 @@ export const OrderDetailCard = memo(({ order, theme = 'dark' }) => {
             📦 {statusLabel}
           </span>
           {tracking.length > 0 && (
-            <a href={tracking[0].url} target="_blank" rel="noreferrer" className="jarbris-tracking-link">
+            <a
+              href={tracking[0].url}
+              target="_blank"
+              rel="noreferrer"
+              className="jarbris-tracking-link"
+            >
               🚀 {t('order.track_package')}
             </a>
           )}
@@ -74,7 +79,9 @@ export const OrderDetailCard = memo(({ order, theme = 'dark' }) => {
 
       {/* Items */}
       <div className="jarbris-order-detail-items-container">
-        <p className="jarbris-order-items-label">{t('order.items_label')} ({items.length})</p>
+        <p className="jarbris-order-items-label">
+          {t('order.items_label')} ({items.length})
+        </p>
         <div>
           {items.map((item, idx) => (
             <OrderItemRow key={idx} item={item} index={idx} theme={theme} />
@@ -126,7 +133,9 @@ const OrderListRow = memo(({ order, index, onClick }) => {
       </div>
       <div className="jarbris-order-row-right">
         {order.total && <div className="jarbris-order-row-total">{order.total}</div>}
-        {isClickable && <div className="jarbris-order-row-details-arrow">{t('order.details')} →</div>}
+        {isClickable && (
+          <div className="jarbris-order-row-details-arrow">{t('order.details')} →</div>
+        )}
       </div>
     </motion.div>
   );
@@ -166,7 +175,9 @@ const OrderCards = memo(({ message, onOrderClick }) => {
 
     return (
       <div className="jarbris-order-cards-container">
-        {finalDisplayMessage && <p className="jarbris-order-detail-message">{finalDisplayMessage}</p>}
+        {finalDisplayMessage && (
+          <p className="jarbris-order-detail-message">{finalDisplayMessage}</p>
+        )}
         <OrderListRow
           order={targetOrder}
           index={0}

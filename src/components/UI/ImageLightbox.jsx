@@ -249,7 +249,11 @@ const ImageLightbox = ({
               </div>
             )}
 
-            <button className="jarbris-lightbox-close" onClick={onClose} aria-label="Chiudi gallery">
+            <button
+              className="jarbris-lightbox-close"
+              onClick={onClose}
+              aria-label="Chiudi gallery"
+            >
               <svg
                 width="24"
                 height="24"

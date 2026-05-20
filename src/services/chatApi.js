@@ -19,10 +19,10 @@ export const sendMessage = async (
   clientMessageId = null,
 ) => {
   try {
-    const headers = { 
-      'Content-Type': 'application/json', 
+    const headers = {
+      'Content-Type': 'application/json',
       'X-Widget-Token': getWidgetToken(),
-      'Accept-Language': getSnapshot()
+      'Accept-Language': getSnapshot(),
     };
 
     const response = await fetch(`${API_BASE_URL}/api/chat`, {
@@ -65,10 +65,10 @@ export const sendMessage = async (
  */
 export const bootSession = async (sessionId, shopDomain, visitorId) => {
   try {
-    const headers = { 
-      'Content-Type': 'application/json', 
+    const headers = {
+      'Content-Type': 'application/json',
       'X-Widget-Token': getWidgetToken(),
-      'Accept-Language': getSnapshot()
+      'Accept-Language': getSnapshot(),
     };
     const params = new URLSearchParams();
     if (shopDomain) params.set('shopDomain', shopDomain);
@@ -84,10 +84,10 @@ export const bootSession = async (sessionId, shopDomain, visitorId) => {
 };
 
 export const updateProfile = async (sessionId, shopDomain, data) => {
-  const headers = { 
-    'Content-Type': 'application/json', 
+  const headers = {
+    'Content-Type': 'application/json',
     'X-Widget-Token': getWidgetToken(),
-    'Accept-Language': getSnapshot()
+    'Accept-Language': getSnapshot(),
   };
 
   const response = await fetch(`${API_BASE_URL}/api/chat/profile`, {
@@ -105,10 +105,10 @@ export const updateProfile = async (sessionId, shopDomain, data) => {
  * Sends user feedback (message rating) to the backend.
  */
 export const submitFeedback = async (feedbackData) => {
-  const headers = { 
-    'Content-Type': 'application/json', 
+  const headers = {
+    'Content-Type': 'application/json',
     'X-Widget-Token': getWidgetToken(),
-    'Accept-Language': getSnapshot()
+    'Accept-Language': getSnapshot(),
   };
   const response = await fetch(`${API_BASE_URL}/api/feedback`, {
     method: 'POST',

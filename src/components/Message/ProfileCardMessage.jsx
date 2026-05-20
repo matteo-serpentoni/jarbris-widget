@@ -59,7 +59,9 @@ const ProfileCardMessage = ({
           role="button"
           tabIndex={0}
           aria-expanded={effectiveExpanded}
-          aria-label={effectiveExpanded ? t('profile_card.aria_collapse') : t('profile_card.aria_expand')}
+          aria-label={
+            effectiveExpanded ? t('profile_card.aria_collapse') : t('profile_card.aria_expand')
+          }
         >
           <div className="jarbris-profile-card-icon" style={{ color: 'rgba(255, 255, 255, 0.35)' }}>
             <UserIcon size={18} />

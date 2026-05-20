@@ -473,7 +473,7 @@ const DevTools = ({ onConfigChange, onSiteChange, onMobileToggle }) => {
               }}
             >
               <span>Language Simulator</span>
-              <span style={{color: '#f6ad55'}}>(Auto-resets session)</span>
+              <span style={{ color: '#f6ad55' }}>(Auto-resets session)</span>
             </label>
             <select
               value={simulatedLng}

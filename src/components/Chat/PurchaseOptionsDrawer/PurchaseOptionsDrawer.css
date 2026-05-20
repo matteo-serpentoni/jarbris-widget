@@ -224,11 +224,15 @@
 [data-theme='light'] .jarbris-purchase-drawer__radio-indicator {
   border-color: rgba(0, 0, 0, 0.25);
 }
-[data-theme='light'] .jarbris-purchase-drawer__radio-row.selected .jarbris-purchase-drawer__radio-indicator {
+[data-theme='light']
+  .jarbris-purchase-drawer__radio-row.selected
+  .jarbris-purchase-drawer__radio-indicator {
   border-color: #3b82f6;
   background: #3b82f6;
 }
-[data-theme='light'] .jarbris-purchase-drawer__radio-row.selected .jarbris-purchase-drawer__radio-indicator::after {
+[data-theme='light']
+  .jarbris-purchase-drawer__radio-row.selected
+  .jarbris-purchase-drawer__radio-indicator::after {
   background: #fff;
 }
 
@@ -313,16 +317,40 @@
 }
 
 /* Dark theme colors */
-.jarbris-purchase-drawer__plan-badge--subscription       { background: rgba(99,102,241,0.15); color: rgb(165,180,252); }
-.jarbris-purchase-drawer__plan-badge--prepaid            { background: rgba(16,185,129,0.15); color: rgb(52,211,153);  }
-.jarbris-purchase-drawer__plan-badge--preorder           { background: rgba(245,158,11,0.15); color: rgb(251,191,36);  }
-.jarbris-purchase-drawer__plan-badge--try_before_you_buy { background: rgba(59,130,246,0.15); color: rgb(147,197,253); }
+.jarbris-purchase-drawer__plan-badge--subscription {
+  background: rgba(99, 102, 241, 0.15);
+  color: rgb(165, 180, 252);
+}
+.jarbris-purchase-drawer__plan-badge--prepaid {
+  background: rgba(16, 185, 129, 0.15);
+  color: rgb(52, 211, 153);
+}
+.jarbris-purchase-drawer__plan-badge--preorder {
+  background: rgba(245, 158, 11, 0.15);
+  color: rgb(251, 191, 36);
+}
+.jarbris-purchase-drawer__plan-badge--try_before_you_buy {
+  background: rgba(59, 130, 246, 0.15);
+  color: rgb(147, 197, 253);
+}
 
 /* Light theme colors */
-[data-theme='light'] .jarbris-purchase-drawer__plan-badge--subscription       { background: #eef2ff; color: #4f46e5; }
-[data-theme='light'] .jarbris-purchase-drawer__plan-badge--prepaid            { background: #ecfdf5; color: #059669; }
-[data-theme='light'] .jarbris-purchase-drawer__plan-badge--preorder           { background: #fffbeb; color: #d97706; }
-[data-theme='light'] .jarbris-purchase-drawer__plan-badge--try_before_you_buy { background: #eff6ff; color: #2563eb; }
+[data-theme='light'] .jarbris-purchase-drawer__plan-badge--subscription {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+[data-theme='light'] .jarbris-purchase-drawer__plan-badge--prepaid {
+  background: #ecfdf5;
+  color: #059669;
+}
+[data-theme='light'] .jarbris-purchase-drawer__plan-badge--preorder {
+  background: #fffbeb;
+  color: #d97706;
+}
+[data-theme='light'] .jarbris-purchase-drawer__plan-badge--try_before_you_buy {
+  background: #eff6ff;
+  color: #2563eb;
+}
 
 /* Dashed "Seleziona un'opzione" prompt button —
    The dashed background + muted text come from AddToCartButton.css

@@ -36,7 +36,10 @@ const Suggestions = memo(({ suggestions, onSuggestionClick }) => {
   // during render and resets showOverflow before painting — no effect needed.
   // Pattern: https://react.dev/learn/you-might-not-need-an-effect#storing-information-from-previous-renders
   const suggestionsKey = suggestions ? suggestions.map((s) => s.label).join('|') : '';
-  const [overflowState, setOverflowState] = useState({ showOverflow: false, lastKey: suggestionsKey });
+  const [overflowState, setOverflowState] = useState({
+    showOverflow: false,
+    lastKey: suggestionsKey,
+  });
 
   let showOverflow = overflowState.showOverflow;
   if (overflowState.lastKey !== suggestionsKey) {

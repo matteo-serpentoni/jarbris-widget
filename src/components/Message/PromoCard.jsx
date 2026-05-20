@@ -249,7 +249,11 @@ const PromoCard = memo(({ promo, onSearch, index = 0 }) => {
                     Attivo
                   </motion.div>
                 )}
-                <button className="jarbris-promo-info-btn" onClick={toggleFlip} title={t('promo.details_title')}>
+                <button
+                  className="jarbris-promo-info-btn"
+                  onClick={toggleFlip}
+                  title={t('promo.details_title')}
+                >
                   <Icons.Info />
                 </button>
               </div>
@@ -281,8 +285,12 @@ const PromoCard = memo(({ promo, onSearch, index = 0 }) => {
                       <Icons.Gift />
                     </div>
                     <div className="jarbris-targets-info">
-                      <span className="jarbris-targets-label">{t('promo.discount_applies_to')}</span>
-                      <span className={`jarbris-targets-value ${isAllCatalog ? 'all-catalog' : ''}`}>
+                      <span className="jarbris-targets-label">
+                        {t('promo.discount_applies_to')}
+                      </span>
+                      <span
+                        className={`jarbris-targets-value ${isAllCatalog ? 'all-catalog' : ''}`}
+                      >
                         {isAllCatalog
                           ? 'Tutto il catalogo'
                           : promo.targets.slice(0, 2).join(', ') +
@@ -390,8 +398,8 @@ const PromoCard = memo(({ promo, onSearch, index = 0 }) => {
             <button
               className="jarbris-promo-close-btn"
               onClick={toggleFlip}
-              title={t('ui.back_to_offer')}>
-
+              title={t('ui.back_to_offer')}
+            >
               <Icons.Close />
             </button>
           </div>
@@ -457,9 +465,7 @@ const PromoCard = memo(({ promo, onSearch, index = 0 }) => {
               <div className="jarbris-detail-item">
                 <span className="label">{t('promo.other_notes')}:</span>
                 <ul className="jarbris-notes-list">
-                  {promo.details?.onOneTimePurchaseOnly && (
-                    <li>{t('promo.single_purchase')}</li>
-                  )}
+                  {promo.details?.onOneTimePurchaseOnly && <li>{t('promo.single_purchase')}</li>}
                   {promo.details?.isForAllCustomers ? (
                     <li>{t('promo.all_customers')}</li>
                   ) : (

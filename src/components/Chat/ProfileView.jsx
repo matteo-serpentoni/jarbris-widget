@@ -39,13 +39,9 @@ const ProfileView = ({
 
       <p className="profile-description">
         {requiresReConsent && (
-          <span className="profile-reconsent-inline-alert">
-            {t('profile.reconsent_alert')}
-          </span>
+          <span className="profile-reconsent-inline-alert">{t('profile.reconsent_alert')}</span>
         )}
-        {isIdentified
-          ? t('profile.description_identified')
-          : t('profile.description_anonymous')}
+        {isIdentified ? t('profile.description_identified') : t('profile.description_anonymous')}
       </p>
 
       <ProfileEditor

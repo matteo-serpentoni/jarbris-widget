@@ -160,7 +160,10 @@ if (import.meta.env.DEV) {
     } catch {
       /* silent */
     }
-    window.postMessage({ type: 'JARBRIS:identity', visitorId: devVisitorId, sessionId: newId }, '*');
+    window.postMessage(
+      { type: 'JARBRIS:identity', visitorId: devVisitorId, sessionId: newId },
+      '*',
+    );
     console.log('[DEV MOCK] Session rotated — new sessionId:', newId);
     console.log('[DEV MOCK] Expected: widget clears to welcome message only.');
   };

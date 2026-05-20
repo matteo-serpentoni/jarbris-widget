@@ -74,9 +74,7 @@ const CheckoutView = memo(({ checkoutState, checkoutMode, error, onClose }) => {
             <ExternalLinkIcon />
           </div>
           <h3 className="jarbris-checkout-popup-title">{t('checkout.in_progress_title')}</h3>
-          <p className="jarbris-checkout-popup-text">
-            {t('checkout.in_progress_text')}
-          </p>
+          <p className="jarbris-checkout-popup-text">{t('checkout.in_progress_text')}</p>
           <button className="jarbris-checkout-popup-btn" onClick={onClose}>
             {t('checkout.back_to_chat')}
           </button>

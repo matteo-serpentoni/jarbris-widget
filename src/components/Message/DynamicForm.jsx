@@ -12,19 +12,20 @@ import './DynamicForm.css';
 const LookupResult = ({ message, onRetry, loading }) => {
   const t = useI18n();
   return (
-  <motion.div
-    className="jarbris-order-lookup-results-text"
-    initial={{ opacity: 0, scale: 0.95 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.2 }}
-  >
-    <div className="jarbris-order-lookup-icon">🔍</div>
-    <p className="jarbris-order-lookup-message">{message}</p>
-    <button onClick={onRetry} className="jarbris-order-lookup-retry-btn" disabled={loading}>
-      {loading ? <span className="jarbris-loader-small" /> : t('form.retry')}
-    </button>
-  </motion.div>
-);};
+    <motion.div
+      className="jarbris-order-lookup-results-text"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.2 }}
+    >
+      <div className="jarbris-order-lookup-icon">🔍</div>
+      <p className="jarbris-order-lookup-message">{message}</p>
+      <button onClick={onRetry} className="jarbris-order-lookup-retry-btn" disabled={loading}>
+        {loading ? <span className="jarbris-loader-small" /> : t('form.retry')}
+      </button>
+    </motion.div>
+  );
+};
 
 // Navigation cache to survive component unmounts (capped to prevent unbounded growth)
 const NAV_CACHE_MAX = 50;
@@ -284,7 +285,9 @@ const DynamicForm = ({ message, onSubmit, loading, children }) => {
                   </div>
                   {(opt.quantity || opt.price) && (
                     <div className="jarbris-dynamic-option-meta">
-                      {opt.quantity && opt.quantity > 1 ? `${t('form.qty_pieces', { count: opt.quantity })} • ` : ''}
+                      {opt.quantity && opt.quantity > 1
+                        ? `${t('form.qty_pieces', { count: opt.quantity })} • `
+                        : ''}
                       {opt.price}
                     </div>
                   )}
@@ -434,7 +437,12 @@ const DynamicForm = ({ message, onSubmit, loading, children }) => {
 
               <div className="jarbris-dynamic-form-actions">
                 {history.length > 0 && (
-                  <button type="button" onClick={handleBack} className="jarbris-dynamic-form-back-btn" disabled={loading}>
+                  <button
+                    type="button"
+                    onClick={handleBack}
+                    className="jarbris-dynamic-form-back-btn"
+                    disabled={loading}
+                  >
                     {t('form.back')}
                   </button>
                 )}
