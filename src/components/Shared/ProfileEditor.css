@@ -2,6 +2,24 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.profile-editor-form::-webkit-scrollbar {
+  width: 4px;
+}
+
+.profile-editor-form::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.profile-editor-form::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
 }
 
 .profile-editor-field {
@@ -46,9 +64,10 @@
 
 .profile-editor-actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   margin-top: 5px;
   width: 100%;
+  align-items: stretch;
 }
 
 .profile-editor-btn-save {
@@ -70,6 +89,17 @@
     color-mix(in srgb, var(--profile-header-color, #667eea) 80%, black)
   );
   box-shadow: 0 4px 15px color-mix(in srgb, var(--profile-header-color, #667eea) 30%, transparent);
+}
+
+/* When alone (not identified / message showing): full width */
+.profile-editor-btn-save.full {
+  flex: 1 1 100%;
+}
+
+/* When alongside export+delete: compact proportional width */
+.profile-editor-btn-save.compact {
+  flex: 2;
+  font-size: 12px;
 }
 
 .profile-editor-btn-save:hover:not(:disabled) {
@@ -231,16 +261,7 @@
   }
 }
 
-.profile-editor-btn-save {
-  width: 100%;
-  flex: none;
-}
-
-.profile-editor-gdpr-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 5px;
-}
+/* btn-save flex is set in the shared rule above (flex: 2) — no override needed */
 
 .profile-editor-btn-export {
   flex: 1;

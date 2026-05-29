@@ -1,0 +1,118 @@
+/* UpsellModal — extends jarbris-confirm-dialog styles */
+
+.jarbris-upsell-modal {
+  max-width: 340px;
+  gap: 10px;
+}
+
+.jarbris-upsell-title {
+  font-size: 15px;
+}
+
+.jarbris-upsell-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.jarbris-upsell-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme='light'] .jarbris-upsell-item {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.07);
+}
+
+.jarbris-upsell-item-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.jarbris-upsell-item-title {
+  margin: 0 0 3px 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.3;
+}
+
+[data-theme='light'] .jarbris-upsell-item-title {
+  color: #1a1a1a;
+}
+
+.jarbris-upsell-item-desc {
+  margin: 0;
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.4;
+}
+
+[data-theme='light'] .jarbris-upsell-item-desc {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.jarbris-upsell-enable-btn {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  background: var(--upsell-accent, #667eea);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  white-space: nowrap;
+}
+
+.jarbris-upsell-enable-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.jarbris-upsell-enable-btn:active {
+  transform: translateY(0);
+}
+
+/* Activated state — same pill, non-interactive, ✓ symbol */
+.jarbris-upsell-activated {
+  cursor: default;
+  opacity: 0.75;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+/* Fixed-width slot so layout doesn't shift during Attiva → ✓ morph */
+.jarbris-upsell-btn-slot {
+  flex-shrink: 0;
+  width: 64px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Green circle ✓ — morphs in from the button shape */
+.jarbris-upsell-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 185, 129, 0.18);
+  color: #10b981;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  overflow: hidden;
+}

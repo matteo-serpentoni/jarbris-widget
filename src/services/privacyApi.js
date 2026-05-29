@@ -95,9 +95,10 @@ export async function exportMyData(sessionId, shopDomain, anonId) {
  * @param {string} sessionId
  * @param {string} shopDomain
  * @param {string|null} anonId
+ * @param {string|null} email - Art. 11 fallback identifier when sessionId is stale
  * @returns {Promise<void>}
  */
-export async function deleteMyData(sessionId, shopDomain, anonId) {
+export async function deleteMyData(sessionId, shopDomain, anonId, email = null) {
   const response = await fetch(`${API_BASE_URL}/api/privacy/me`, {
     method: 'DELETE',
     headers: {
@@ -108,6 +109,7 @@ export async function deleteMyData(sessionId, shopDomain, anonId) {
       sessionId,
       shopDomain,
       visitorId: anonId || null,
+      email: email || null,
     }),
   });
 
@@ -117,4 +119,41 @@ export async function deleteMyData(sessionId, shopDomain, anonId) {
     }
     throw new Error(`Erasure failed with status ${response.status}`);
   }
+}
+
+/**
+ * Update marketing email consent (opt-in/opt-out) for Jarbris.
+ *
+ * @param {string} sessionId
+ * @param {string} shopDomain
+ * @param {string|null} anonId
+ * @param {{ marketing: boolean, consentTextVersion: string }} payload
+ * @returns {Promise<{currentMarketingConsent: boolean|null, hasUnsubscribed: boolean}>}
+ */
+export async function updateMarketingConsent(
+  sessionId,
+  shopDomain,
+  anonId,
+  { marketing, consentTextVersion },
+) {
+  const response = await fetch(`${API_BASE_URL}/api/chat/marketing-consent`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Widget-Token': getWidgetToken(),
+    },
+    body: JSON.stringify({
+      sessionId,
+      shopDomain,
+      anonId: anonId || null,
+      marketing,
+      consentTextVersion: consentTextVersion || 'v1',
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Marketing consent update failed with status ${response.status}`);
+  }
+
+  return response.json();
 }
