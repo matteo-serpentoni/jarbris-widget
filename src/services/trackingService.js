@@ -114,17 +114,20 @@ function _buildPayload(events) {
 function _send(payload) {
   try {
     const body = JSON.stringify(payload);
+    const url = _context.widgetToken
+      ? `${EVENTS_ENDPOINT}?token=${encodeURIComponent(_context.widgetToken)}`
+      : EVENTS_ENDPOINT;
 
     // sendBeacon: non-blocking, survives page unload
     if (navigator.sendBeacon && body.length < BEACON_MAX_BYTES) {
       const blob = new Blob([body], { type: 'application/json' });
-      const sent = navigator.sendBeacon(EVENTS_ENDPOINT, blob);
+      const sent = navigator.sendBeacon(url, blob);
       if (sent) return;
       // sendBeacon rejected (queue full) — fallback to fetch
     }
 
     // Fallback: fetch with keepalive (non-blocking, survives page unload)
-    fetch(EVENTS_ENDPOINT, {
+    fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
