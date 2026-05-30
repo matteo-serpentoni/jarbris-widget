@@ -124,16 +124,26 @@ const ProfileEditor = ({
         visitorId,
       });
 
-      const serverProfile = result.customer || { name, email, isIdentified: true };
+      const serverProfile = {
+        ...(result.customer || { name, email, isIdentified: true }),
+        currentMarketingConsent:
+          result.consent?.marketing !== undefined ? result.consent.marketing : marketingConsent,
+        hasUnsubscribed: result.customer?.hasUnsubscribed ?? hasUnsubscribed,
+      };
       storage.setProfile(serverProfile);
 
       if (serverProfile.name !== undefined) setName(serverProfile.name);
       if (serverProfile.email) setEmail(serverProfile.email);
       setIsIdentified(!!serverProfile.isIdentified);
 
-      if (result.consent && typeof result.consent.analytics === 'boolean') {
-        setAnalyticsConsent(result.consent.analytics);
-        broadcastConsentChange(result.consent.analytics);
+      if (result.consent) {
+        if (typeof result.consent.analytics === 'boolean') {
+          setAnalyticsConsent(result.consent.analytics);
+          broadcastConsentChange(result.consent.analytics);
+        }
+        if (typeof result.consent.marketing === 'boolean') {
+          setMarketingConsent(result.consent.marketing);
+        }
       }
 
       onProfileUpdate?.(serverProfile);
