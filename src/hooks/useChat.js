@@ -139,8 +139,6 @@ export const useChat = (devShopDomain, customer, options = {}) => {
     setSessionStatus('active');
     setAssignedTo(null);
     setInitialSuggestions([]);
-    setBootProfile(null);
-    setBootConsent(null);
     // Reset thinking/loading state so the indicator is never stuck after a session reset.
     setIsThinking(false);
     setThinkingIntent(null);

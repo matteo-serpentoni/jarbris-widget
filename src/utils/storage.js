@@ -102,8 +102,8 @@ function clearSession() {
 
 /**
  * Get the normalized user profile from localStorage.
- * Enforces a fixed schema: { name, email, isIdentified }.
- * @returns {{ name: string, email: string, isIdentified: boolean }|null}
+ * Enforces a fixed schema: { name, email, isIdentified, currentMarketingConsent, hasUnsubscribed }.
+ * @returns {{ name: string, email: string, isIdentified: boolean, currentMarketingConsent: boolean|null, hasUnsubscribed: boolean }|null}
  */
 function getProfile() {
   const raw = getJSON('profile');
@@ -112,19 +112,24 @@ function getProfile() {
     name: raw.name || '',
     email: raw.email || '',
     isIdentified: !!raw.isIdentified,
+    currentMarketingConsent:
+      raw.currentMarketingConsent !== undefined ? raw.currentMarketingConsent : null,
+    hasUnsubscribed: !!raw.hasUnsubscribed,
   };
 }
 
 /**
  * Save a normalized profile to localStorage.
  * Enforces a fixed schema to prevent shape drift.
- * @param {{ name?: string, email?: string, isIdentified?: boolean }} profile
+ * @param {{ name?: string, email?: string, isIdentified?: boolean, currentMarketingConsent?: boolean|null, hasUnsubscribed?: boolean }} profile
  */
-function setProfile({ name, email, isIdentified }) {
+function setProfile({ name, email, isIdentified, currentMarketingConsent, hasUnsubscribed }) {
   setJSON('profile', {
     name: name || '',
     email: email || '',
     isIdentified: !!isIdentified,
+    currentMarketingConsent: currentMarketingConsent !== undefined ? currentMarketingConsent : null,
+    hasUnsubscribed: !!hasUnsubscribed,
   });
 }
 
