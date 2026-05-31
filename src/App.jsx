@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Orb from './components/Orb/Orb';
-import AppInstalled from './components/AppInstalled/AppInstalled';
 
 const ORB_STATE_KEY = 'jarbris_orb_enlarged';
 
@@ -17,9 +16,7 @@ function App() {
 
   const params = new URLSearchParams(window.location.search);
   const hasEmbedParam = params.has('embed');
-  const isAllowedRoute = ['/orb-preview', '/widget/orb-preview', '/app/installed'].includes(
-    window.location.pathname,
-  );
+  const isAllowedRoute = ['/orb-preview', '/widget/orb-preview'].includes(window.location.pathname);
   const isDirectAccess = !isEmbedded && !hasEmbedParam && !isAllowedRoute && import.meta.env.PROD;
 
   const [enlarged, setEnlarged] = useState(() => {
@@ -164,7 +161,6 @@ function App() {
             </div>
           }
         />
-        <Route path="/app/installed" element={<AppInstalled />} />
         <Route
           path="/orb-preview"
           element={<Orb mode="preview" enlarged={true} setEnlarged={() => {}} />}
