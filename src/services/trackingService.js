@@ -37,6 +37,11 @@ let _context = {
   widgetToken: null,
 };
 
+// ── Event queue — holds events fired before context is ready ──
+// Bounded to MAX_QUEUE_SIZE to prevent unbounded growth (state.md §4)
+const MAX_QUEUE_SIZE = 20;
+let _queue = [];
+
 /**
  * Set the tracking context. Called once by useChat when identity is ready.
  * Must be called before any trackEvent calls — events are silently dropped
@@ -51,6 +56,7 @@ let _context = {
  */
 export function setContext(ctx) {
   _context = { ..._context, ...ctx };
+  _flushQueue();
 }
 
 /**
@@ -86,23 +92,46 @@ export function sanitizeQuery(q) {
 
 /**
  * Build the event payload envelope.
+ * Requires siteId at minimum. If sessionId is missing but anonId exists,
+ * the payload is still built (anonId is the fallback identity).
+ * If both are missing, source is marked 'widget_orphan' for backend visibility.
  *
  * @param {Array<Object>} events - Array of { eventType, eventData }
- * @returns {Object|null} Payload or null if context not ready
+ * @returns {Object|null} Payload or null if siteId not set
  */
 function _buildPayload(events) {
-  if (!_context.siteId || !_context.sessionId) return null;
+  if (!_context.siteId) return null;
+
+  const anonId = _context.visitorId || _context.sessionId || null;
+  const isOrphan = !_context.sessionId && !anonId;
 
   return {
     siteId: _context.siteId,
-    sessionId: _context.sessionId,
-    source: 'widget',
+    sessionId: _context.sessionId || null,
+    source: isOrphan ? 'widget_orphan' : 'widget',
     identity: {
-      anonId: _context.visitorId || _context.sessionId,
+      anonId,
       shopifyCustomerId: _context.shopifyCustomerId || undefined,
     },
     events,
   };
+}
+
+/**
+ * Flush the pending event queue once context is ready.
+ * Drops events if siteId is still missing (context never arrived).
+ * @private
+ */
+function _flushQueue() {
+  if (_queue.length === 0) return;
+
+  const toFlush = _queue;
+  _queue = [];
+
+  for (const { eventType, eventData } of toFlush) {
+    // Re-run through the normal path (consent check + send)
+    trackEvent(eventType, eventData);
+  }
 }
 
 /**
@@ -155,6 +184,15 @@ export function trackEvent(eventType, eventData = {}) {
     // Consent gate: technical events bypass, analytics require opt-in
     const isTechnical = CONSENT_EXEMPT_EVENTS.has(eventType);
     if (!isTechnical && !canTrackAnalytics()) return;
+
+    // If siteId is not yet set, the context has not arrived from the parent.
+    // Queue the event (bounded) and flush when setContext() is called.
+    if (!_context.siteId) {
+      if (_queue.length < MAX_QUEUE_SIZE) {
+        _queue.push({ eventType, eventData });
+      }
+      return;
+    }
 
     const payload = _buildPayload([{ eventType, eventData }]);
     if (!payload) return;
