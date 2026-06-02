@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { getWidgetConfig } from '../services/customizationApi';
 import { setWidgetToken } from '../services/widgetTokenStore';
 import { BRIDGE_CONFIG } from '../config/bridge';
+import storage from '../utils/storage';
 
 const DEFAULT_CONFIG = {
   orbTheme: {
@@ -44,7 +45,7 @@ export const useOrb = (modeOverride = null) => {
 
     // 2. Check localStorage (Manual Override in Dev)
     if (import.meta.env.DEV) {
-      const savedDevShop = localStorage.getItem('jarbris_dev_shop_domain');
+      const savedDevShop = storage.get('dev_shop_domain');
       if (savedDevShop) return savedDevShop;
     }
 
@@ -104,14 +105,14 @@ export const useOrb = (modeOverride = null) => {
         }
 
         if (isDev) {
-          const hasManualOverride = !!localStorage.getItem('jarbris_dev_shop_domain');
+          const hasManualOverride = !!storage.get('dev_shop_domain');
           if (hasManualOverride || (shopDomain && incomingDomain === 'localhost')) {
             return;
           }
         }
 
         setShopDomain(incomingDomain);
-        localStorage.setItem('jarbris_dev_shop_domain', incomingDomain);
+        storage.set('dev_shop_domain', incomingDomain);
       }
     };
 

@@ -18,7 +18,7 @@
  * @module utils/consentBridge
  */
 
-const CONSENT_STORAGE_KEY = 'jarbris_analytics_consent';
+import storage from './storage';
 
 /**
  * Read the boot-time consent value from localStorage.
@@ -28,11 +28,7 @@ const CONSENT_STORAGE_KEY = 'jarbris_analytics_consent';
  * @returns {boolean}
  */
 export function getBootConsent() {
-  try {
-    return localStorage.getItem(CONSENT_STORAGE_KEY) === 'true';
-  } catch {
-    return false;
-  }
+  return storage.get('analytics_consent') === 'true';
 }
 
 /**
@@ -58,11 +54,7 @@ export function canTrackAnalytics() {
  */
 export function broadcastConsentChange(analyticsConsent) {
   // C: localStorage (fast boot on next page load)
-  try {
-    localStorage.setItem(CONSENT_STORAGE_KEY, String(analyticsConsent));
-  } catch {
-    // localStorage unavailable — tracker will still react to the event
-  }
+  storage.set('analytics_consent', String(analyticsConsent));
 
   // B: Global in-memory state (for tracker boot-time polling)
   window.JARBRIS_PRIVACY = { analyticsConsent };
@@ -83,11 +75,7 @@ export function broadcastConsentChange(analyticsConsent) {
  * @param {boolean} previousValue
  */
 export function rollbackConsent(previousValue) {
-  try {
-    localStorage.setItem(CONSENT_STORAGE_KEY, String(previousValue));
-  } catch {
-    // Ignore
-  }
+  storage.set('analytics_consent', String(previousValue));
   window.JARBRIS_PRIVACY = { analyticsConsent: previousValue };
 }
 

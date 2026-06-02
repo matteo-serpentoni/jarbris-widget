@@ -5,6 +5,7 @@ import es from './locales/es.json';
 import fr from './locales/fr.json';
 import de from './locales/de.json';
 import pt from './locales/pt.json';
+import storage from '../utils/storage';
 
 const BUNDLES = { en, it, es, fr, de, pt };
 const FALLBACK = 'en';
@@ -15,7 +16,7 @@ function detectLang() {
 
   // DevTools language simulator override
   if (import.meta.env?.DEV) {
-    const devOverride = localStorage.getItem('jarbris_dev_lng_override');
+    const devOverride = storage.get('dev_lng_override');
     if (devOverride && devOverride in BUNDLES) return devOverride;
   }
 
@@ -57,7 +58,7 @@ export function setLng(lng) {
 
   // DevTools language simulator priority lock
   if (import.meta.env?.DEV) {
-    if (localStorage.getItem('jarbris_dev_lng_override')) return;
+    if (storage.get('dev_lng_override')) return;
   }
   const normalized = lng.slice(0, 2).toLowerCase();
   if (normalized === _lng || !(normalized in BUNDLES)) return;

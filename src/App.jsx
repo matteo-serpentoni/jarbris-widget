@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Orb from './components/Orb/Orb';
-
-const ORB_STATE_KEY = 'jarbris_orb_enlarged';
+import storage from './utils/storage';
 
 function App() {
   // Detect if running in proper embedded context
@@ -20,11 +19,7 @@ function App() {
   const isDirectAccess = !isEmbedded && !hasEmbedParam && !isAllowedRoute && import.meta.env.PROD;
 
   const [enlarged, setEnlarged] = useState(() => {
-    try {
-      return localStorage.getItem(ORB_STATE_KEY) === 'true';
-    } catch {
-      return false;
-    }
+    return storage.get('orb_enlarged') === 'true';
   });
   const [cartBubbleVisible, setCartBubbleVisible] = useState(false);
 
@@ -58,11 +53,7 @@ function App() {
   }, [enlarged, cartBubbleVisible]);
 
   useEffect(() => {
-    try {
-      localStorage.setItem(ORB_STATE_KEY, enlarged.toString());
-    } catch {
-      /* ITP/blocked */
-    }
+    storage.set('orb_enlarged', enlarged.toString());
   }, [enlarged]);
 
   useEffect(() => {
@@ -74,20 +65,8 @@ function App() {
 
   // --- DEV-ONLY PREVIEW LOGIC ---
   const [devPreview, setDevPreview] = useState({
-    show: (() => {
-      try {
-        return localStorage.getItem('jarbris_dev_show_storefront') === 'true';
-      } catch {
-        return false;
-      }
-    })(),
-    theme: (() => {
-      try {
-        return localStorage.getItem('jarbris_dev_storefront_theme') || 'light';
-      } catch {
-        return 'light';
-      }
-    })(),
+    show: storage.get('dev_show_storefront') === 'true',
+    theme: storage.get('dev_storefront_theme') || 'light',
   });
 
   useEffect(() => {
@@ -95,20 +74,8 @@ function App() {
 
     const handleDevUpdate = () => {
       setDevPreview({
-        show: (() => {
-          try {
-            return localStorage.getItem('jarbris_dev_show_storefront') === 'true';
-          } catch {
-            return false;
-          }
-        })(),
-        theme: (() => {
-          try {
-            return localStorage.getItem('jarbris_dev_storefront_theme') || 'light';
-          } catch {
-            return 'light';
-          }
-        })(),
+        show: storage.get('dev_show_storefront') === 'true',
+        theme: storage.get('dev_storefront_theme') || 'light',
       });
     };
 
