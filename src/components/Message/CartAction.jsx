@@ -1,7 +1,7 @@
 import { useRef, useEffect, useReducer, memo } from 'react';
 import { extractVariantId } from '../../utils/shopifyUtils';
 import FormattedText from './FormattedText';
-import { BRIDGE_CONFIG } from '../../config/bridge';
+import { BRIDGE_CONFIG, postToParent } from '../../config/bridge';
 import './CartAction.css';
 
 // Module-level dedup set — prevents re-executing the same cart action on re-render
@@ -57,14 +57,11 @@ const CartAction = memo(
       }
 
       // Send add-to-cart via bridge
-      window.parent.postMessage(
-        {
-          type: 'JARBRIS:addToCart',
-          variantId: numericVariantId,
-          quantity,
-        },
-        '*',
-      );
+      postToParent({
+        type: 'JARBRIS:addToCart',
+        variantId: numericVariantId,
+        quantity,
+      });
 
       // Listen for response
       const handleResponse = (event) => {

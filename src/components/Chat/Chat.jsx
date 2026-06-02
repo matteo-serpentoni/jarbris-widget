@@ -17,6 +17,7 @@ import { ProductDrawer } from '../Message/ProductCards';
 import { OrderDetailCard } from '../Message/OrderCards';
 import { normalizeOrderNumber, extractShopifyId, extractVariantId } from '../../utils/shopifyUtils';
 import Drawer from '../UI/Drawer';
+import { postToParent } from '../../config/bridge';
 import ProfileView from './ProfileView';
 import StarRating from './StarRating';
 import ImageLightbox from '../UI/ImageLightbox';
@@ -168,14 +169,11 @@ const Chat = ({
         // cart/add.js requires a numeric variantId. Mirrors AddToCartButton behavior.
         const numericVariantId = extractVariantId(resolvedVariantId);
         if (numericVariantId) {
-          window.parent?.postMessage(
-            {
-              type: 'JARBRIS:addToCart',
-              variantId: numericVariantId,
-              quantity: payload.quantity || 1,
-            },
-            '*',
-          );
+          postToParent({
+            type: 'JARBRIS:addToCart',
+            variantId: numericVariantId,
+            quantity: payload.quantity || 1,
+          });
         }
 
         // Always notify backend so cross-sell is triggered, regardless of variantId.

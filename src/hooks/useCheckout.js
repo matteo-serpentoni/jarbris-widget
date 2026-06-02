@@ -9,6 +9,7 @@ import {
   ensureBridgeListener,
 } from '../services/checkoutService';
 import { trackEvent } from '../services/trackingService.js';
+import { postToParent } from '../config/bridge';
 
 /**
  * useCheckout — Manages the Shopify checkout lifecycle.
@@ -102,7 +103,7 @@ export function useCheckout({ onCartReset, onAddMessage } = {}) {
     setCheckoutMode(null);
 
     // Request cart resync — embed.js will send JARBRIS:cartUpdate
-    window.parent.postMessage({ type: 'JARBRIS:getCart' }, '*');
+    postToParent({ type: 'JARBRIS:getCart' });
   }, [checkoutState]);
 
   /**

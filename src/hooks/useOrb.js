@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getWidgetConfig } from '../services/customizationApi';
 import { setWidgetToken } from '../services/widgetTokenStore';
-import { BRIDGE_CONFIG } from '../config/bridge';
+import { BRIDGE_CONFIG, postToParent } from '../config/bridge';
 import storage from '../utils/storage';
 
 const DEFAULT_CONFIG = {
@@ -120,7 +120,7 @@ export const useOrb = (modeOverride = null) => {
 
     // Request shop domain if needed
     if (window.parent && !shopDomain && mode === 'production') {
-      window.parent.postMessage({ type: 'JARBRIS:requestShopDomain' }, '*');
+      postToParent({ type: 'JARBRIS:requestShopDomain' });
     }
 
     return () => window.removeEventListener('message', handleMessage);

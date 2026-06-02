@@ -69,3 +69,21 @@ export const BRIDGE_CONFIG = {
     OPEN_PURCHASE_OPTIONS_DRAWER: 'OPEN_PURCHASE_OPTIONS_DRAWER',
   },
 };
+
+/**
+ * Safely posts a message to the parent window.
+ * Resolves the parent origin from the URL query parameters synchronously.
+ * Falls back to '*' if no valid origin can be resolved from the URL.
+ *
+ * @param {object} message - Message payload to send
+ */
+export function postToParent(message) {
+  if (typeof window === 'undefined' || !window.parent) return;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const shop = urlParams.get('shop') || urlParams.get('shopDomain');
+
+  const targetOrigin = shop ? (shop.startsWith('http') ? shop : `https://${shop}`) : '*';
+
+  window.parent.postMessage(message, targetOrigin);
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import * as Sentry from '@sentry/react';
 import { reportError } from '../../services/errorApi';
+import { postToParent } from '../../config/bridge';
 
 /**
  * ErrorBoundary
@@ -34,12 +35,12 @@ class ErrorBoundary extends React.Component {
     });
 
     // Notify parent to self-destruct iframe so it doesn't block the screen
-    window.parent?.postMessage({ type: 'JARBRIS:fatalError' }, '*');
+    postToParent({ type: 'JARBRIS:fatalError' });
   }
 
   render() {
     if (this.state.hasError) {
-      // ✅ Silent Failure: If a fallback prop is provided, render it.
+      // Silent Failure: If a fallback prop is provided, render it.
       // Otherwise render null to protect the merchant's site.
       return this.props.fallback || null;
     }

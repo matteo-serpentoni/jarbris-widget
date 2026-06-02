@@ -6,6 +6,7 @@ import OrbBubble from './OrbBubble';
 // Lazy-load DevTools only in development (tree-shaken from prod bundle)
 const DevTools = import.meta.env.DEV ? lazy(() => import('../Dev/DevTools')) : null;
 import { useOrb } from '../../hooks/useOrb';
+import { postToParent } from '../../config/bridge';
 import { getCssVariable } from '../../utils/domUtils';
 import { vec3ToRgbString } from '../../utils/colorUtils';
 import { t } from '../../i18n';
@@ -375,9 +376,9 @@ const Orb = memo(
       if (mode === 'preview') return; // Skip in preview mode
 
       if (enlarged) {
-        window.parent?.postMessage({ type: 'JARBRIS:chatOpened' }, '*');
+        postToParent({ type: 'JARBRIS:chatOpened' });
       } else {
-        window.parent?.postMessage({ type: 'JARBRIS:chatClosed' }, '*');
+        postToParent({ type: 'JARBRIS:chatClosed' });
       }
     }, [enlarged, mode]);
 

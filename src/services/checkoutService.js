@@ -30,7 +30,7 @@
  *   to support inline mode — only this service file needs to change.
  */
 
-import { BRIDGE_CONFIG } from '../config/bridge';
+import { BRIDGE_CONFIG, postToParent } from '../config/bridge';
 import { getWidgetToken } from './widgetTokenStore';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
@@ -49,7 +49,7 @@ function requestCheckoutUrl() {
     pendingCallback = { resolve, reject };
 
     // Request from host
-    window.parent.postMessage({ type: BRIDGE_CONFIG.checkoutMessages.GET_URL }, '*');
+    postToParent({ type: BRIDGE_CONFIG.checkoutMessages.GET_URL });
 
     // Timeout after 8 seconds
     setTimeout(() => {
@@ -152,7 +152,7 @@ function openCheckoutPopup(url) {
  * (opens checkout in a new tab via embed.js).
  */
 function openCheckoutNewTab() {
-  window.parent.postMessage({ type: BRIDGE_CONFIG.checkoutMessages.FALLBACK }, '*');
+  postToParent({ type: BRIDGE_CONFIG.checkoutMessages.FALLBACK });
 }
 
 /**
@@ -160,7 +160,7 @@ function openCheckoutNewTab() {
  * Triggers cart resync on the storefront side.
  */
 function notifyCheckoutComplete() {
-  window.parent.postMessage({ type: BRIDGE_CONFIG.checkoutMessages.COMPLETE }, '*');
+  postToParent({ type: BRIDGE_CONFIG.checkoutMessages.COMPLETE });
 }
 
 /**

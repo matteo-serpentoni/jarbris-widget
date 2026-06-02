@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { BRIDGE_CONFIG } from '../config/bridge.js';
+import { BRIDGE_CONFIG, postToParent } from '../config/bridge.js';
 
 // Lightweight DEV-only logger — no external dependency.
 const isDev = import.meta.env.DEV;
@@ -190,7 +190,7 @@ export function usePurchaseOptions() {
         quantity,
       });
 
-      window.parent.postMessage({ type: BRIDGE_CONFIG.cartMessages.ADD_TO_CART, ...cartLine }, '*');
+      postToParent({ type: BRIDGE_CONFIG.cartMessages.ADD_TO_CART, ...cartLine });
       return true;
     },
     [addToCartBlocked, buildCartLine, state.productId],
@@ -222,7 +222,7 @@ export function usePurchaseOptions() {
         quantity,
       });
 
-      window.parent.postMessage(payload, '*');
+      postToParent(payload);
       return true;
     },
     [state.sellingPlanId],

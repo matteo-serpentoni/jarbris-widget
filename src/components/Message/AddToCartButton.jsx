@@ -5,7 +5,7 @@ import { trackEvent } from '../../services/trackingService.js';
 import { useChatSession } from '../../contexts/useChatSession';
 import './AddToCartButton.css';
 
-import { BRIDGE_CONFIG } from '../../config/bridge';
+import { BRIDGE_CONFIG, postToParent } from '../../config/bridge';
 
 const AddToCartButton = memo(
   ({
@@ -74,7 +74,7 @@ const AddToCartButton = memo(
         };
         if (sellingPlanId) cartPayload.sellingPlanId = sellingPlanId;
 
-        window.parent.postMessage(cartPayload, '*');
+        postToParent(cartPayload);
 
         // Ascolta la risposta dal parent
         const handleResponse = (event) => {

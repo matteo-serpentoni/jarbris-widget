@@ -12,6 +12,7 @@ import { broadcastConsentChange } from '../utils/consentBridge';
 import { setContext as setTrackingContext, trackEvent } from '../services/trackingService.js';
 import storage from '../utils/storage';
 import { t, setLng } from '../i18n';
+import { postToParent } from '../config/bridge';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
@@ -145,7 +146,7 @@ export const useChat = (devShopDomain, customer, options = {}) => {
     setLoading(false);
 
     // Request new session from parent (embed.js)
-    window.parent?.postMessage({ type: 'JARBRIS:requestNewSession' }, '*');
+    postToParent({ type: 'JARBRIS:requestNewSession' });
   }, []);
 
   const addUserMessage = useCallback((text, id = Date.now(), hidden = false) => {
@@ -315,8 +316,8 @@ export const useChat = (devShopDomain, customer, options = {}) => {
     // those changes are triggered by the JARBRIS:identity response itself, so re-sending JARBRIS:ready
     // would cause an infinite re-registration loop (new sessionId → effect teardown/remount → ready
     // → embed replies with identity → new sessionId → ...) resulting in duplicate messages.
-    window.parent?.postMessage({ type: 'JARBRIS:ready' }, '*');
-    window.parent?.postMessage({ type: 'JARBRIS:getCart' }, '*');
+    postToParent({ type: 'JARBRIS:ready' });
+    postToParent({ type: 'JARBRIS:getCart' });
 
     return () => window.removeEventListener('message', handleMessage);
   }, [disabled, clearChat]);

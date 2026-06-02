@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Orb from './components/Orb/Orb';
 import storage from './utils/storage';
+import { postToParent } from './config/bridge';
 
 function App() {
   // Detect if running in proper embedded context
@@ -39,7 +40,7 @@ function App() {
         if (enlarged.height) resizeData.height = enlarged.height;
       }
 
-      window.parent?.postMessage(resizeData, '*');
+      postToParent(resizeData);
     };
 
     if (isEnlarged || cartBubbleVisible) {
