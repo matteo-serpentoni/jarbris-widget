@@ -3,6 +3,18 @@
  * Defines security parameters for postMessage communication.
  */
 
+let parentOrigin = null;
+
+export function setParentOrigin(origin) {
+  if (origin && typeof origin === 'string' && origin.startsWith('http')) {
+    parentOrigin = origin;
+  }
+}
+
+export function getParentOrigin() {
+  return parentOrigin;
+}
+
 export const BRIDGE_CONFIG = {
   // Allowed origins for incoming messages
   // In production, this should only include the merchant's domain and official previews
@@ -21,24 +33,35 @@ export const BRIDGE_CONFIG = {
 
   // Helper to validate origin
   isValidOrigin: (origin, authorizedDomain = null, messageType = null) => {
-    if (import.meta.env.DEV) return true; // Relaxed for local dev
+    if (import.meta.env.DEV) {
+      setParentOrigin(origin);
+      return true; // Relaxed for local dev
+    }
 
     // 1. Check official whitelist (Dashboard, CDN, etc.)
     const isWhitelisted = BRIDGE_CONFIG.whitelist.some((allowed) => origin.startsWith(allowed));
-    if (isWhitelisted) return true;
+    if (isWhitelisted) {
+      setParentOrigin(origin);
+      return true;
+    }
 
     // 2. Secure Check: If we have a verified domain from the backend, we lock to it
     if (authorizedDomain) {
       const normalizedDomain = authorizedDomain.startsWith('http')
         ? authorizedDomain
         : `https://${authorizedDomain}`;
-      return origin === normalizedDomain;
+      if (origin === normalizedDomain) {
+        setParentOrigin(origin);
+        return true;
+      }
+      return false;
     }
 
     // 3. Bootstrap Handshake: If we don't have an authorized domain yet,
     // we allow messages that follow our protocol (JARBRIS: prefix).
     // This allows custom domains to initiate the handshake.
     if (!authorizedDomain && messageType && BRIDGE_CONFIG.hasPrefix(messageType)) {
+      setParentOrigin(origin);
       return true;
     }
 
@@ -83,7 +106,13 @@ export function postToParent(message) {
   const urlParams = new URLSearchParams(window.location.search);
   const shop = urlParams.get('shop') || urlParams.get('shopDomain');
 
-  const targetOrigin = shop ? (shop.startsWith('http') ? shop : `https://${shop}`) : '*';
+  let targetOrigin = parentOrigin;
+  if (!targetOrigin && shop) {
+    targetOrigin = shop.startsWith('http') ? shop : `https://${shop}`;
+  }
+  if (!targetOrigin) {
+    targetOrigin = '*';
+  }
 
   window.parent.postMessage(message, targetOrigin);
 }

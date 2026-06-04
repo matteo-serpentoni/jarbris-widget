@@ -12,7 +12,7 @@ import { broadcastConsentChange } from '../utils/consentBridge';
 import { setContext as setTrackingContext, trackEvent } from '../services/trackingService.js';
 import storage from '../utils/storage';
 import { t, setLng } from '../i18n';
-import { postToParent } from '../config/bridge';
+import { BRIDGE_CONFIG, postToParent } from '../config/bridge';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
@@ -236,6 +236,8 @@ export const useChat = (devShopDomain, customer, options = {}) => {
     if (disabled) return;
 
     const handleMessage = (event) => {
+      if (!BRIDGE_CONFIG.isValidOrigin(event.origin, null, event.data?.type)) return;
+
       // 1. Identity & ShopDomain — parent is source of truth for visitorId + sessionId
       if (event.data?.type === 'JARBRIS:identity' || event.data?.type === 'JARBRIS:shopDomain') {
         // B22: Receive persistent identity from parent (1st-party localStorage)

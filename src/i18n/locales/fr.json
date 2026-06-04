@@ -204,28 +204,12 @@
       "Je récupère les infos du produit...",
       "Je cherche les détails pour vous..."
     ],
-    "order_track": [
-      "Je vérifie l'état de la livraison...",
-      "Je cherche votre colis..."
-    ],
-    "faq": [
-      "Je consulte notre guide...",
-      "Je cherche la réponse pour vous..."
-    ],
-    "shipping": [
-      "Je vérifie les frais et délais de livraison..."
-    ],
-    "refund": [
-      "Je vérifie notre politique de retour..."
-    ],
-    "escalation": [
-      "Je vous mets en contact avec un humain..."
-    ],
-    "default": [
-      "Laissez-moi vérifier...",
-      "Un instant...",
-      "Je cherche des informations..."
-    ]
+    "order_track": ["Je vérifie l'état de la livraison...", "Je cherche votre colis..."],
+    "faq": ["Je consulte notre guide...", "Je cherche la réponse pour vous..."],
+    "shipping": ["Je vérifie les frais et délais de livraison..."],
+    "refund": ["Je vérifie notre politique de retour..."],
+    "escalation": ["Je vous mets en contact avec un humain..."],
+    "default": ["Laissez-moi vérifier...", "Un instant...", "Je cherche des informations..."]
   },
   "order": {
     "track_package": "Suivre le colis",

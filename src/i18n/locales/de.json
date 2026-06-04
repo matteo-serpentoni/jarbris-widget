@@ -200,31 +200,13 @@
       "Mal sehen, was ich für dich finde...",
       "Ich prüfe die Verfügbarkeit..."
     ],
-    "product_detail": [
-      "Ich hole Produktinfos...",
-      "Ich suche die Details für dich..."
-    ],
-    "order_track": [
-      "Ich prüfe den Versandstatus...",
-      "Ich suche dein Paket..."
-    ],
-    "faq": [
-      "Ich schaue in unserem Leitfaden nach..."
-    ],
-    "shipping": [
-      "Ich prüfe Versandkosten und -zeiten..."
-    ],
-    "refund": [
-      "Ich prüfe unsere Rückgabepolitik..."
-    ],
-    "escalation": [
-      "Ich verbinde dich sofort mit einem Menschen..."
-    ],
-    "default": [
-      "Lass mich nachsehen...",
-      "Einen Moment...",
-      "Ich suche Informationen..."
-    ]
+    "product_detail": ["Ich hole Produktinfos...", "Ich suche die Details für dich..."],
+    "order_track": ["Ich prüfe den Versandstatus...", "Ich suche dein Paket..."],
+    "faq": ["Ich schaue in unserem Leitfaden nach..."],
+    "shipping": ["Ich prüfe Versandkosten und -zeiten..."],
+    "refund": ["Ich prüfe unsere Rückgabepolitik..."],
+    "escalation": ["Ich verbinde dich sofort mit einem Menschen..."],
+    "default": ["Lass mich nachsehen...", "Einen Moment...", "Ich suche Informationen..."]
   },
   "order": {
     "track_package": "Paket verfolgen",
