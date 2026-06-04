@@ -1,4 +1,12 @@
 {
   "$schema": "https://unpkg.com/knip@latest/schema.json",
-  "ignore": ["public/**"]
+  "entry": ["src/main.jsx!", "vite.config.js"],
+  "project": ["src/**/*.{js,jsx}"],
+  "ignore": ["public/**", "src/components/Dev/**"],
+  "ignoreBinaries": ["eslint", "prettier", "knip", "jscpd"],
+  "ignoreDependencies": ["@vitejs/plugin-react", "@sentry/vite-plugin"],
+  "rules": {
+    "exports": "off",
+    "duplicates": "off"
+  }
 }

@@ -5,14 +5,10 @@
 
 let parentOrigin = null;
 
-export function setParentOrigin(origin) {
+function setParentOrigin(origin) {
   if (origin && typeof origin === 'string' && origin.startsWith('http')) {
     parentOrigin = origin;
   }
-}
-
-export function getParentOrigin() {
-  return parentOrigin;
 }
 
 export const BRIDGE_CONFIG = {

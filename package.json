@@ -8,8 +8,13 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "knip": "knip",
+    "format:check": "prettier --check .",
+    "audit:dead": "npx knip --no-progress",
+    "audit:dup": "npx jscpd . --ignore 'node_modules/**,dist/**,tests/**,.git/**' --min-lines 5 --min-tokens 50",
+    "check:all": "npm run lint && npm run format:check && npm run audit:dead && npm run audit:dup",
+    "fix:all": "npm run lint:fix && npm run format",
     "prepare": "husky"
   },
   "dependencies": {

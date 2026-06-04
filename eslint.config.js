@@ -27,9 +27,11 @@ export default defineConfig([
         'error',
         {
           varsIgnorePattern: '^[A-Z_]',
+          argsIgnorePattern: '^_',
           caughtErrorsIgnorePattern: '^_',
         },
       ],
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
   },
 ]);
