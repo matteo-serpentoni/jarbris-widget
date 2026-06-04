@@ -15,7 +15,9 @@
   },
   "session": {
     "expired_title": "Sesión expirada",
-    "expired_message": "Tu sesión expiró por inactividad. Recarga la página para iniciar una nueva conversación."
+    "expired_message": "Tu sesión expiró por inactividad. Recarga la página para iniciar una nueva conversación.",
+    "closed_title": "Conversación anterior",
+    "new_conversation": "Nueva conversación"
   },
   "errors": {
     "config": "Configuración no encontrada. Por favor recarga la página. (Código: 001)",
@@ -199,13 +201,32 @@
       "Comprobando disponibilidad...",
       "Buscando los mejores productos..."
     ],
-    "product_detail": ["Obteniendo info del producto...", "Buscando detalles para ti..."],
-    "order_track": ["Verificando el estado del envío...", "Buscando tu paquete..."],
-    "faq": ["Consultando nuestra guía...", "Buscando la respuesta para ti..."],
-    "shipping": ["Verificando costos y tiempos de envío..."],
-    "refund": ["Verificando nuestra política de devoluciones..."],
-    "escalation": ["Conectándote con un humano ahora..."],
-    "default": ["Déjame revisar...", "Un momento...", "Buscando información..."]
+    "product_detail": [
+      "Obteniendo info del producto...",
+      "Buscando detalles para ti..."
+    ],
+    "order_track": [
+      "Verificando el estado del envío...",
+      "Buscando tu paquete..."
+    ],
+    "faq": [
+      "Consultando nuestra guía...",
+      "Buscando la respuesta para ti..."
+    ],
+    "shipping": [
+      "Verificando costos y tiempos de envío..."
+    ],
+    "refund": [
+      "Verificando nuestra política de devoluciones..."
+    ],
+    "escalation": [
+      "Conectándote con un humano ahora..."
+    ],
+    "default": [
+      "Déjame revisar...",
+      "Un momento...",
+      "Buscando información..."
+    ]
   },
   "order": {
     "track_package": "Rastrear paquete",

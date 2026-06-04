@@ -388,7 +388,7 @@ const Chat = ({
               />
 
               {/* Conversation Ended Separator & Rating */}
-              {sessionStatus === 'completed' && (
+              {(sessionStatus === 'completed' || sessionStatus === 'closed') && (
                 <div className="conversation-ended-container">
                   <div className="conversation-ended-separator">
                     <div className="separator-line" />

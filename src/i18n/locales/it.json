@@ -15,7 +15,9 @@
   },
   "session": {
     "expired_title": "Sessione scaduta",
-    "expired_message": "La tua sessione è scaduta per inattività. Ricarica la pagina per iniziare una nuova conversazione."
+    "expired_message": "La tua sessione è scaduta per inattività. Ricarica la pagina per iniziare una nuova conversazione.",
+    "closed_title": "Conversazione precedente",
+    "new_conversation": "Nuova conversazione"
   },
   "errors": {
     "config": "Configurazione non trovata. Per favore ricarica la pagina. (Codice: 001)",

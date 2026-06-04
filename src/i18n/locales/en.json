@@ -15,7 +15,9 @@
   },
   "session": {
     "expired_title": "Session expired",
-    "expired_message": "Your session expired due to inactivity. Reload the page to start a new conversation."
+    "expired_message": "Your session expired due to inactivity. Reload the page to start a new conversation.",
+    "closed_title": "Previous conversation",
+    "new_conversation": "New conversation"
   },
   "errors": {
     "config": "Configuration not found. Please reload the page. (Code: 001)",

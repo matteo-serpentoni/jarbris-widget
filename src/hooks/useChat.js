@@ -610,8 +610,12 @@ export const useChat = (devShopDomain, customer, options = {}) => {
 
       let currentSessionId = sessionId;
 
-      // AUTO-START NEW SESSION IF COMPLETED
-      if (sessionStatus === 'completed' || sessionStatus === 'abandoned') {
+      // AUTO-START NEW SESSION IF COMPLETED OR CLOSED
+      if (
+        sessionStatus === 'completed' ||
+        sessionStatus === 'abandoned' ||
+        sessionStatus === 'closed'
+      ) {
         // B22: queue the pending message so it auto-sends after the new sessionId arrives.
         // clearChat() resets state + welcome message + sends JARBRIS:requestNewSession.
         // isThinking is reset inside clearChat() — no stuck indicator.
