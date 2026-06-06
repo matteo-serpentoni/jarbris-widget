@@ -575,7 +575,26 @@ export const useChat = (devShopDomain, customer, options = {}) => {
       if (data.assignedTo !== undefined) setAssignedTo(data.assignedTo);
     });
 
+    const handleFeedbackUpdated = (data) => {
+      if (!data) return;
+      const { messageId, feedback } = data;
+      setMessages((prev) =>
+        prev.map((msg) => {
+          if (
+            String(msg.id || '') === String(messageId || '') ||
+            String(msg.clientMessageId || '') === String(messageId || '')
+          ) {
+            return { ...msg, feedback };
+          }
+          return msg;
+        }),
+      );
+    };
+
+    socket.on('message:feedback_updated', handleFeedbackUpdated);
+
     return () => {
+      socket.off('message:feedback_updated', handleFeedbackUpdated);
       socket.disconnect();
     };
   }, [sessionId, shopDomain, disabled]);
@@ -786,17 +805,37 @@ export const useChat = (devShopDomain, customer, options = {}) => {
 
   const sendFeedback = useCallback(
     async (messageId, rating, aiMessageText, type = 'message') => {
-      // 1. Optimistic UI Update (Only for message feedback)
+      let finalRating = rating;
+
       if (type === 'message') {
+        const msg = messages.find(
+          (m) =>
+            String(m.id || '') === String(messageId || '') ||
+            String(m.clientMessageId || '') === String(messageId || ''),
+        );
+        if (msg) {
+          finalRating = msg.feedback === rating ? null : rating;
+        }
+
+        // 1. Optimistic UI Update
         setMessages((prev) =>
-          prev.map((msg) => (msg.id === messageId ? { ...msg, feedback: rating } : msg)),
+          prev.map((m) =>
+            String(m.id || '') === String(messageId || '') ||
+            String(m.clientMessageId || '') === String(messageId || '')
+              ? { ...m, feedback: finalRating }
+              : m,
+          ),
         );
       }
 
       // 2. Find context (user query)
       let userQuery = 'N/A';
       if (type === 'message') {
-        const messageIndex = messages.findIndex((m) => m.id === messageId);
+        const messageIndex = messages.findIndex(
+          (m) =>
+            String(m.id || '') === String(messageId || '') ||
+            String(m.clientMessageId || '') === String(messageId || ''),
+        );
         if (messageIndex > 0) {
           const prevMsg = messages[messageIndex - 1];
           if (prevMsg.sender === 'user') {
@@ -813,7 +852,7 @@ export const useChat = (devShopDomain, customer, options = {}) => {
           messageId,
           userQuery,
           aiResponse: aiMessageText,
-          rating,
+          rating: finalRating,
           type,
         });
       } catch {

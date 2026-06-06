@@ -56,7 +56,7 @@ const MessageBubble = memo(
                     onFeedback?.('positive');
                   }}
                   type="button"
-                  className={`feedback-btn ${feedback === 'positive' ? 'active' : ''}`}
+                  className={`feedback-btn positive ${feedback === 'positive' ? 'active' : ''}`}
                   title={t('feedback.helpful')}
                   aria-label={t('feedback.helpful_aria')}
                 >
@@ -81,7 +81,7 @@ const MessageBubble = memo(
                     onFeedback?.('negative');
                   }}
                   type="button"
-                  className={`feedback-btn ${feedback === 'negative' ? 'active' : ''}`}
+                  className={`feedback-btn negative ${feedback === 'negative' ? 'active' : ''}`}
                   title={t('feedback.not_helpful')}
                   aria-label={t('feedback.not_helpful_aria')}
                 >

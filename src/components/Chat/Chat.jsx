@@ -230,9 +230,6 @@ const Chat = ({
   });
 
   // Group messages to handle "transforming" components (like OrderLookupForm).
-  // 2e: Keyed on (length + last id) instead of the full messages array reference —
-  // prevents recomputation on unrelated state changes that don't touch the message list.
-  const lastMessageId = messages[messages.length - 1]?.id;
   const chatBlocks = useMemo(() => {
     const blocks = [];
     // 2d: Use a separate Set instead of mutating the filtered array objects.
@@ -336,8 +333,7 @@ const Chat = ({
       blocks.push(msg);
     }
     return blocks.filter((_, idx) => !sourceIndices.has(idx));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages.length, lastMessageId]);
+  }, [messages]);
 
   return (
     <div className="chat-inner" style={{ '--chat-header-color': chatColors.header }}>

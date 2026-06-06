@@ -134,12 +134,12 @@
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
-.feedback-btn.active[title='Utile'] {
+.feedback-btn.active.positive {
   color: #00ffbc; /* Vibrant Neon Emerald */
   filter: drop-shadow(0 0 5px rgba(0, 255, 188, 0.6));
 }
 
-.feedback-btn.active[title='Non utile'] {
+.feedback-btn.active.negative {
   color: #ff3333; /* Vibrant Neon Red */
   filter: drop-shadow(0 0 5px rgba(255, 51, 51, 0.6));
 }
