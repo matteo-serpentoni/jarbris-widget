@@ -12,7 +12,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "audit:dead": "npx knip --no-progress",
-    "audit:dup": "npx jscpd . --ignore 'node_modules/**,dist/**,tests/**,.git/**' --min-lines 5 --min-tokens 50",
+    "audit:dup": "npx jscpd . -i 'node_modules/**,dist/**,tests/**,.git/**' --min-lines 5 --min-tokens 50",
     "check:all": "npm run lint && npm run format:check && npm run audit:dead && npm run audit:dup",
     "fix:all": "npm run lint:fix && npm run format",
     "prepare": "husky"
