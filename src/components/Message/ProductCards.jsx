@@ -348,7 +348,11 @@ const ProductCard = memo(({ product, index, onImageClick, observeCard, unobserve
                       productId={product.productId || product.id}
                       onAnimationComplete={() =>
                         onProductAction &&
-                        onProductAction('add_to_cart', { id: product.productId || product.id })
+                        onProductAction('add_to_cart', {
+                          id: product.productId || product.id,
+                          variantId: product.variants[0]?.id || product.variantId,
+                          mode: 'one_time',
+                        })
                       }
                     />
                   )}

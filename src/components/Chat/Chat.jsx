@@ -114,14 +114,19 @@ const Chat = ({
   // Shared handler for ATC events: notifies backend to trigger cross-sell.
   // Called by the chip action, card button, and drawer button — single source of truth.
   const handleProductCartAction = useCallback(
-    (productId) => {
+    (productId, options = {}) => {
       if (isPreview) return;
       setHasActedOnProduct(true);
       if (productId) {
         liveChat.sendMessage('_SYS_EVENT_', {
           hidden: true,
           systemAction: 'ADD_TO_CART_MANUAL',
-          payload: { productId },
+          payload: {
+            productId,
+            variantId: options.variantId || null,
+            sellingPlanId: options.sellingPlanId || null,
+            mode: options.mode || null,
+          },
         });
       }
     },
@@ -133,7 +138,11 @@ const Chat = ({
   const onProductAction = useCallback(
     (action, payloadData) => {
       if (action === 'add_to_cart') {
-        handleProductCartAction(payloadData?.id);
+        handleProductCartAction(payloadData?.id, {
+          variantId: payloadData?.variantId || null,
+          sellingPlanId: payloadData?.sellingPlanId || null,
+          mode: payloadData?.mode || null,
+        });
       } else if (action === 'open_purchase_options_drawer') {
         const defaultVariantId =
           payloadData?.variantId ||
@@ -546,7 +555,11 @@ const Chat = ({
               onClose={purchaseOptions.closeDrawer}
               onConfirm={() => {
                 // Called after AddToCartButton animation completes
-                handleProductCartAction(purchaseOptions.productId);
+                handleProductCartAction(purchaseOptions.productId, {
+                  variantId: purchaseOptions.variantId,
+                  sellingPlanId: purchaseOptions.sellingPlanId,
+                  mode: purchaseOptions.mode,
+                });
                 purchaseOptions.closeDrawer();
               }}
             />

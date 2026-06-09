@@ -251,6 +251,8 @@ const ProductSheet = memo(({ product, onClose, onProductAction, isMobile, search
             if (onProductAction) {
               onProductAction('add_to_cart', {
                 id: currentVariant.productId || product.productId || product.id,
+                variantId: currentVariant.id || currentVariant.variantId,
+                mode: 'one_time',
               });
             }
             onClose();
