@@ -191,7 +191,14 @@ const MessageList = memo(
 
       // 5.5 Promo Cards (OFFERS intent - no text, only cards)
       if (msg.type?.toLowerCase() === 'promo_cards') {
-        return <PromoCards message={msg} onSearch={sendMessage} />;
+        return (
+          <PromoCards
+            message={msg}
+            onSearch={sendMessage}
+            chatColors={chatColors}
+            sendFeedback={sendFeedback}
+          />
+        );
       }
 
       // 5.6 Cart Action (ADD_TO_CART_ACTION — auto add-to-cart for no-variant products)
@@ -286,7 +293,12 @@ const MessageList = memo(
         <>
           <TextMessage message={msg} />
           {msg.promos && msg.promos.length > 0 && (
-            <PromoCards message={msg} onSearch={sendMessage} />
+            <PromoCards
+              message={msg}
+              onSearch={sendMessage}
+              chatColors={chatColors}
+              sendFeedback={sendFeedback}
+            />
           )}
         </>
       );

@@ -1,9 +1,12 @@
 import React, { memo } from 'react';
 import PromoCard from './PromoCard';
+import MessageBubble from '../Chat/MessageBubble';
+import TextMessage from './TextMessage';
 import './PromoCard.css';
 
-const PromoCards = memo(({ message, onSearch }) => {
+const PromoCards = memo(({ message, onSearch, chatColors, sendFeedback }) => {
   const { promos = [] } = message;
+  const displayMessage = message.message || message.text;
   const scrollRef = React.useRef(null);
   const [showLeftArrow, setShowLeftArrow] = React.useState(false);
   const [showRightArrow, setShowRightArrow] = React.useState(true);
@@ -52,6 +55,21 @@ const PromoCards = memo(({ message, onSearch }) => {
 
   return (
     <div className="jarbris-promos-container carousel">
+      {displayMessage && (
+        <MessageBubble
+          sender={message.sender || 'assistant'}
+          timestamp={message.timestamp}
+          chatColors={chatColors}
+          className="jarbris-promos-message-bubble"
+          feedback={message.feedback}
+          onFeedback={(type) => sendFeedback(message.id, type, message.text)}
+          showFeedback={
+            message.sender === 'assistant' && !message.error && !message.disableFeedback
+          }
+        >
+          <TextMessage message={{ message: displayMessage }} />
+        </MessageBubble>
+      )}
       <div className="jarbris-carousel-wrapper">
         {showLeftArrow && (
           <button
