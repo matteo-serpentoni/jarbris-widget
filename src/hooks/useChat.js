@@ -10,6 +10,7 @@ import {
 import { reportError } from '../services/errorApi';
 import { broadcastConsentChange } from '../utils/consentBridge';
 import { setContext as setTrackingContext, trackEvent } from '../services/trackingService.js';
+import { getWidgetToken } from '../services/widgetTokenStore';
 import storage from '../utils/storage';
 import { t, setLng } from '../i18n';
 import { BRIDGE_CONFIG, postToParent } from '../config/bridge';
@@ -498,6 +499,11 @@ export const useChat = (devShopDomain, customer, options = {}) => {
 
     // Connect Socket with Reconnection Logic
     const socket = io(API_URL, {
+      // SEC-07b: send the widget token on the handshake so the server can authorize join_session
+      // (and nudge:request, same socket) against the session's site. Callback form → a fresh token
+      // is read on every (re)connect; it may arrive via postMessage shortly after mount, until then
+      // the join is treated as legacy-anonymous and tolerated during the rollout.
+      auth: (cb) => cb({ widgetToken: getWidgetToken() }),
       transports: ['websocket', 'polling'],
       reconnection: true,
       reconnectionAttempts: Infinity,
