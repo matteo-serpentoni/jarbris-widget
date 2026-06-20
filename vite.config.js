@@ -17,6 +17,11 @@ export default defineConfig(({ mode }) => ({
       }),
   ].filter(Boolean),
   base: '/',
+  // Vitest — unit tests for the logic layer (services / hooks / utils). See .agent/rules/testing.md.
+  test: {
+    environment: 'jsdom',
+    include: ['tests/**/*.test.{js,jsx}'],
+  },
   build: {
     sourcemap: 'hidden', // Generate source maps for Sentry but don't expose to browser
     minify: 'esbuild',
