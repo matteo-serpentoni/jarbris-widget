@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+# Claude Code (permessi locali, non condivisi)
+.claude/
+
 # testing
 /coverage
 
