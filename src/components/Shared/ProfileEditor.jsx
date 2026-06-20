@@ -1,16 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { updateProfile } from '../../services/chatApi';
-import {
-  updatePrivacyPreferences,
-  exportMyData,
-  deleteMyData,
-  updateMarketingConsent,
-} from '../../services/privacyApi';
+import { updatePrivacyPreferences, updateMarketingConsent } from '../../services/privacyApi';
 import { getBootConsent, broadcastConsentChange, rollbackConsent } from '../../utils/consentBridge';
 import storage from '../../utils/storage';
 import { LockIcon } from '../UI/Icons';
 import { validateEmail } from '../../utils/validators';
 import ConfirmDialog from '../UI/ConfirmDialog';
+import PrivacyVerifyFlow from './PrivacyVerifyFlow';
 import UpsellModal from '../UI/UpsellModal';
 import { useI18n } from '../../hooks/useI18n';
 import './ProfileEditor.css';
@@ -49,7 +45,8 @@ const ProfileEditor = ({
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState(null);
   const [isIdentified, setIsIdentified] = useState(!!initialProfile?.isIdentified);
-  const [showConfirm, setShowConfirm] = useState(false);
+  // GDPR-03 self-service: which privacy action the email-OTP flow is running ('export' | 'delete' | null)
+  const [verifyAction, setVerifyAction] = useState(null);
 
   const [analyticsConsent, setAnalyticsConsent] = useState(
     initialConsent?.analytics ?? getBootConsent(),
@@ -57,7 +54,6 @@ const ProfileEditor = ({
   const [privacySaving, setPrivacySaving] = useState(false);
   const [privacyError, setPrivacyError] = useState(null);
   const [showPrivacyConfirm, setShowPrivacyConfirm] = useState(false);
-  const [showExportConfirm, setShowExportConfirm] = useState(false);
   const privacyErrorTimerRef = useRef(null);
 
   // Marketing Consent States
@@ -172,60 +168,18 @@ const ProfileEditor = ({
     }
   };
 
-  const handleReset = async () => {
-    setShowConfirm(false);
-    setSaving(true);
-    setMessage({ type: 'success', text: t('profile.deleting') });
-
-    try {
-      // Pass email as Art.11 GDPR fallback identifier in case lastSessionId is stale
-      await deleteMyData(sessionId, shopDomain, visitorId, email);
-      storage.removeProfile();
-
-      setName('');
-      setEmail('');
-      setIsIdentified(false);
-      setAnalyticsConsent(false);
-      setMarketingConsent(false);
-      setHasUnsubscribed(false);
-      onProfileUpdate?.(null);
-
-      setMessage({ type: 'success', text: t('profile.deleted') });
-
-      // After a short delay, reset button to initial state so the user can re-enter data
-      setTimeout(() => {
-        setMessage(null);
-        setSaving(false);
-      }, 2500);
-    } catch (err) {
-      setSaving(false);
-      if (err.message.includes('identity_verification_required')) {
-        setMessage({ type: 'error', text: t('profile.error_identity') });
-      } else {
-        setMessage({ type: 'error', text: t('profile.error_reset') });
-      }
-      setTimeout(() => setMessage(null), 3500);
-    }
-  };
-
-  const handleExport = async () => {
-    setShowExportConfirm(false);
-    setSaving(true);
-    setMessage({ type: 'success', text: t('profile.download_started') });
-
-    try {
-      await exportMyData(sessionId, shopDomain, visitorId);
-      setMessage({ type: 'success', text: t('profile.downloaded') });
-    } catch (err) {
-      if (err.message.includes('identity_verification_required')) {
-        setMessage({ type: 'error', text: t('profile.error_export_identity') });
-      } else {
-        setMessage({ type: 'error', text: t('profile.error_export') });
-      }
-    } finally {
-      setSaving(false);
-      setTimeout(() => setMessage(null), 4000);
-    }
+  // Post-erasure cleanup. The export/delete network calls and their success/error UI now live inside
+  // PrivacyVerifyFlow (GDPR-03 email-OTP); here we only reset local state once an erasure succeeds.
+  const handleErased = () => {
+    storage.removeProfile();
+    setName('');
+    setEmail('');
+    setIsIdentified(false);
+    setAnalyticsConsent(false);
+    setMarketingConsent(false);
+    setHasUnsubscribed(false);
+    broadcastConsentChange(false);
+    onProfileUpdate?.(null);
   };
 
   const executePrivacyToggle = async (newValue) => {
@@ -377,7 +331,7 @@ const ProfileEditor = ({
             type="submit"
             disabled={saving || message}
             className={`profile-editor-btn-save ${
-              isIdentified && mode === 'drawer' ? 'compact' : 'full'
+              mode === 'drawer' ? 'compact' : 'full'
             } ${message ? (message.type === 'success' ? 'success' : 'error') : ''}`}
           >
             {message
@@ -389,11 +343,14 @@ const ProfileEditor = ({
                   : t('profile.save_profile')}
           </button>
 
-          {isIdentified && mode === 'drawer' && (
+          {/* GDPR-03: identity is proven by the email-OTP flow, not the session — so these are no
+              longer gated on isIdentified. A guest who is a real customer can still exercise their
+              rights; a pure-anonymous visitor is guided to contact the store inside the flow. */}
+          {mode === 'drawer' && (
             <>
               <button
                 type="button"
-                onClick={() => setShowExportConfirm(true)}
+                onClick={() => setVerifyAction('export')}
                 disabled={saving}
                 className="profile-editor-btn-export"
               >
@@ -401,7 +358,7 @@ const ProfileEditor = ({
               </button>
               <button
                 type="button"
-                onClick={() => setShowConfirm(true)}
+                onClick={() => setVerifyAction('delete')}
                 disabled={saving}
                 className="profile-editor-btn-delete"
               >
@@ -480,24 +437,13 @@ const ProfileEditor = ({
         onCancel={() => setShowPrivacyConfirm(false)}
       />
 
-      <ConfirmDialog
-        isOpen={showExportConfirm}
-        title={t('profile.confirm_export_title')}
-        message={t('profile.confirm_export_message')}
-        confirmText={t('profile.confirm_export_confirm')}
-        cancelText={t('profile.confirm_cancel')}
-        onConfirm={handleExport}
-        onCancel={() => setShowExportConfirm(false)}
-      />
-
-      <ConfirmDialog
-        isOpen={showConfirm}
-        title={t('profile.confirm_delete_title')}
-        message={t('profile.confirm_delete_message')}
-        confirmText={t('profile.confirm_delete_confirm')}
-        cancelText={t('profile.confirm_cancel')}
-        onConfirm={handleReset}
-        onCancel={() => setShowConfirm(false)}
+      <PrivacyVerifyFlow
+        isOpen={!!verifyAction}
+        action={verifyAction || 'export'}
+        initialEmail={email}
+        accentColor={colors.header}
+        onClose={() => setVerifyAction(null)}
+        onErased={handleErased}
       />
 
       <ConfirmDialog

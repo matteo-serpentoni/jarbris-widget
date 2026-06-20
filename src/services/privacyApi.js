@@ -51,20 +51,60 @@ export async function updatePrivacyPreferences(sessionId, shopDomain, anonId, { 
 }
 
 /**
- * Request data export under Art 15 GDPR.
- * Triggers a JSON blob download on success.
+ * GDPR-03 — identity is now proven by a one-time code emailed to the address of record, NOT asserted
+ * via sessionId/visitorId (those selectors were the IDOR vector and are gone from the API). The tenant
+ * is resolved server-side from the widget token; the client sends only the email + code.
  *
- * @param {string} sessionId
- * @param {string} shopDomain
- * @param {string|null} anonId
+ * Normalize a user-entered code to the canonical form the server hashed: the backend generates the
+ * code as uppercase hex and matches the exact string, so we uppercase and strip whitespace. Hex is
+ * case-insensitive to a human, but the stored hash is not — without this, a lowercased paste fails.
+ *
+ * @param {string} code
+ * @returns {string}
+ */
+function normalizeCode(code) {
+  return String(code || '')
+    .replace(/\s+/g, '')
+    .toUpperCase();
+}
+
+/**
+ * GDPR-03 step 1 — request a one-time verification code for the email of record (Art.15/Art.17 gate).
+ * The API answers 200 identically for known and unknown emails by design (anti-enumeration), so a
+ * resolved promise NEVER means the email exists. Throws `too_many_requests` on the per-IP limiter,
+ * `request_failed` otherwise — callers surface a neutral message either way.
+ *
+ * @param {string} email
+ * @param {string} [lng] - 2-char UI language, used to localize the email
  * @returns {Promise<void>}
  */
-export async function exportMyData(sessionId, shopDomain, anonId) {
-  const query = new URLSearchParams({
-    sessionId,
-    shopDomain,
-    ...(anonId && { visitorId: anonId }),
+export async function requestPrivacyCode(email, lng) {
+  const response = await fetch(`${API_BASE_URL}/api/privacy/verify/request`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Widget-Token': getWidgetToken(),
+    },
+    body: JSON.stringify({ email, ...(lng && { lng }) }),
   });
+
+  if (!response.ok) {
+    if (response.status === 429) throw new Error('too_many_requests');
+    throw new Error('request_failed');
+  }
+}
+
+/**
+ * GDPR-03 step 2a — Art.15 export. Requires the verified one-time code. Triggers a JSON blob download
+ * on success. A wrong/expired/missing/locked code returns 403 `verification_failed` (indistinguishable
+ * by design — never leaks whether the email is a known customer).
+ *
+ * @param {string} email
+ * @param {string} code
+ * @returns {Promise<void>}
+ */
+export async function exportMyData(email, code) {
+  const query = new URLSearchParams({ email, code: normalizeCode(code) });
 
   const response = await fetch(`${API_BASE_URL}/api/privacy/export?${query}`, {
     method: 'GET',
@@ -74,9 +114,7 @@ export async function exportMyData(sessionId, shopDomain, anonId) {
   });
 
   if (!response.ok) {
-    if (response.status === 403 || response.status === 409) {
-      throw new Error(`identity_verification_required`);
-    }
+    if (response.status === 403) throw new Error('verification_failed');
     throw new Error(`Export failed with status ${response.status}`);
   }
 
@@ -90,35 +128,29 @@ export async function exportMyData(sessionId, shopDomain, anonId) {
 }
 
 /**
- * Request data erasure under Art 17 GDPR.
+ * GDPR-03 step 2b — Art.17 erasure. Requires the verified one-time code. Returns the erasure summary
+ * on success. A wrong/expired/missing/locked code returns 403 `verification_failed`.
  *
- * @param {string} sessionId
- * @param {string} shopDomain
- * @param {string|null} anonId
- * @param {string|null} email - Art. 11 fallback identifier when sessionId is stale
- * @returns {Promise<void>}
+ * @param {string} email
+ * @param {string} code
+ * @returns {Promise<{success: boolean, deletedEventsCount: number}>}
  */
-export async function deleteMyData(sessionId, shopDomain, anonId, email = null) {
+export async function deleteMyData(email, code) {
   const response = await fetch(`${API_BASE_URL}/api/privacy/me`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
       'X-Widget-Token': getWidgetToken(),
     },
-    body: JSON.stringify({
-      sessionId,
-      shopDomain,
-      visitorId: anonId || null,
-      email: email || null,
-    }),
+    body: JSON.stringify({ email, code: normalizeCode(code) }),
   });
 
   if (!response.ok) {
-    if (response.status === 403 || response.status === 409) {
-      throw new Error(`identity_verification_required`);
-    }
+    if (response.status === 403) throw new Error('verification_failed');
     throw new Error(`Erasure failed with status ${response.status}`);
   }
+
+  return response.json();
 }
 
 /**
