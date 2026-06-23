@@ -4,7 +4,7 @@
   "project": ["src/**/*.{js,jsx}"],
   "ignore": ["public/**", "src/components/Dev/**"],
   "ignoreBinaries": ["eslint", "prettier", "knip", "jscpd"],
-  "ignoreDependencies": ["@vitejs/plugin-react", "@sentry/vite-plugin"],
+  "ignoreDependencies": ["@vitejs/plugin-react", "@sentry/vite-plugin", "@testing-library/react"],
   "rules": {
     "exports": "off",
     "duplicates": "off"
