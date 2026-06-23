@@ -94,7 +94,10 @@ export function sanitizeQuery(q) {
  * Build the event payload envelope.
  * Requires siteId at minimum. If sessionId is missing but anonId exists,
  * the payload is still built (anonId is the fallback identity).
- * If both are missing, source is marked 'widget_orphan' for backend visibility.
+ * `source` is always 'widget' — the API ingest schema (event.schema.js) accepts
+ * only that value. When no identity is available (no sessionId and no anonId),
+ * sessionId and identity.anonId are null and the API skips persistence for the
+ * identity-less event (no error, no rejected batch).
  *
  * @param {Array<Object>} events - Array of { eventType, eventData }
  * @returns {Object|null} Payload or null if siteId not set
@@ -103,12 +106,11 @@ function _buildPayload(events) {
   if (!_context.siteId) return null;
 
   const anonId = _context.visitorId || _context.sessionId || null;
-  const isOrphan = !_context.sessionId && !anonId;
 
   return {
     siteId: _context.siteId,
     sessionId: _context.sessionId || null,
-    source: isOrphan ? 'widget_orphan' : 'widget',
+    source: 'widget',
     identity: {
       anonId,
       shopifyCustomerId: _context.shopifyCustomerId || undefined,
