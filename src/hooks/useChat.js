@@ -17,10 +17,6 @@ import { BRIDGE_CONFIG, postToParent } from '../config/bridge';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
-// Technical events that bypass analytics consent — mirrors backend privacyUtils.TECHNICAL_EVENTS_WHITELIST.
-// SCALE-LIMIT: keep this list tiny and in sync with the backend. Product + Legal sign-off required to add entries.
-const CONSENT_EXEMPT_EVENTS = new Set(['jarbris_session_started', 'privacy_consent_updated']);
-
 const buildWelcomeMessage = (profileOverride = null) => {
   const profile = profileOverride || storage.getProfile();
   let welcomeText = t('welcome');

@@ -24,7 +24,8 @@ const EVENTS_ENDPOINT = `${API_URL}/api/events`;
 const BEACON_MAX_BYTES = 50_000;
 
 // Consent-exempt event types — always sent regardless of analytics consent.
-// Mirrors TECHNICAL_EVENTS_WHITELIST from API privacyUtils.js.
+// Mirrors TECHNICAL_EVENTS_WHITELIST from API privacyUtils.js. Single source of truth in the widget.
+// SCALE-LIMIT: keep this list tiny and in sync with the backend — adding entries needs Product + Legal sign-off.
 const CONSENT_EXEMPT_EVENTS = new Set(['jarbris_session_started', 'privacy_consent_updated']);
 
 // ── Context (set once by useChat when identity is ready) ──
