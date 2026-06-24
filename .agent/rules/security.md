@@ -43,7 +43,7 @@ These keys are permitted because without them the chat service cannot function a
 
 ### Cleanup on session expiry
 
-When a session times out (30 min), all `jarbris_*` keys in `localStorage` MUST be removed. This is implemented in the `getOrCreateSessionId()` function in `useChat.js`.
+When a session times out (30 min) the parent storefront script (`embed.js`) rotates the session id; the widget detects the new id and purges `localStorage` via `storage.clearSession()` (`utils/storage.js`), which removes all `jarbris_*` keys except `profile` / `analytics_consent` / `dev_*`. This is triggered from `useChat` on the session-id rotation (B27) and on `clearChat()`. (The 30-min timeout + the former `getOrCreateSessionId()` no longer live in `useChat.js` — they moved to `embed.js`.)
 
 
 ## 4. CSP Compliance
